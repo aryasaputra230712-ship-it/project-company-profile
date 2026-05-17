@@ -50,7 +50,7 @@ while ($row = mysqli_fetch_assoc($query)) {
         </div>
     </div>
 </section>
-hello world
+hello world bro
 <script>
     window.dataSlides = <?php echo json_encode($slides); ?>;
 </script>
