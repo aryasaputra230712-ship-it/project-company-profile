@@ -2,7 +2,7 @@
 
 $host = "localhost"; // Tetap localhost karena kodingan & DB sama-sama di hosting
 $user = "vibewebs_id_rsa"; // User yang kamu buat di cPanel
-$pass = "Vibewebs0708"; // Password yang kamu reset tadi
+$pass = "Aryasaputra23"; // Password yang kamu reset tadi
 $db   = "vibewebs_db"; // Nama database di cPanel
 
 $conn = mysqli_connect($host, $user, $pass, $db);
