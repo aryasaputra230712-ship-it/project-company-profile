@@ -17,7 +17,6 @@ while ($row = mysqli_fetch_assoc($query)) {
 ?>
 
 
-
 <main>
     <div class="container-main">
         <div class="main-intro">
@@ -51,7 +50,7 @@ while ($row = mysqli_fetch_assoc($query)) {
         </div>
     </div>
 </section>
-
+hello
 <script>
     window.dataSlides = <?php echo json_encode($slides); ?>;
 </script>
