@@ -1,11 +1,12 @@
 <?php
+// Perbaikan path untuk hosting
 define('ROOTPATH', $_SERVER['DOCUMENT_ROOT']);
 define('BASE_URL', '');
 
 $page_css = "/modules/main";
 
+// Memastikan file config terpanggil dengan benar
 include_once ROOTPATH . "/config/config.php";
-// Header sudah berisi <!DOCTYPE html>, <html>, <head>, dan <body>
 include_once ROOTPATH . "/layouts/header.php";
 
 $query = mysqli_query($conn, "SELECT * FROM slide_utama WHERE status = 'active'");
