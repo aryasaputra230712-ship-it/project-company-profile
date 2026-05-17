@@ -1,7 +1,11 @@
 <?php
-define('ROOTPATH', realpath(__DIR__));
+// Perbaikan path untuk hosting
+define('ROOTPATH', $_SERVER['DOCUMENT_ROOT']);
 define('BASE_URL', '');
 
+$page_css = "index";
+
+// Memastikan file config terpanggil dengan benar
 include_once ROOTPATH . "/config/config.php";
 include_once ROOTPATH . "/layouts/header.php";
 
@@ -17,11 +21,11 @@ while ($row = mysqli_fetch_assoc($query)) {
     <div class="container-main">
         <div class="main-intro">
             <video class="video-bg" muted autoplay loop playsinline>
-                <source src="<?= BASE_URL ?>/assets/videos/<?= $slides[0]['video_file'] ?? 'default.mp4'; ?>" type="video/mp4">
+                <source src="<?= BASE_URL ?>/assets/videos/<?= $slides[0]['video_file']; ?>" type="video/mp4">
             </video>
 
             <div class="intro-content">
-                <img src="<?= BASE_URL ?>/assets/imgs/logo.png" alt="Logo">
+                <img src="../assets/imgs/logo.png" alt="Logo">
                 <h1 id="dynamic-title"><?= $slides[0]['judul']; ?></h1>
                 <p id="dynamic-subtitle"><?= $slides[0]['subjudul']; ?></p>
             </div>
@@ -41,7 +45,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                 <a href="#" class="btn-primary">Pelajari Selengkapnya</a>
             </div>
             <div class="about-img">
-                <img src="<?= BASE_URL ?>/assets/imgs/about-founder.jpg" alt="Founder Aurelis">
+                <img src="../../assets/imgs/about-founder.jpg" alt="Founder Aurelis">
             </div>
         </div>
     </div>
@@ -50,6 +54,6 @@ while ($row = mysqli_fetch_assoc($query)) {
 <script>
     window.dataSlides = <?php echo json_encode($slides); ?>;
 </script>
-<script src="<?= BASE_URL ?>/assets/js/main.js"></script>
+<script src="../../assets/js/modules/main.js"></script>
 
 <?php include_once ROOTPATH . "/layouts/footer.php"; ?>
