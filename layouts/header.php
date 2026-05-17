@@ -1,18 +1,21 @@
 <?php
-// 1. Perbaiki Path internal
+// 1. Path internal untuk include file PHP
 if (!defined('ROOTPATH')) {
     define('ROOTPATH', $_SERVER['DOCUMENT_ROOT']);
 }
 
-$protocol = "http";
-if ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+// 2. Deteksi Protokol (HTTP/HTTPS)
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
-) {
-    $protocol = "https";
-}
-$base_url = $protocol . "://" . $_SERVER['HTTP_HOST'] . "/test/e-commerce";
+    ? "https" : "http";
 
-include_once ROOTPATH . "/config/config.php";
+// 3. Base URL yang dinamis (Otomatis vibewebs.web.id)
+$base_url = $protocol . "://" . $_SERVER['HTTP_HOST'];
+
+// Pastikan file config ada sebelum di-include
+if (file_exists(ROOTPATH . "/config/config.php")) {
+    include_once ROOTPATH . "/config/config.php";
+}
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -36,13 +39,13 @@ include_once ROOTPATH . "/config/config.php";
     <header>
         <nav class="navbar">
             <div class="nav-logo">
-                <a href="<?php echo $base_url; ?>/modules/main/index.php">
+                <a href="<?php echo $base_url; ?>/index.php">
                     <img src="<?php echo $base_url; ?>/assets/imgs/logo.png" alt="Logo">
                 </a>
             </div>
 
             <ul class="nav-links">
-                <li><a href="<?php echo $base_url; ?>/modules/main/index.php">Home</a></li>
+                <li><a href="<?php echo $base_url; ?>/index.php">Home</a></li>
                 <li><a href="#">Shop</a></li>
                 <li><a href="#">About Us</a></li>
                 <li><a href="#">Contact</a></li>
