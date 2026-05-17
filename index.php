@@ -3,7 +3,7 @@
 define('ROOTPATH', $_SERVER['DOCUMENT_ROOT']);
 define('BASE_URL', '');
 
-$page_css = "/modules/main";
+$page_css = "index";
 
 // Memastikan file config terpanggil dengan benar
 include_once ROOTPATH . "/config/config.php";
