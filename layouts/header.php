@@ -28,6 +28,7 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
+    <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/global.css">
 
     <?php if (isset($page_css)) : ?>
         <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/<?php echo trim($page_css, '/'); ?>.css">
