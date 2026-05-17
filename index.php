@@ -16,6 +16,8 @@ while ($row = mysqli_fetch_assoc($query)) {
 }
 ?>
 
+
+
 <main>
     <div class="container-main">
         <div class="main-intro">
@@ -25,8 +27,8 @@ while ($row = mysqli_fetch_assoc($query)) {
 
             <div class="intro-content">
                 <img src="../assets/imgs/main/logo.png" alt="Logo">
-                <h1 id="dynamic-title"><?= $slides[0]['title']; ?></h1>
-                <p id="dynamic-subtitle"><?= $slides[0]['subtitle']; ?></p>
+                <h1 id="dynamic-title"><?= $slides[0]['judul']; ?></h1>
+                <p id="dynamic-subtitle"><?= $slides[0]['subjudul']; ?></p>
             </div>
         </div>
     </div>
