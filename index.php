@@ -1,12 +1,5 @@
 <?php
 // Perbaikan path untuk hosting
-if (!defined('ROOTPATH')) {
-    define('ROOTPATH', __DIR__);
-}
-
-include_once ROOTPATH . "/config/config.php";
-include_once ROOTPATH . "/layouts/header.php";
-
 define('ROOTPATH', $_SERVER['DOCUMENT_ROOT']);
 define('BASE_URL', '');
 
