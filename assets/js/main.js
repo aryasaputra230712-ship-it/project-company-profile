@@ -11,8 +11,8 @@ function gantiTeks() {
 
   setTimeout(() => {
     index = (index + 1) % dataSlides.length;
-    titleEl.textContent = dataSlides[index].title;
-    subtitleEl.textContent = dataSlides[index].subtitle;
+    titleEl.textContent = dataSlides[index].judul;
+    subtitleEl.textContent = dataSlides[index].subjudul;
 
     titleEl.classList.remove("fade-text");
     subtitleEl.classList.remove("fade-text");
