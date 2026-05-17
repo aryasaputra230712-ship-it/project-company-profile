@@ -25,7 +25,7 @@ while ($row = mysqli_fetch_assoc($query)) {
             </video>
 
             <div class="intro-content">
-                <img src="../assets/imgs/main/logo.png" alt="Logo">
+                <img src="../assets/imgs/logo.png" alt="Logo">
                 <h1 id="dynamic-title"><?= $slides[0]['judul']; ?></h1>
                 <p id="dynamic-subtitle"><?= $slides[0]['subjudul']; ?></p>
             </div>
