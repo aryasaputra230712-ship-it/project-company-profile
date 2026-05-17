@@ -1,0 +1,170 @@
+/* ========== Styling Main ==========*/
+/* Container Main */
+.container-main {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Main Intro Section */
+.main-intro {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-intro::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 5;
+}
+
+.video-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Intro Content Overlay */
+.intro-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Logo Styling */
+.intro-content img {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+/* H1 Styling */
+.intro-content h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  line-height: 1.2;
+}
+
+/* P Styling */
+.intro-content p {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin: 0;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  max-width: 600px;
+}
+
+.intro-content h1,
+.intro-content p {
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.fade-text {
+  opacity: 0;
+  transform: translateY(15px);
+}
+
+/* ================================ */
+
+/*================================ About Styling ================================*/
+.about-section {
+  padding: 80px 10%;
+  background-color: #fff;
+  color: #1a1a1a;
+}
+
+.about-grid {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.about-text {
+  flex: 1;
+}
+
+.about-text h3 {
+  color: #d4af37; /* Warna emas */
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+}
+
+.about-text h2 {
+  font-size: 2.5rem;
+  margin: 20px 0;
+  font-family: "Poppins", sans-serif;
+}
+
+.about-text p {
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.about-img {
+  flex: 1;
+}
+
+.about-img img {
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: 20px 20px 0px #f4f4f4; /* Efek aksen di belakang foto */
+}
+
+/* Responsivitas Tablet */
+@media (max-width: 768px) {
+  .intro-content {
+    gap: 1rem;
+  }
+
+  .intro-content img {
+    width: 100px;
+  }
+
+  .intro-content h1 {
+    font-size: 2rem;
+  }
+
+  .intro-content p {
+    font-size: 1.2rem;
+  }
+}
+
+/* Responsivitas Mobile */
+@media (max-width: 480px) {
+  .intro-content {
+    gap: 0.8rem;
+    padding: 0 1rem;
+  }
+
+  .intro-content img {
+    width: 80px;
+  }
+
+  .intro-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .intro-content p {
+    font-size: 1rem;
+  }
+}
