@@ -1,5 +1,6 @@
 <?php
 define('ROOTPATH', $_SERVER['DOCUMENT_ROOT']);
+define('BASE_URL', '');
 
 $page_css = "/modules/main";
 
