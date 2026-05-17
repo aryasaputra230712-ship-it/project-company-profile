@@ -1,6 +1,5 @@
 <?php
-define('ROOTPATH', $_SERVER['DOCUMENT_ROOT'] . '/test/e-commerce');
-define('BASE_URL', '/test/e-commerce');
+define('ROOTPATH', $_SERVER['DOCUMENT_ROOT']);
 
 $page_css = "/modules/main";
 
