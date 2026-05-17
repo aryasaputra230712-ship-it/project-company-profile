@@ -1,7 +1,12 @@
 <?php
 // Perbaikan path untuk hosting
-define('ROOTPATH', $_SERVER['DOCUMENT_ROOT']);
-define('BASE_URL', '');
+if (!defined('ROOTPATH')) {
+    define('ROOTPATH', __DIR__);
+}
+
+include_once ROOTPATH . "/config/config.php";
+include_once ROOTPATH . "/layouts/header.php";
+?>
 
 $page_css = "index";
 
@@ -12,7 +17,7 @@ include_once ROOTPATH . "/layouts/header.php";
 $query = mysqli_query($conn, "SELECT * FROM slide_utama WHERE status = 'active'");
 $slides = [];
 while ($row = mysqli_fetch_assoc($query)) {
-    $slides[] = $row;
+$slides[] = $row;
 }
 ?>
 
