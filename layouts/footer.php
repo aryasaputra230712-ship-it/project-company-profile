@@ -2,7 +2,7 @@
     <footer style="background: rgb(17 43 59); color: white; padding: 50px 0;">
         <div style="display: flex; justify-content: space-around;">
             <div>
-                <img src="../../assets/imgs/footer/logo_gold.png" alt="Logo" width="100">
+                <img src="../../assets/imgs/logo_gold.png" alt="Logo" width="100">
                 <p>blalbablablablaballbalbal</p>
             </div>
 
