@@ -54,6 +54,6 @@ while ($row = mysqli_fetch_assoc($query)) {
 <script>
     window.dataSlides = <?php echo json_encode($slides); ?>;
 </script>
-<script src="../../assets/js/modules/main.js"></script>
+<script src="../../assets/js/main.js"></script>
 
 <?php include_once ROOTPATH . "/layouts/footer.php"; ?>
