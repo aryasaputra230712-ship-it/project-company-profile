@@ -12,13 +12,12 @@ while ($row = mysqli_fetch_assoc($query)) {
     $slides[] = $row;
 }
 
+include ROOTPATH . "/modules/main.php";
 include ROOTPATH . "/layouts/header.php";
 
 
 ?>
 
-
-<section>hello</section>
 <script>
     window.dataSlides = <?php echo json_encode($slides); ?>;
 </script>
