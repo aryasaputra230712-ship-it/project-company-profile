@@ -14,25 +14,10 @@ $slides = [];
 while ($row = mysqli_fetch_assoc($query)) {
     $slides[] = $row;
 }
+
+include_once ROOTPATH . "modules/main.php";
+
 ?>
-
-
-<main>
-    <div class="container-main">
-        <div class="main-intro">
-            <video class="video-bg" muted autoplay loop playsinline>
-                <source src="<?= BASE_URL ?>/assets/videos/<?= $slides[0]['video_file']; ?>" type="video/mp4">
-            </video>
-
-            <div class="intro-content">
-                <img src="../assets/imgs/logo.png" alt="Logo">
-                <h1 id="dynamic-title"><?= $slides[0]['judul']; ?></h1>
-                <p id="dynamic-subtitle"><?= $slides[0]['subjudul']; ?></p>
-            </div>
-        </div>
-    </div>
-</main>
-
 <section class="about-section">
     <div class="container">
         <div class="about-grid">
@@ -45,7 +30,7 @@ while ($row = mysqli_fetch_assoc($query)) {
                 <a href="#" class="btn-primary">Pelajari Selengkapnya</a>
             </div>
             <div class="about-img">
-                <img src="../../assets/imgs/about-founder.jpg" alt="Founder Aurelis">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= $slides[0]["logo"] ?>" alt="Founder Aurelis">
             </div>
         </div>
     </div>
