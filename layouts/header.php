@@ -40,7 +40,7 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
         <nav class="navbar">
             <div class="nav-logo">
                 <a href="<?php echo $base_url; ?>/index.php">
-                    <img src="<?php echo $base_url; ?>/assets/imgs/logo.png" alt="Logo">
+                    <img src="<?php echo $base_url; ?>/assets/imgs/logo_blue.png" alt="Logo">
                 </a>
             </div>
 
