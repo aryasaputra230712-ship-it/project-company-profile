@@ -83,6 +83,10 @@
   align-items: center;
   justify-content: center;
 }
+.about-text .about-img {
+  height: 50vh;
+  gap: 1.6rem;
+}
 
 @media (max-width: 768px) {
   .navbar {
