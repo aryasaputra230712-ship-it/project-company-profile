@@ -1,18 +1,22 @@
 <?php
 // 1. Path internal untuk include file PHP
 if (!defined('ROOTPATH')) {
-    define('ROOTPATH', $_SERVER['DOCUMENT_ROOT']);
+    define('ROOTPATH', __DIR__);
 }
 
-// 2. Deteksi Protokol (HTTP/HTTPS)
+// 2. Deteksi Protokol
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
     ? "https" : "http";
 
-// 3. Base URL yang dinamis (Otomatis vibewebs.web.id)
-$base_url = $protocol . "://" . $_SERVER['HTTP_HOST'];
+// 3. Base URL Pintar
+// Ini akan menghasilkan "vibewebs.web.id" di hosting
+// Dan "localhost/company_profile" di laptop kamu
+$host = $_SERVER['HTTP_HOST'];
+$script_name = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+$base_url = $protocol . "://" . $host . ($script_name == '/' ? '' : $script_name);
 
-// Pastikan file config ada sebelum di-include
+// Pastikan file config ter-include dengan benar
 if (file_exists(ROOTPATH . "/config/config.php")) {
     include_once ROOTPATH . "/config/config.php";
 }
@@ -31,7 +35,7 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/global.css">
 
     <?php if (isset($page_css)) : ?>
-        <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/<?php echo trim($page_css, '/'); ?>.css">
+        <link rel="stylesheet" href="<?php echo $base_url; ?>/cs/assetss/<?php echo trim($page_css, '/'); ?>.css">
     <?php endif; ?>
 </head>
 
