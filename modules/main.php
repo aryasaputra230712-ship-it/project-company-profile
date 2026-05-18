@@ -6,7 +6,7 @@ include_once ROOTPATH . "/config/config.php";
 
 ?>
 
-<main>
+<main style="height: 100vh;">
     <div class="container-main">
         <div class="main-intro">
             <div class="video-bg-container">
