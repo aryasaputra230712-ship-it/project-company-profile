@@ -4,20 +4,18 @@ define('ROOTPATH', __DIR__);
 
 include_once ROOTPATH . "/config/config.php";
 
-$page_css = "main";
-
+// 1. LOGIK DATABASE
 $query = mysqli_query($conn, "SELECT * FROM slide_utama WHERE status = 'active'");
 $slides = [];
 while ($row = mysqli_fetch_assoc($query)) {
     $slides[] = $row;
 }
 
-// Cek apakah ada data
 if (empty($slides)) {
-    die("Error: Tidak ada slide aktif di database");
+    die("Error: Tidak ada data slide.");
 }
 
-include ROOTPATH . "/modules/main.php";
+// 2. HEADER (Tetap di-include agar navigasi konsisten)
 include ROOTPATH . "/layouts/header.php";
 ?>
 

@@ -1,39 +1,35 @@
 /* ========== Styling Main ==========*/
 /* Container Main */
+/* Wajib Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-.container-main {
-  width: 100%;
-  margin: 0 auto;
-}
-
-/* Main Intro Section */
-.main-intro {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.main-intro::before {
-  content: "";
+/* Supaya Navbar tidak mendorong video ke bawah (Gap Putih) */
+header,
+.navbar {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 5;
+  z-index: 100;
+  background: transparent !important; /* Menghilangkan background putih header */
+}
+
+/* Container Video */
+.main-intro {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Tinggi pas satu layar penuh */
+  overflow: hidden;
 }
 
 .video-bg {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Video memenuhi layar tanpa gepeng */
 }
 
 /* Intro Content Overlay */
