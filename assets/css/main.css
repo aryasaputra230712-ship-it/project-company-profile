@@ -29,7 +29,7 @@ header,
 .video-bg {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Video memenuhi layar tanpa gepeng */
+  object-fit: cover;
 }
 
 /* Intro Content Overlay */
