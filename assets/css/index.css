@@ -79,7 +79,7 @@
 
 /* ======= About us ======= */
 .about-section {
-  padding: 6rem 1.5rem;
+  padding: 6rem 2.5rem;
   background: #090a12;
   color: #f5f5f7;
 }
@@ -97,6 +97,7 @@
   flex: 1 1 40%;
   max-width: 600px;
   margin: 0;
+  text-align: center;
 }
 
 .about-text h3 {
@@ -117,6 +118,7 @@
   margin-bottom: 2rem;
 }
 
+/* Mengatur ukuran img */
 .about-img img {
   width: 100%;
   height: auto;
@@ -124,6 +126,32 @@
   object-fit: cover;
   border-radius: 1rem;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+/*===== Button =====*/
+a {
+  text-decoration: none;
+  color: #050816;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-primary {
+  display: inline-block;
+  padding: 0.3rem 1.2rem;
+  text-decoration: none;
+  background-color: #f7c66b;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 20px rgba(247, 198, 107, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: #ffdb99;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(247, 198, 107, 0.4);
 }
 
 @media (max-width: 900px) {

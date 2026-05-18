@@ -60,10 +60,12 @@ include ROOTPATH . "/layouts/header.php";
                 <p>
                     Aurelis bukan sekadar brand perhiasan. Ini adalah simbol ketangguhan dan keindahan yang lahir dari pengalaman panjang. Setiap lekukan desain kami membawa cerita tentang kekuatan hati.
                 </p>
-                <a href="#" class="btn-primary">Pelajari Selengkapnya</a>
+                <div class="btn-primary">
+                    <a href="#">Pelajari Selengkapnya</a>
+                </div>
             </div>
             <div class="about-img">
-                <img src="<?= BASE_URL ?>/assets/imgs/about.jpg" alt="Founder Aurelis">
+                <img src="<?= BASE_URL ?>/assets/imgs/about.png" alt="Founder Aurelis">
             </div>
         </div>
     </div>
