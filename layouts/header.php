@@ -4,7 +4,7 @@ if (!defined('ROOTPATH')) {
     define('ROOTPATH', __DIR__);
 }
 
-// 2. Deteksi Protokol
+// 2. Deteksi Protokol(Jangan di otak atik)
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
     (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
     ? "https" : "http";
@@ -35,7 +35,7 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/global.css">
 
     <?php if (isset($page_css)) : ?>
-        <link rel="stylesheet" href="<?php echo $base_url; ?>/cs/assetss/<?php echo trim($page_css, '/'); ?>.css">
+        <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/<?php echo trim($page_css, '/'); ?>.css">
     <?php endif; ?>
 </head>
 
