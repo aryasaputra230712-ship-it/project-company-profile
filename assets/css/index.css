@@ -78,10 +78,59 @@
 }
 
 /* ======= About us ======= */
+.about-section {
+  padding: 6rem 1.5rem;
+  background: #090a12;
+  color: #f5f5f7;
+}
+
 .about-grid {
   display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+}
+
+.about-text,
+.about-img {
+  flex: 1 1 40%;
+  max-width: 600px;
+  margin: 0;
+}
+
+.about-text h3 {
+  color: #f7c66b;
+  letter-spacing: 0.2em;
+  margin-bottom: 1rem;
+}
+
+.about-text h2 {
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.about-text p {
+  max-width: 38rem;
+  line-height: 1.85;
+  margin-bottom: 2rem;
+}
+
+.about-img img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 900px) {
+  .about-text,
+  .about-img {
+    flex: 1 1 100%;
+  }
 }
 
 @media (max-width: 768px) {

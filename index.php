@@ -63,7 +63,7 @@ include ROOTPATH . "/layouts/header.php";
                 <a href="#" class="btn-primary">Pelajari Selengkapnya</a>
             </div>
             <div class="about-img">
-                <img src="<?= BASE_URL ?>/assets/imgs/" alt="Founder Aurelis">
+                <img src="<?= BASE_URL ?>/assets/imgs/about.jpg" alt="Founder Aurelis">
             </div>
         </div>
     </div>
