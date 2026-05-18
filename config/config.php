@@ -6,8 +6,8 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1') 
     // Jika dijalankan di komputer lokal, gunakan konfigurasi lokal
     $host = "localhost";        // Alamat server database lokal
     $user = "root";             // Username MySQL lokal
-    $password = ""; // Password MySQL lokal
-    $database = "vibewebs_db"; // Nama database lokal
+    $pass = ""; // Password MySQL lokal
+    $db = "vibewebs_db"; // Nama database lokal
 
 } else {
     // Jika dijalankan di jaringan (bukan localhost), gunakan konfigurasi server
