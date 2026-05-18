@@ -13,7 +13,7 @@ $base_url = $protocol . "://" . $host . ($script_name == '/' ? '' : $script_name
 define('BASE_URL', $base_url);
 
 include_once ROOTPATH . "/config/config.php";
-$page_css = "main";
+$page_css = "index";
 
 // 1. LOGIK DATABASE
 $query = mysqli_query($conn, "SELECT * FROM slide_utama WHERE status = 'active'");
@@ -50,8 +50,23 @@ include ROOTPATH . "/layouts/header.php";
     </div>
 </main>
 
-<section>
-    <h1>Hello World</h1>
+
+<section class="about-section">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-text">
+                <h3>SINCE 2006</h3>
+                <h2>PERJALANAN & LAHIRNYA AURELIS</h2>
+                <p>
+                    Aurelis bukan sekadar brand perhiasan. Ini adalah simbol ketangguhan dan keindahan yang lahir dari pengalaman panjang. Setiap lekukan desain kami membawa cerita tentang kekuatan hati.
+                </p>
+                <a href="#" class="btn-primary">Pelajari Selengkapnya</a>
+            </div>
+            <div class="about-img">
+                <img src="<?= BASE_URL ?>/assets/imgs/" alt="Founder Aurelis">
+            </div>
+        </div>
+    </div>
 </section>
 
 <script>
