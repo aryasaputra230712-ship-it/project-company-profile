@@ -12,8 +12,8 @@ while ($row = mysqli_fetch_assoc($query)) {
     $slides[] = $row;
 }
 
-include_once ROOTPATH . "/layouts/header.php";
-include_once ROOTPATH . "/modules/main.php";
+include ROOTPATH . "/layouts/header.php";
+include ROOTPATH . "/modules/main.php";
 
 ?>
 
