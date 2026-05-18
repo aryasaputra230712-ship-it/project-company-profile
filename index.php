@@ -50,6 +50,10 @@ include ROOTPATH . "/layouts/header.php";
     </div>
 </main>
 
+<section>
+    <h1>Hello World</h1>
+</section>
+
 <script>
     window.dataSlides = <?php echo json_encode($slides); ?>;
 </script>
