@@ -1,3 +1,12 @@
+<?php
+define('ROOTPATH', __DIR__);
+define('BASE_URL', '');
+
+include_once ROOTPATH . "/config/config.php";
+include_once ROOTPATH . "/index.php";
+
+?>
+
 <main>
     <div class="container-main">
         <div class="main-intro">
