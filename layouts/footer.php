@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 // 2. Deteksi Protokol(Jangan di otak atik)
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
@@ -31,13 +32,35 @@ $base_url = $protocol . "://" . $host . ($script_name == '/' ? '' : $script_name
                 <a style="color: white; text-decoration: none;" href="#">Facebook</a>
                 <a style="color: white; text-decoration: none;" href="#">Tiktok</a>
             </div>
+=======
+<footer style="background: rgb(17 43 59); color: white; padding: 50px 0;">
+    <div style="display: flex; justify-content: space-around;">
+        <div>
+            <img src="../../assets/imgs/logo_gold.png" alt="Logo" width="100">
+            <p>blalbablablablaballbalbal</p>
+>>>>>>> 6e84f0f7e1b5b2bb3df2cbd0a54e931e7b35250a
         </div>
-        <br><br>
-        
-        <hr style="width: 80%; margin-left: 11%;">
-        <p align="center">&copy; 2026 Aurelis Jewelry. All rights reserved.</p>
-        
-    </footer>
-    
+
+        <div>
+            <h3>CONTACT</h3>
+            <p>PHONE: </p>
+            <p>EMAIL: </p>
+            <p></p>
+        </div>
+
+        <div>
+            <a style="color: white; text-decoration: none;" href="#">Instagram</a>
+            <a style="color: white; text-decoration: none;" href="#">Facebook</a>
+            <a style="color: white; text-decoration: none;" href="#">Tiktok</a>
+        </div>
+    </div>
+    <br><br>
+
+    <hr style="width: 80%; margin-left: 11%;">
+    <p align="center">&copy; 2026 Aurelis Jewelry. All rights reserved.</p>
+
+</footer>
+
 </body>
+
 </html>
