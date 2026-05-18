@@ -3,7 +3,7 @@ define('BASE_URL', '');
 define('ROOTPATH', __DIR__);
 
 include_once ROOTPATH . "/config/config.php";
-
+$page_css = "/main";
 // 1. LOGIK DATABASE
 $query = mysqli_query($conn, "SELECT * FROM slide_utama WHERE status = 'active'");
 $slides = [];
@@ -16,6 +16,8 @@ if (empty($slides)) {
 }
 
 // 2. HEADER (Tetap di-include agar navigasi konsisten)
+
+
 include ROOTPATH . "/layouts/header.php";
 ?>
 
