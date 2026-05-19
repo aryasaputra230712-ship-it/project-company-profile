@@ -52,7 +52,7 @@ include ROOTPATH . "/layouts/header.php";
 
 
 <section class="about-section">
-    <div class="container">
+    <div class="container-about">
         <div class="about-grid">
             <div class="about-text">
                 <h3>SINCE 2006</h3>
@@ -65,7 +65,26 @@ include ROOTPATH . "/layouts/header.php";
                 </div>
             </div>
             <div class="about-img">
-                <img src="<?= BASE_URL ?>/assets/imgs/about.png" alt="Founder Aurelis">
+                <img src="<?= BASE_URL ?>/assets/imgs/about.png" alt="About">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="founder-section">
+    <div class="container-founder">
+        <div class="founder-grid">
+
+            <div class="founder-img">
+                <img src="<?= BASE_URL ?>/assets/imgs/founder.png" alt="Founder Aurelis">
+            </div>
+            <div class="founder-text">
+                <h1>THE FOUNDER</h1>
+                <div class="founder-p">
+                    <p>Lahir di Banyuwangi dari keluarga petani sederhana, keterbatasan justru menjadi fondasi ketangguhan Astutik.</p>
+                    <p>Belajar langsung dari mentor internasional asal Jepang, Taku Kitayama, membentuk disiplin dan standar kualitas global pada setiap karyanya.</p>
+                    <p>Kini berdomisili di Bali, beliau mengembangkan Aurelis sebagai simbol perhiasan yang merepresentasikan karakter kuat seorang perempuan.</p>
+                </div>
             </div>
         </div>
     </div>
