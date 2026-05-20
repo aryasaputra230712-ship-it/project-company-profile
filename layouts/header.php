@@ -93,17 +93,12 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
                 </a>
             </div>
 
-            <ul class="nav-links">
-                <li><a href="<?php echo $base_url; ?>/index.php">HOME</a></li>
-                <li><a href="<?php echo $base_url; ?>/gallery.php">GALLERY</a></li>
-                <li><a href="<?php echo $base_url; ?>/about-us.php">ABOUT US</a></li>
-                <li><a href="<?php echo $base_url; ?>/workshop.php">WORKSHOP</a></li>
-                <li><a href="<?php echo $base_url; ?>/contact.php">CONTACT</a></li>
             <ul class="hidden md:flex items-center gap-8 list-none">
                 <li><a href="<?php echo $base_url; ?>/index.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Home</a></li>
-                <li><a href="#" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Shop</a></li>
-                <li><a href="#" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">About Us</a></li>
-                <li><a href="#" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Contact</a></li>
+                <li><a href="<?php echo $base_url; ?>/gallery.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Gallery</a></li>
+                <li><a href="<?php echo $base_url; ?>/worksho.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Workshop</a></li>
+                <li><a href="<?php echo $base_url; ?>/about-us.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">About Us</a></li>
+                <li><a href="<?php echo $base_url; ?>/contact.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Contact</a></li>
 
             </ul>
 
