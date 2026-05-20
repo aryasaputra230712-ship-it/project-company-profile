@@ -32,12 +32,11 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-<<<<<<< HEAD
+
     <?php if (isset($page_css)) : ?>
         <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/<?php echo trim($page_css, '/'); ?>.css">
     <?php endif; ?>
 
-=======
     <script>
         tailwind.config = {
             theme: {
@@ -81,7 +80,7 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <script>
         new WOW().init();
     </script>
->>>>>>> d1887bf0d9e45470b1a62d1756963cad573e90e8
+
 </head>
 
 <body class="w-full">
@@ -94,20 +93,18 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
                 </a>
             </div>
 
-<<<<<<< HEAD
             <ul class="nav-links">
                 <li><a href="<?php echo $base_url; ?>/index.php">HOME</a></li>
                 <li><a href="<?php echo $base_url; ?>/gallery.php">GALLERY</a></li>
                 <li><a href="<?php echo $base_url; ?>/about-us.php">ABOUT US</a></li>
                 <li><a href="<?php echo $base_url; ?>/workshop.php">WORKSHOP</a></li>
                 <li><a href="<?php echo $base_url; ?>/contact.php">CONTACT</a></li>
-=======
             <ul class="hidden md:flex items-center gap-8 list-none">
                 <li><a href="<?php echo $base_url; ?>/index.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Home</a></li>
                 <li><a href="#" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Shop</a></li>
                 <li><a href="#" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">About Us</a></li>
                 <li><a href="#" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Contact</a></li>
->>>>>>> d1887bf0d9e45470b1a62d1756963cad573e90e8
+
             </ul>
 
             <div class="flex items-center gap-5">
