@@ -32,8 +32,68 @@ $page_css = "contact";
 include ROOTPATH . "/layouts/header.php";
 ?>
 
-<section style="height: 100vh;">
-    <h1>fdsfdsfdsfsd</h1>
+<style>
+    .contact-intro {
+        position: relative;        
+    }
+
+    .bg-contact{
+        position: absolute;
+        inset: 0;
+        
+    }
+
+    .bg-contact img{
+        position: relative;
+        width: 100%;
+        height: 52vh;
+        object-fit: cover;
+        filter: brightness(0.3);
+        -webkit-filter: brightness(0.3);
+    }
+
+    .bg-contact::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(rgba(138, 157, 255, 0.2) 0%, rgba(137, 147, 255, 0.2) 100%);
+        pointer-events: none;
+    }
+
+    .intro-content{
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 52vh;
+        text-transform: uppercase;
+        margin-top: 35px;
+    }
+
+    .intro-content h1{
+        letter-spacing: 20px; 
+        font-size: 50px;
+    }
+
+    .intro-content p{
+        font-weight: 300; 
+        letter-spacing: 2px;
+    }
+</style>
+
+<section class="contact-hero">
+    <div class="contact-intro">
+        <div class="bg-contact">
+            <img src="<?= BASE_URL ?>/assets/imgs/contact-hero.jpeg" alt="bg-contact">
+        </div>
+
+        <div class="intro-content">
+            <h1>Contact</h1>
+            <p>We'd Love to Hear from You</p>
+        </div>
+    </div>
 </section>
 
 <?php include ROOTPATH . "/layouts/footer.php" ?>
