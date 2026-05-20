@@ -86,6 +86,22 @@ include ROOTPATH . "/layouts/header.php";
     </div>
 </section>
 
+<section class="history-section">
+    <div class="history-container">
+        <div class="history-img-wrapper">
+            <img src="<?= BASE_URL ?>/assets/imgs/history.png" alt="Aurelis Jewelry">
+        </div>
+        <div class="history-text">
+            <h3>SINCE 2006</h3>
+            <h2>PERJALANAN ASTUTIK & LAHIRNYA AURELIS</h2>
+            <div class="history-p">
+                <p>TIDAK SEMUA BRAND BESAR LAHIR DARI KEMEWAHAN. SEBAGIAN JUSTRU TUMBUH DARI KETEKUNAN, JATUH BANGUN, DAN MIMPI SEORANG PEREMPUAN YANG TIDAK PERNAH MENYERAH.</p>
+                <p>ASTUTIK PERTAMA KALI MENGENAL DUNIA PERHIASAN PADA TAHUN 2006. BERAWAL DARI RASA SUKA, TUMBUHLAH PROSES BELAJAR MANDIRI; MEMAHAMI KARAKTER BATU HINGGA MENGENAL SELERA PASAR DUNIA.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
 <script>
     window.dataSlides = <?php echo json_encode($slides); ?>;
 </script>

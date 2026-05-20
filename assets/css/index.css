@@ -278,6 +278,123 @@ a {
 }
 /* ================================================ */
 
+/* ======== History Styling ======== */
+/* Bagian pembungkus luar (Section) */
+.history-section {
+  background-color: #ffffff; /* Background Putih Bersih */
+  color: #1a2a3a; /* Warna teks gelap elegan */
+  padding: 3.5rem 2.5rem; /* Jarak atas-bawah (10rem) dan kiri-kanan (2.5rem) */
+  background-color: #050816; /* Warna latar gelap agar senada dengan Hero */
+  color: #f7f7f7; /* Warna teks putih cerah agar kontras */
+  border-top: 1px solid rgba(255, 255, 255, 0.05); /* Garis batas tipis di bagian atas */
+}
+
+/* Kontainer utama untuk mengatur posisi teks dan gambar */
+.history-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8rem; /* Jarak lebar antara gambar dan teks */
+  max-width: 1200px; /* Lebar maksimal konten agar tidak terlalu melebar di layar besar */
+  margin: 0 auto; /* Menengahkan kontainer secara horizontal */
+  display: flex; /* Mengaktifkan mode flexbox untuk mengatur kolom */
+  align-items: center; /* Menyejajarkan gambar dan teks secara vertikal di tengah */
+  gap: 5rem; /* Jarak antara kolom gambar dan kolom teks */
+}
+
+/* Bagian Gambar dengan efek melayang */
+/* Pembungkus gambar */
+.history-img-wrapper {
+  flex: 1;
+  position: relative;
+  padding: 20px;
+  flex: 1; /* Memberikan porsi lebar yang sama (50%) dengan teks */
+  position: relative; /* Dasar untuk posisi elemen dekoratif (jika ada) */
+}
+
+/* Styling tag gambar */
+.history-img-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1); /* Bayangan sangat lembut */
+  position: relative;
+  z-index: 2;
+  width: 100%; /* Gambar memenuhi lebar pembungkus */
+  height: auto; /* Mempertahankan rasio aspek gambar */
+  border-radius: 0.5rem; /* Sudut gambar yang sedikit tumpul (halus) */
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4); /* Bayangan tebal untuk efek kedalaman/mewah */
+  transition: transform 0.4s ease; /* Durasi animasi saat kursor diarahkan ke gambar */
+}
+
+/* Kotak dekoratif tipis di belakang gambar (opsional) */
+.history-img-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 90%;
+  border: 1px solid #e5e5e5;
+  z-index: 1;
+  /* Efek interaktif saat gambar disentuh kursor */
+}
+/* Bagian Teks */
+/* Pembungkus teks */
+.history-text {
+  flex: 1.2;
+}
+
+/* Sub-judul (SINCE 2006) */
+.history-text h3 {
+  font-size: 1rem;
+  letter-spacing: 0.4em;
+  color: #bfa37e; /* Warna emas pucat */
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+}
+
+/* Judul Utama */
+.history-text h2 {
+  font-family: "Playfair Display", serif; /* Wajib pakai Serif */
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.2;
+  margin-bottom: 2.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #fff;
+}
+
+.history-p p {
+  font-size: 0.95rem;
+  line-height: 2;
+  margin-bottom: 2rem;
+  color: #555;
+  text-transform: uppercase; /* Sesuai referensi */
+  letter-spacing: 0.05em;
+  font-size: 1rem; /* Ukuran standar yang mudah dibaca */
+  line-height: 1.8; /* Jarak antar baris yang lega agar mata tidak cepat lelah */
+  margin-bottom: 1.5rem; /* Jarak antar paragraf */
+  color: #e6e9ff; /* Warna putih kebiruan yang lembut */
+  opacity: 0.85; /* Sedikit transparan agar teks judul tetap lebih dominan */
+  letter-spacing: 0.02em;
+}
+
+/* Responsive untuk HP */
+@media (max-width: 992px) {
+  .history-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 4rem;
+  }
+
+  .history-img-wrapper {
+    width: 100%;
+    max-width: 500px;
+  }
+}
+
 /* Tablet: Mengubah layout About dari samping menjadi bertumpuk */
 @media (max-width: 900px) {
   .about-text,
@@ -298,6 +415,12 @@ a {
     align-items: center;
     text-align: center;
     order: 2;
+  }
+
+  .history-container {
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
   }
 }
 
