@@ -1,24 +1,34 @@
-const titleEl = document.getElementById("dynamic-title");
-const subtitleEl = document.getElementById("dynamic-subtitle");
-const dataSlides = window.dataSlides || [];
-let index = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  const titleEl = document.getElementById("dynamic-title");
+  const subtitleEl = document.getElementById("dynamic-subtitle");
+  const slides = window.dataSlides;
+  let currentIndex = 0;
 
-function gantiTeks() {
-  if (!dataSlides.length) return;
+  if (slides && slides.length > 1) {
+    setInterval(() => {
+      // 1. Tambahkan animasi KELUAR
+      // Kita pakai fadeOutDown agar teks seolah tenggelam
+      titleEl.classList.remove("animate__fadeInUp");
+      titleEl.classList.add("animate__fadeOutDown");
 
-  titleEl.classList.add("fade-text");
-  subtitleEl.classList.add("fade-text");
+      subtitleEl.classList.remove("animate__fadeInUp");
+      subtitleEl.classList.add("animate__fadeOutDown");
 
-  setTimeout(() => {
-    index = (index + 1) % dataSlides.length;
-    titleEl.textContent = dataSlides[index].judul;
-    subtitleEl.textContent = dataSlides[index].subjudul;
+      // 2. Tunggu animasi keluar selesai (sekitar 500ms)
+      setTimeout(() => {
+        // Ganti Konten Teks
+        currentIndex = (currentIndex + 1) % slides.length;
+        titleEl.textContent = slides[currentIndex].judul;
+        subtitleEl.textContent = slides[currentIndex].subjudul;
 
-    titleEl.classList.remove("fade-text");
-    subtitleEl.classList.remove("fade-text");
-  }, 400);
-}
+        // 3. Tambahkan animasi MASUK
+        // Hilangkan class keluar, ganti dengan class masuk
+        titleEl.classList.remove("animate__fadeOutDown");
+        titleEl.classList.add("animate__fadeInUp");
 
-if (dataSlides.length > 1) {
-  setInterval(gantiTeks, 4000);
-}
+        subtitleEl.classList.remove("animate__fadeOutDown");
+        subtitleEl.classList.add("animate__fadeInUp");
+      }, 600); // Jeda ini harus sinkron dengan durasi animate.css (default 1s, tapi fadeOut biasanya lebih cepat)
+    }, 5000); // Ganti teks setiap 5 detik
+  }
+});
