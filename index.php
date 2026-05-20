@@ -102,6 +102,27 @@ include ROOTPATH . "/layouts/header.php";
     </div>
 </section>
 
+<section class="motto-section">
+    <h1>"Lebih dari Sekadar Perhiasan"</h1>
+    <div class="motto-container">
+        <div class="motto-text">
+            <h3>01.</h3>
+            <h4>Perjalanan Hidup</h4>
+            <p>Mewakili setiap langkah dan cerita yang membentuk pribadi perempuan.</p>
+        </div>
+        <div class="motto-text">
+            <h3>02.</h3>
+            <h4>Kekuatan</h4>
+            <p>Melambangkan keberanian untuk bangkit dan berdiri lebih tegak.</p>
+        </div>
+        <div class="motto-text">
+            <h3>03.</h3>
+            <h4>Makna</h4>
+            <p>Menyimpan filosofi mendalam di balik setiap lengkungan desain.</p>
+        </div>
+    </div>
+</section>
+
 <script>
     window.dataSlides = <?php echo json_encode($slides); ?>;
 </script>

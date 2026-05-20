@@ -328,7 +328,7 @@ a {
   transition: transform 0.4s ease; /* Durasi animasi saat kursor diarahkan ke gambar */
 }
 
-/* Kotak dekoratif tipis di belakang gambar (opsional) */
+/* Kotak dekoratif tipis di belakang gambar */
 .history-img-wrapper::before {
   content: "";
   position: absolute;
@@ -379,6 +379,88 @@ a {
   color: #e6e9ff; /* Warna putih kebiruan yang lembut */
   opacity: 0.85; /* Sedikit transparan agar teks judul tetap lebih dominan */
   letter-spacing: 0.02em;
+}
+/* ==================================== */
+
+/* ======= Motto Styling ======= */
+/* Bagian utama Motto - Menggunakan warna krem pucat (Champagne) agar terlihat mewah */
+.motto-section {
+  padding: 6rem 2.5rem;
+  background-color: #fdfbf7; /* Warna dasar krem sangat terang (Off-white warm) */
+  color: #050816; /* Warna teks utama kembali ke biru gelap brand agar terbaca jelas */
+  text-align: center;
+  position: relative;
+}
+
+/* Judul Utama Motto */
+.motto-section h1 {
+  font-family: "Playfair Display", serif; /* Font klasik untuk kesan mahal */
+  font-style: italic;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  letter-spacing: 0.1em;
+  margin-bottom: 5rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: #050816;
+}
+
+/* Kontainer pembungkus tiga kolom motto */
+.motto-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  gap: 4rem; /* Jarak antar elemen ditingkatkan agar lebih lega */
+}
+
+/* Styling setiap blok teks (01, 02, 03) */
+.motto-text {
+  flex: 1;
+  max-width: 350px;
+  padding: 2rem;
+  transition: transform 0.3s ease; /* Untuk animasi saat di-hover */
+}
+
+/* Angka (01, 02, dst) - Menggunakan warna emas sebagai focal point */
+.motto-text h3 {
+  color: #f7c66b; /* Warna emas untuk nomor */
+  font-family: "Playfair Display", serif;
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+/* Judul Motto (Perjalanan Hidup, dll) */
+.motto-text h4 {
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  color: #050816;
+}
+
+/* Paragraf deskripsi di bawah judul motto */
+.motto-text p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: #4a4a4a; /* Abu-abu gelap agar tidak terlalu kontras/tajam di mata */
+  text-transform: none; /* Mengubah ke normal agar lebih mudah dibaca daripada uppercase semua */
+  letter-spacing: 0.02em;
+}
+
+/* Efek hover opsional: membuat card sedikit terangkat */
+.motto-text:hover {
+  transform: translateY(-10px);
+}
+
+/* Responsive untuk Mobile */
+@media (max-width: 768px) {
+  .motto-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 4rem;
+  }
 }
 
 /* Responsive untuk HP */
