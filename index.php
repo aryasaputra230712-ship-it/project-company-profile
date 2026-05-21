@@ -52,7 +52,7 @@ include ROOTPATH . "/layouts/header.php";
 <main class="relative w-full min-h-screen overflow-hidden">
     <div class="absolute inset-0 w-full h-full overflow-hidden">
         <video class="w-full h-full object-cover brightness-90" muted autoplay loop playsinline>
-            <source src="<?= BASE_URL ?>/assets/videos/<?= htmlspecialchars($slides[0]['video_file']); ?>" type="video/mp4">
+            <source src="https://aurelis.yuda-aditya.cloud/jew.mp4" type="video/mp4">
         </video>
         <div class="absolute inset-0 bg-gradient-to-r from-[rgba(4,7,22,0.35)] to-[rgba(2,3,13,0.85)] pointer-events-none"></div>
     </div>
@@ -130,7 +130,8 @@ include ROOTPATH . "/layouts/header.php";
         $motto = [
             ['01.', 'Perjalanan Hidup', 'Mewakili setiap langkah dan cerita yang membentuk pribadi perempuan.'],
             ['02.', 'Kekuatan', 'Melambangkan keberanian untuk bangkit dan berdiri lebih tegak.'],
-            ['03.', 'Makna', 'Menyimpan filosofi mendalam di balik setiap lengkungan desain.']
+            ['03.', 'Makna', 'Menyimpan filosofi mendalam di balik setiap lengkungan desain.'],
+            ['04.', 'Makna', 'Menyimpan filosofi mendalam di balik setiap lengkungan desain.']
         ];
         foreach ($motto as $item): ?>
             <div class="group hover:-translate-y-3 transition-all duration-300">
@@ -139,6 +140,28 @@ include ROOTPATH . "/layouts/header.php";
                 <p class="text-gray-600 leading-relaxed max-w-[300px] mx-auto"><?= $item[2] ?></p>
             </div>
         <?php endforeach; ?>
+    </div>
+</section>
+
+<section class="bg-aurelis-navy py-24 px-10 text-center">
+    <div class="max-w-4xl mx-auto flex flex-col items-center gap-8">
+
+        <div class="text-aurelis-gold text-5xl md:text-6xl font-serif-aurelis opacity-80">
+            <i class="fa-solid fa-quote-left"></i>
+        </div>
+
+        <blockquote class="relative">
+            <h2 class="font-serif-aurelis italic text-2xl md:text-4xl uppercase tracking-[0.05em] leading-relaxed text-white">
+                "Aurelis lahir untuk perempuan yang berani bermimpi besar, yang percaya bahwa keindahan sejati datang dari kekuatan hati."
+            </h2>
+        </blockquote>
+
+        <div class="w-32 h-[1px] bg-aurelis-gold opacity-60"></div>
+
+        <p class="uppercase tracking-[0.3em] text-[10px] md:text-xs text-gray-500 font-medium">
+            Aurelis International Vision — 2025
+        </p>
+
     </div>
 </section>
 
