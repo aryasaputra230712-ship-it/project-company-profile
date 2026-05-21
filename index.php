@@ -165,6 +165,144 @@ include ROOTPATH . "/layouts/header.php";
     </div>
 </section>
 
+<section class="bg-[#fdfbf7] py-24 px-6 md:px-10">
+    <div class="text-center mb-16">
+        <h2 class="font-serif-aurelis italic text-gray-500 uppercase tracking-[0.4em] text-sm md:text-base">
+            Handpicked Masterpieces
+        </h2>
+    </div>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+
+        <div class="group cursor-pointer">
+            <div class="overflow-hidden mb-6 aspect-[3/4]">
+                <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="Diamond Ring"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            </div>
+            <h3 class="text-center font-serif-aurelis uppercase tracking-[0.2em] text-aurelis-dark text-lg">
+                Diamond Ring
+            </h3>
+        </div>
+
+        <div class="group cursor-pointer">
+            <div class="overflow-hidden mb-6 aspect-[3/4]">
+                <img src="<?= BASE_URL ?>/assets/imgs/product2.jpeg" alt="Emerald Necklace"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            </div>
+            <h3 class="text-center font-serif-aurelis uppercase tracking-[0.2em] text-aurelis-dark text-lg">
+                Emerald Necklace
+            </h3>
+        </div>
+
+        <div class="group cursor-pointer">
+            <div class="overflow-hidden mb-6 aspect-[3/4]">
+                <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="Luxury Earrings"
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            </div>
+            <h3 class="text-center font-serif-aurelis uppercase tracking-[0.2em] text-aurelis-dark text-lg">
+                Luxury Earrings
+            </h3>
+        </div>
+
+    </div>
+</section>
+
+<section class="bg-aurelis-dark py-24 px-10 text-center border-t border-white/5">
+    <h2 class="font-serif-aurelis text-3xl md:text-4xl uppercase tracking-[0.4em] text-white mb-20">
+        Why Aurelis?
+    </h2>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-6">
+
+        <div class="flex flex-col items-center group">
+            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
+                <i class="fa-solid fa-infinity text-aurelis-gold text-xl"></i>
+            </div>
+            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Abadi</h4>
+            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
+                Keindahan klasik tak lekang waktu.
+            </p>
+        </div>
+
+        <div class="flex flex-col items-center group">
+            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
+                <i class="fa-solid fa-shield text-aurelis-gold text-xl"></i>
+            </div>
+            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Tangguh</h4>
+            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
+                Dibuat kokoh untuk bertahan lama.
+            </p>
+        </div>
+
+        <div class="flex flex-col items-center group">
+            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
+                <i class="fa-solid fa-leaf text-aurelis-gold text-xl"></i>
+            </div>
+            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Asli</h4>
+            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
+                Material asli mutu terjamin.
+            </p>
+        </div>
+
+        <div class="flex flex-col items-center group">
+            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
+                <i class="fa-solid fa-crown text-aurelis-gold text-xl"></i>
+            </div>
+            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Premium</h4>
+            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
+                Detail sempurna standar tinggi.
+            </p>
+        </div>
+
+        <div class="flex flex-col items-center group">
+            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
+                <i class="fa-solid fa-tree text-aurelis-gold text-xl"></i>
+            </div>
+            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Alami</h4>
+            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
+                Pesona alami sentuhan elegan.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section class="bg-[#fdfbf7] py-24 px-6 md:px-10 border-t border-gray-100">
+    <div class="text-center mb-16">
+        <h2 class="font-serif-aurelis text-3xl md:text-4xl uppercase tracking-[0.5em] text-aurelis-dark">
+            Gallery
+        </h2>
+    </div>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+
+        <div class="group relative overflow-hidden aspect-square bg-gray-200">
+            <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="Gallery 1"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+
+        <div class="group relative overflow-hidden aspect-square bg-gray-200">
+            <img src="<?= BASE_URL ?>/assets/imgs/product2.jpeg" alt="Gallery 2"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+
+        <div class="group relative overflow-hidden aspect-square bg-gray-200">
+            <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="Gallery 3"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+
+        <div class="group relative overflow-hidden aspect-square bg-gray-200">
+            <img src="<?= BASE_URL ?>/assets/imgs/product4.jpeg" alt="Gallery 4"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        </div>
+
+    </div>
+</section>
+
 <script>
     window.dataSlides = <?php echo json_encode($slides); ?>;
 </script>
