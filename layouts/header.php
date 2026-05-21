@@ -32,6 +32,11 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
+
+    <?php if (isset($page_css)) : ?>
+        <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/<?php echo trim($page_css, '/'); ?>.css">
+    <?php endif; ?>
+
     <script>
         tailwind.config = {
             theme: {
@@ -75,6 +80,7 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <script>
         new WOW().init();
     </script>
+
 </head>
 
 <body class="w-full">
@@ -89,9 +95,11 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
 
             <ul class="hidden md:flex items-center gap-8 list-none">
                 <li><a href="<?php echo $base_url; ?>/index.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Home</a></li>
-                <li><a href="#" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Shop</a></li>
-                <li><a href="#" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">About Us</a></li>
-                <li><a href="#" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Contact</a></li>
+                <li><a href="<?php echo $base_url; ?>/gallery.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Gallery</a></li>
+                <li><a href="<?php echo $base_url; ?>/worksho.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Workshop</a></li>
+                <li><a href="<?php echo $base_url; ?>/about-us.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">About Us</a></li>
+                <li><a href="<?php echo $base_url; ?>/contact.php" class="text-aurelis-light text-[0.95rem] font-medium tracking-wide hover:text-aurelis-hover transition-colors duration-300">Contact</a></li>
+
             </ul>
 
             <div class="flex items-center gap-5">
