@@ -13,303 +13,187 @@ $base_url = $protocol . "://" . $host . ($script_name == '/' ? '' : $script_name
 define('BASE_URL', $base_url);
 
 include_once ROOTPATH . "/config/config.php";
-$page_css = "gallery";
 
-// 1. LOGIK DATABASE
-// $query = mysqli_query($conn, "SELECT * FROM slide_utama WHERE status = 'active'");
-// $slides = [];
-// while ($row = mysqli_fetch_assoc($query)) {
-//     $slides[] = $row;
-// }
-
-// if (empty($slides)) {
-//     die("Error: Tidak ada data slide.");
-// }
-
-// 2. HEADER (Tetap di-include agar navigasi konsisten)
 include ROOTPATH . "/layouts/header.php";
 ?>
 
-<style>
-    .gallery-intro {
-        position: relative;
-    }
-
-    .bg-gallery{
-        position: absolute;
-        inset: 0;
-        
-    }
-
-    .bg-gallery img{
-        position: relative;
-        width: 100%;
-        height: 60vh;
-        object-fit: cover;
-        filter: brightness(0.4);
-        -webkit-filter: brightness(0.4);
-    }
-
-    .intro-content{
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        min-height: 60vh;
-        text-transform: uppercase;
-    }
-
-    .intro-content h1{
-        letter-spacing: 20px; 
-        font-size: 50px;
-        margin-top: 50px;
-    }
-
-    .intro-content p{
-        font-weight: 300; 
-        letter-spacing: 2px;
-    }
-
-    .gallery-collec{
-        margin: 50px auto;
-        margin-bottom: 75px;
-        max-width: 73rem;
-    }
-
-
-
-    /* =========================
-   FILTER MENU
-========================= */
-
-.filter-menu{
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    margin-bottom: 120px;
-}
-
-.filter-btn{
-    background: none;
-    border: none;
-    letter-spacing: 2px;
-    cursor: pointer;
-    position: relative;
-    color: #fff;
-    transition: all .2s;
-}
-
-.filter-btn.active::after{
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -10px;
-    width: 100%;
-    height: 2px;
-    background: orange;
-}
-
-.filter-btn:hover{
-    color: #c78835;
-}
-
-/* =========================
-   GALLERY
-========================= */
-
-.gallery{
-    margin: 0 30px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-}
-
-.item{
-    overflow: hidden;
-    border-radius: 7px;
-    transition: 0.3s;
-}
-
-.item img{
-    width: 100%;
-    height: 381px;
-    object-fit: cover;
-    display: block;
-    transition: 0.3s;
-}
-
-.item:hover img{
-    transform: scale(1.03);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media(max-width: 1024px){
-
-     .item img{
-        height: 100%;
-    }
-
-    .gallery{
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-}
-
-@media(max-width: 768px){
-
-    .item img{
-        height: 100%;
-    }
-
-    .gallery{
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-}
-
-@media(max-width: 500px){
-
-    .item img{
-        height: 100%;
-    }
-
-    .gallery{
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-}
-</style>
-
-
 <section class="gallery-hero">
-    <div class="gallery-intro">
-        <div class="bg-gallery">
-            <img src="<?= BASE_URL ?>/assets/imgs/gallery-hero.jpg" alt="bg-gallery">
+    <div class="relative">
+        <div class="absolute inset-0">
+            <img class="relative w-full h-full object-cover brightness-50" src="<?= BASE_URL ?>/assets/imgs/gallery-hero.jpg" alt="bg-gallery">
         </div>
 
-        <div class="intro-content">
-            <h1>Gallery</h1>
-            <p>Timeless Jewelry Collection</p>
+        <div class="relative flex flex-col items-center justify-center gap-6 min-h-[50vh] uppercase">
+            <h1 class="tracking-[20px] text-5xl">Gallery</h1>
+            <p class="font-light text-sm">Timeless Jewelry Collection</p>
         </div>
     </div>
 </section>
 
-<section class="gallery-collec">
-    
-    <!-- FILTER MENU -->
-    <div class="filter-menu">
+<section class="mt-12 mb-20">
 
-        <button class="filter-btn active" data-filter="all">
+    <!-- FILTER MENU -->
+    <div class="flex justify-center gap-10 mb-20 text-sm">
+
+        <button 
+        class="filter-btn border-b-2 border-orange-500 text-white tracking-[2px] pb-2"
+        data-filter="all">
             All
         </button>
 
-        <button class="filter-btn" data-filter="ring">
+        <button 
+        class="filter-btn text-white tracking-[2px] pb-2 hover:text-orange-400"
+        data-filter="rings">
             Rings
         </button>
 
-        <button class="filter-btn" data-filter="necklace">
+        <button 
+        class="filter-btn text-white tracking-[2px] pb-2 hover:text-orange-400"
+        data-filter="necklace">
             Necklace
         </button>
 
-        <button class="filter-btn" data-filter="earring">
+        <button 
+        class="filter-btn text-white tracking-[2px] pb-2 hover:text-orange-400"
+        data-filter="earrings">
             Earrings
         </button>
 
     </div>
 
     <!-- GALLERY -->
-    <div class="gallery">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 mx-auto px-6 max-w-5xl">
 
+        <div class="item rings overflow-hidden h-[400px]">
+            <a href="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="product1" target="_blank">
+                <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg"class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
+            </a>
+
+            <!-- PRODUCT INFO -->
+            <div class="mt-4 text-center">
+
+                <h3 class="text-white text-lg tracking-wide">
+                    Diamond Ring
+                </h3>
+
+                <p class="text-orange-400 text-sm mt-1 mb-3">
+                    Rp 4.700.000
+                </p>
+
+                <a class="flex justify-center items-center bg-orange-600 p-2 rounded-sm hover:bg-orange-700 transition-all duration-300 m-auto w-40" href="#">Pesan Sekarang</a>
+
+            </div>
+        </div>
         
-        <div class="item ring">
-            <a href="<?= BASE_URL ?>/assets/imgs/product1.jpeg" target="_blank">
-                <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="product1">
+        <div class="item necklace overflow-hidden">
+            <a href="<?= BASE_URL ?>/assets/imgs/product2.jpeg" alt="product2" target="_blank">
+                <img src="<?= BASE_URL ?>/assets/imgs/product2.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
             </a>
-        </div>
 
-        <div class="item necklace">
-            <a href="<?= BASE_URL ?>/assets/imgs/product2.jpeg" target="_blank">
-                <img src="<?= BASE_URL ?>/assets/imgs/product2.jpeg" alt="product2">
-            </a>
-        </div>
+            <!-- PRODUCT INFO -->
+            <div class="mt-4 text-center">
 
+                <h3 class="text-white text-lg tracking-wide">
+                    Emerald Necklace
+                </h3>
+
+                <p class="text-orange-400 text-sm mt-1 mb-3">
+                    Rp 7.500.000
+                </p>
+
+                <a class="flex justify-center items-center bg-orange-600 p-2 rounded-sm hover:bg-orange-700 transition-all duration-300 m-auto w-40" href="#">Pesan Sekarang</a>
+
+            </div>
+        </div>
         
-        <div class="item earring">
-            <a href="<?= BASE_URL ?>/assets/imgs/product3.jpeg" target="_blank">
-                <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="product3">
+        <div class="item earrings overflow-hidden">
+            <a href="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="product3" target="_blank">
+                <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
             </a>
-        </div>
 
-        <div class="item ring">
-            <a href="<?= BASE_URL ?>/assets/imgs/product4.jpeg" target="_blank">
-                <img src="<?= BASE_URL ?>/assets/imgs/product4.jpeg" alt="product4">
-            </a>
-        </div>
+            <!-- PRODUCT INFO -->
+            <div class="mt-4 text-center">
 
+                <h3 class="text-white text-lg tracking-wide">
+                    Luxury Earrings
+                </h3>
+
+                <p class="text-orange-400 text-sm mt-1 mb-3">
+                    Rp 1.200.000
+                </p>
+
+                <a class="flex justify-center items-center bg-orange-600 p-2 rounded-sm hover:bg-orange-700 transition-all duration-300 m-auto w-40" href="#">Pesan Sekarang</a>
+
+            </div>
+        </div>
         
-        <div class="item ring">
-            <a href="<?= BASE_URL ?>/assets/imgs/product1.jpeg" target="_blank">
-                <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="product1">
+        <div class="item rings overflow-hidden">
+            <a href="<?= BASE_URL ?>/assets/imgs/product4.jpeg" alt="product4" target="_blank">
+                <img src="<?= BASE_URL ?>/assets/imgs/product4.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
             </a>
-        </div>
 
-        <div class="item earring">
-            <a href="<?= BASE_URL ?>/assets/imgs/product3.jpeg" target="_blank">
-                <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="product3">
+            <!-- PRODUCT INFO -->
+            <div class="mt-4 text-center">
+
+                <h3 class="text-white text-lg tracking-wide">
+                    Ruby Ring
+                </h3>
+
+                <p class="text-orange-400 text-sm mt-1 mb-3">
+                    Rp 2.500.000
+                </p>
+
+                <a class="flex justify-center items-center bg-orange-600 p-2 rounded-sm hover:bg-orange-700 transition-all duration-300 m-auto w-40" href="#">Pesan Sekarang</a>
+
+            </div>
+        </div>
+        
+        <div class="item rings overflow-hidden">
+            <a href="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="product1" target="_blank">
+                <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
             </a>
+
+            <!-- PRODUCT INFO -->
+            <div class="mt-4 text-center">
+
+                <h3 class="text-white text-lg tracking-wide">
+                    Diamond Ring
+                </h3>
+
+                <p class="text-orange-400 text-sm mt-1 mb-3">
+                    Rp 4.700.000
+                </p>
+
+                <a class="flex justify-center items-center bg-orange-600 p-2 rounded-sm hover:bg-orange-700 transition-all duration-300 m-auto w-40" href="#">Pesan Sekarang</a>
+
+            </div>
+        </div>
+        
+        <div class="item earrings overflow-hidden">
+            <a href="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="product3" target="_blank">
+                <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
+            </a>
+
+            <!-- PRODUCT INFO -->
+            <div class="mt-4 text-center">
+
+                <h3 class="text-white text-lg tracking-wide">
+                    Luxury Earrings
+                </h3>
+
+                <p class="text-orange-400 text-sm mt-1 mb-3">
+                    Rp 1.200.000
+                </p>
+
+                <a class="flex justify-center items-center bg-orange-600 p-2 rounded-sm hover:bg-orange-700 transition-all duration-300 m-auto w-40" href="#">Pesan Sekarang</a>
+
+            </div>
         </div>
 
     </div>
 
 </section>
 
-<script>
-
-/* =========================
-   FILTER FUNCTION
-========================= */
-
-const buttons = document.querySelectorAll('.filter-btn');
-const items = document.querySelectorAll('.item');
-
-buttons.forEach(button => {
-
-    button.addEventListener('click', () => {
-
-        // ACTIVE BUTTON
-        buttons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-
-        // FILTER
-        const filter = button.dataset.filter;
-
-        items.forEach(item => {
-
-            if(filter === 'all'){
-                item.style.display = 'block';
-            }
-            else{
-
-                if(item.classList.contains(filter)){
-                    item.style.display = 'block';
-                }
-                else{
-                    item.style.display = 'none';
-                }
-
-            }
-
-        });
-
-    });
-
-});
-
-</script>
+<script src="<?= BASE_URL ?>/assets/js/gallery.js"></script>
 
 <?php include ROOTPATH . "/layouts/footer.php" ?>
