@@ -172,7 +172,7 @@ include ROOTPATH . "/layouts/header.php";
         </h2>
     </div>
 
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-16">
 
         <div class="group cursor-pointer">
             <div class="overflow-hidden mb-6 aspect-[3/4]">
