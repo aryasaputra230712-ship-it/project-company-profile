@@ -96,10 +96,10 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
             </div>
 
             <ul class="hidden md:flex items-center gap-8 list-none">
-                <li><a href="#" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Home</a></li>
-                <li><a href="#" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Gallery</a></li>
-                <li><a href="#" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Workshop</a></li>
-                <li><a href="#" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Contact</a></li>
+                <li><a href="index.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Home</a></li>
+                <li><a href="gallery.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Gallery</a></li>
+                <li><a href="workshop.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Workshop</a></li>
+                <li><a href="contact.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Contact</a></li>
             </ul>
 
             <div class="flex items-center gap-4 md:gap-5">
@@ -137,10 +137,10 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
             <div class="flex-1 flex flex-col items-center justify-start pt-12 bg-[#050816] ">
                 <ul class="flex flex-col items-center w-full list-none ">
                     <li class="w-full border-b border-gray-50 ">
-                        <a href="index.php" class="mobile-link  block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">HOME</a>
+                        <a href="#" class="mobile-link  block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">HOME</a>
                     </li>
                     <li class="w-full border-b border-gray-50">
-                        <a href="gallery.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">GALLERY</a>
+                        <a href="#" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">GALLERY</a>
                     </li>
                     <li class="w-full border-b border-gray-50">
                         <a href="#" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">WORKSHOP</a>
