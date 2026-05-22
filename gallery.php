@@ -24,8 +24,8 @@ include ROOTPATH . "/layouts/header.php";
         </div>
 
         <div class="relative flex flex-col items-center justify-center gap-6 min-h-[50vh] uppercase">
-            <h1 class="tracking-[20px] text-5xl">Gallery</h1>
-            <p class="font-light text-sm">Timeless Jewelry Collection</p>
+            <h1 class="tracking-[10px] text-4xl text-center md:text-5xl md:tracking-[15px] lg:text-5xl lg:tracking-[20px]">Gallery</h1>
+            <p class="tracking-widest font-light text-sm">Timeless Jewelry Collection</p>
         </div>
     </div>
 </section>
@@ -64,7 +64,7 @@ include ROOTPATH . "/layouts/header.php";
     <!-- GALLERY -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 mx-auto px-6 max-w-5xl">
 
-        <div class="item rings overflow-hidden h-[400px]">
+        <div class="item rings overflow-hidden w-full h-[400px]">
             <a href="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="product1" target="_blank">
                 <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg"class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
             </a>
