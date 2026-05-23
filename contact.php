@@ -24,7 +24,7 @@ include ROOTPATH . "/layouts/header.php";
         </div>
 
         <div class="relative flex flex-col items-center justify-center gap-5 min-h-[45vh] uppercase">
-            <h1 class="tracking-[15px] text-5xl">Contact</h1>
+            <h1 class="tracking-[10px] text-4xl text-center md:text-5xl md:tracking-[15px] lg:text-5xl lg:tracking-[20px]">Contact</h1>
             <p class="tracking-widest text-sm font-light">We'd Love to Hear from You</p>
         </div>
     </div>
@@ -52,25 +52,25 @@ include ROOTPATH . "/layouts/header.php";
         </div>
     </div>
 
-    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-5xl m-auto gap-12 mb-[80px] px-6">
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-6xl m-auto gap-12 mb-[80px] px-6">
         <form action="contact.php" method="post">
             <h2 class="pb-7 tracking-[2px] uppercase text-2xl">Send Us a Message</h2>
 
             <table class="text-sm w-full">
                 <tr>
-                    <td class="pb-5"><input class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-orange-300" type="text" placeholder="Your Name"></td>
+                    <td class="pb-5"><input class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-aurelis-gold" type="text" placeholder="Your Name"></td>
                 </tr>
 
                 <tr>
-                    <td class="pb-5"><input class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-orange-300" type="text" placeholder="Your Email"></td>
+                    <td class="pb-5"><input class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-aurelis-gold" type="text" placeholder="Your Email"></td>
                 </tr>
 
                 <tr>
-                    <td class="pb-5"><input class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-orange-300" type="text" placeholder="Subject"></td>
+                    <td class="pb-5"><input class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-aurelis-gold" type="text" placeholder="Subject"></td>
                 </tr>
 
                 <tr>
-                    <td><textarea class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-orange-300 max-h-[250px] h-[150px]" placeholder="Message"></textarea></td>
+                    <td><textarea class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-aurelis-gold max-h-[250px] h-[150px]" placeholder="Message"></textarea></td>
                 </tr>
             </table>
 
@@ -95,9 +95,9 @@ include ROOTPATH . "/layouts/header.php";
 <section class="flex flex-col items-center justify-center uppercase my-[70px]">
     <p class="tracking-[5px] text-md mb-7">Follow Us</p>
     <div class="flex gap-7 text-2xl">
-        <a href="#"><i class="fa-brands fa-instagram transition-all duration-200 hover:text-amber-600"></i></a>
-        <a href="#"><i class="fa-brands fa-facebook transition-all duration-200 hover:text-amber-600"></i></a>
-        <a href="#"><i class="fa-brands fa-tiktok transition-all duration-200 hover:text-amber-600"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram transition-all duration-200 hover:text-aurelis-gold"></i></a>
+        <a href="#"><i class="fa-brands fa-facebook transition-all duration-200 hover:text-aurelis-gold"></i></a>
+        <a href="#"><i class="fa-brands fa-tiktok transition-all duration-200 hover:text-aurelis-gold"></i></a>
     </div>
 
 </section>

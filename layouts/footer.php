@@ -15,17 +15,17 @@
 
                 <div>
                     <p class="text-2xl mb-5">Follow Us</p>
-                    <div class="flex gap-7 text-xl ">
-                        <a href="#"><i class="fa-brands fa-instagram rounded-[50%] border border-black p-2 transition-all duration-300 hover:bg-blue-400"></i></a>
-                        <a href="#"><i class="fa-brands fa-facebook rounded-[50%] border border-black p-2 transition-all duration-300 hover:bg-blue-400"></i></a>
-                        <a href="#"><i class="fa-brands fa-tiktok rounded-[50%] border border-black p-2 transition-all duration-300 hover:bg-blue-400"></i></a>
+                    <div class="flex gap-7 text-md ">
+                        <a href="#"><i class="fa-brands fa-instagram rounded-[50%] border border-white p-3 transition-all duration-300 hover:bg-white hover:text-black"></i></a>
+                        <a href="#"><i class="fa-brands fa-facebook rounded-[50%] border border-white p-3 transition-all duration-300 hover:bg-white hover:text-black"></i></a>
+                        <a href="#"><i class="fa-brands fa-tiktok rounded-[50%] border border-white p-3 transition-all duration-300 hover:bg-white hover:text-black"></i></a>
                     </div>
                 </div>
             </div>
             
             <div class="text-center">
-                <hr class="max-w-[1240px] m-auto mt-[55px] mb-6">
-                <p class="text-sm">&copy; 2026 Aurelis Jewelry. All rights reserved.</p>
+                <div class="max-w-[1240px] m-auto mt-[55px] mb-6 border border-gray-700"></div>
+                <p class="text-sm font-thin">&copy; 2026 Aurelis Jewelry. All rights reserved.</p>
             </div>
         </footer>
 
