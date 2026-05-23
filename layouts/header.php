@@ -127,26 +127,26 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
 
         <div id="mobile-menu" class="fixed inset-0 bg-aurelis-dark z-[9999] flex flex-col transition-all duration-500 transform -translate-y-full opacity-0 pointer-events-none">
 
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
+            <div class="flex justify-between items-center px-6 py-4 border-b border-white/10">
                 <img src="<?php echo $base_url; ?>/assets/imgs/logo_gold.png" alt="Logo" class="h-8 w-auto object-contain">
                 <button id="close-menu" class="text-aurelis-krem text-2xl focus:outline-none">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
-            <div class="flex-1 flex flex-col items-center justify-start pt-12 bg-[#050816] ">
+            <div class="flex-1 flex flex-col items-center justify-start pt-8 bg-aurelis-dark">
                 <ul class="flex flex-col items-center w-full list-none ">
-                    <li class="w-full border-b border-gray-50 ">
-                        <a href="index.php" class="mobile-link  block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">HOME</a>
+                    <li class="w-full border-b border-white/5">
+                        <a href="index.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">HOME</a>
                     </li>
-                    <li class="w-full border-b border-gray-50">
-                        <a href="gallery.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">GALLERY</a>
+                    <li class="w-full border-b border-white/5">
+                        <a href="gallery.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">GALLERY</a>
                     </li>
-                    <li class="w-full border-b border-gray-50">
-                        <a href="workshop.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">WORKSHOP</a>
+                    <li class="w-full border-b border-white/5">
+                        <a href="workshop.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">WORKSHOP</a>
                     </li>
-                    <li class="w-full border-b border-gray-50">
-                        <a href="contact.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">CONTACT</a>
+                    <li class="w-full border-b border-white/5">
+                        <a href="contact.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">CONTACT</a>
                     </li>
                 </ul>
 

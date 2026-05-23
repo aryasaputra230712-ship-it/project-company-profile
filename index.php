@@ -44,6 +44,10 @@ $res_produk = mysqli_query($conn, $sql_produk);
 $sql_why = "SELECT * FROM keunggulan_utama WHERE status = 'aktif' ORDER BY id ASC";
 $res_why = mysqli_query($conn, $sql_why);
 
+// Tambahkan di bagian atas index.php
+$sql_gallery = "SELECT * FROM galeri_utama WHERE status = 'aktif' ORDER BY id DESC";
+$res_gallery = mysqli_query($conn, $sql_gallery);
+
 $sql = "SELECT s.*, v.jalur_video 
         FROM slide_utama s 
         INNER JOIN video_utama v ON s.video_id = v.id 
