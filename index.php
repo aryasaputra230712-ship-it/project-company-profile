@@ -279,31 +279,26 @@ include ROOTPATH . "/layouts/header.php";
     </div>
 
     <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <?php
+        // Menggunakan hasil query gallery yang sudah kamu buat di atas
+        if (mysqli_num_rows($res_gallery) > 0):
+            while ($row_gal = mysqli_fetch_assoc($res_gallery)):
+        ?>
+                <div class="group relative overflow-hidden aspect-square bg-gray-200 rounded-lg">
+                    <img src="<?= BASE_URL ?>/assets/imgs/<?= $row_gal['gambar'] ?>"
+                        alt="<?= htmlspecialchars($row_gal['judul']) ?>"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
 
-        <div class="group relative overflow-hidden aspect-square bg-gray-200">
-            <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="Gallery 1"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </div>
-
-        <div class="group relative overflow-hidden aspect-square bg-gray-200">
-            <img src="<?= BASE_URL ?>/assets/imgs/product2.jpeg" alt="Gallery 2"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </div>
-
-        <div class="group relative overflow-hidden aspect-square bg-gray-200">
-            <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="Gallery 3"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </div>
-
-        <div class="group relative overflow-hidden aspect-square bg-gray-200">
-            <img src="<?= BASE_URL ?>/assets/imgs/product4.jpeg" alt="Gallery 4"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-        </div>
-
+                    <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <p class="text-white text-[10px] tracking-widest uppercase"><?= htmlspecialchars($row_gal['judul']) ?></p>
+                    </div>
+                </div>
+        <?php
+            endwhile;
+        else:
+            echo "<p class='col-span-full text-center text-gray-400'>Belum ada foto di galeri.</p>";
+        endif;
+        ?>
     </div>
 </section>
 

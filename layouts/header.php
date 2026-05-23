@@ -138,16 +138,16 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
         <div class="flex-1 flex flex-col items-center justify-start pt-8 bg-aurelis-dark">
             <ul class="flex flex-col items-center w-full list-none">
                 <li class="w-full border-b border-white/5">
-                    <a href="index.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">HOME</a>
+                    <a href="<?= $base_url ?>" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">HOME</a>
                 </li>
                 <li class="w-full border-b border-white/5">
-                    <a href="gallery.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">GALLERY</a>
+                    <a href="<?= $base_url ?>/gallery" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">GALLERY</a>
                 </li>
                 <li class="w-full border-b border-white/5">
-                    <a href="workshop.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">WORKSHOP</a>
+                    <a href="<?= $base_url ?>/workshop" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">WORKSHOP</a>
                 </li>
                 <li class="w-full border-b border-white/5">
-                    <a href="contact.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">CONTACT</a>
+                    <a href="<?= $base_url ?>/contact" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">CONTACT</a>
                 </li>
             </ul>
 
@@ -200,7 +200,6 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
 
             // Fungsi Tutup Menu
             const closeMenuAction = (e) => {
-                if (e) e.preventDefault();
                 if (mobileMenu) {
                     mobileMenu.classList.remove("translate-y-0", "opacity-100", "pointer-events-auto");
                     mobileMenu.classList.add("-translate-y-full", "opacity-0", "pointer-events-none");
