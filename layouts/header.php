@@ -29,9 +29,7 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
 
     <?php if (isset($page_css)) : ?>
         <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/<?php echo trim($page_css, '/'); ?>.css">
@@ -59,7 +57,6 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     </script>
 
     <style>
-        /* Base Styling untuk Body sesuai CSS lamamu */
         body {
             font-family: 'Poppins', sans-serif;
             background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), transparent 35%),
@@ -81,10 +78,11 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <script>
         new WOW().init();
     </script>
-
 </head>
 
 <body class="w-full min-h-full bg-aurelis-dark">
+
+    <!-- 1. HEADER UTAMA (Hanya membungkus Navigasi Atas) -->
     <header class="fixed top-0 left-0 w-full z-[999] glass-header transition-all duration-300">
         <nav class="max-w-[1180px] mx-auto px-6 py-4 flex justify-between items-center">
 
@@ -95,14 +93,14 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
             </div>
 
             <ul class="hidden md:flex items-center gap-8 list-none">
-                <li><a href="<?= $base_url ?>" class="...">Home</a></li>
-                <li><a href="<?= $base_url ?>/gallery" class="...">Gallery</a></li>
-                <li><a href="<?= $base_url ?>/workshop" class="...">Workshop</a></li>
-                <li><a href="<?= $base_url ?>/contact" class="...">Contact</a></li>
+                <li><a href="<?= $base_url ?>" class="text-aurelis-krem hover:text-aurelis-gold transition">Home</a></li>
+                <li><a href="<?= $base_url ?>/gallery" class="text-aurelis-krem hover:text-aurelis-gold transition">Gallery</a></li>
+                <li><a href="<?= $base_url ?>/workshop" class="text-aurelis-krem hover:text-aurelis-gold transition">Workshop</a></li>
+                <li><a href="<?= $base_url ?>/contact" class="text-aurelis-krem hover:text-aurelis-gold transition">Contact</a></li>
             </ul>
 
             <div class="flex items-center gap-4 md:gap-5">
-                <!-- Language Switcher for Desktop -->
+                <!-- Language Switcher Desktop -->
                 <div class="hidden md:flex items-center gap-3">
                     <button class="flex items-center gap-2 text-sm font-semibold text-aurelis-gold transition group">
                         <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm opacity-80 group-hover:opacity-100"> ID
@@ -118,25 +116,27 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
                     <a href="#" class="text-aurelis-krem text-lg hover:text-aurelis-gold"><i class="fa-solid fa-cart-shopping"></i></a>
                 </div>
 
-                <button id="hamburger-btn" class="md:hidden text-aurelis-krem text-2xl focus:outline-none">
+                <!-- Tombol Hamburger (Diberi padding p-2 agar area sentuh di HP lebih luas) -->
+                <button id="hamburger-btn" class="md:hidden text-aurelis-krem text-2xl focus:outline-none p-2 relative z-[1000]">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
         </nav>
+    </header> <!-- Penutup Header di sini agar tidak mengurung mobile menu -->
 
 
-    </header>
+    <!-- 2. MOBILE MENU (Sekarang berdiri mandiri di luar elemen Glass) -->
     <div id="mobile-menu" class="fixed inset-0 bg-aurelis-dark z-[9999] flex flex-col transition-all duration-500 transform -translate-y-full opacity-0 pointer-events-none">
 
         <div class="flex justify-between items-center px-6 py-4 border-b border-white/10">
             <img src="<?php echo $base_url; ?>/assets/imgs/logo_gold.png" alt="Logo" class="h-8 w-auto object-contain">
-            <button id="close-menu" class="text-aurelis-krem text-2xl focus:outline-none">
+            <button id="close-menu" class="text-aurelis-krem text-2xl focus:outline-none p-2">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
 
         <div class="flex-1 flex flex-col items-center justify-start pt-8 bg-aurelis-dark">
-            <ul class="flex flex-col items-center w-full list-none ">
+            <ul class="flex flex-col items-center w-full list-none">
                 <li class="w-full border-b border-white/5">
                     <a href="index.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">HOME</a>
                 </li>
@@ -171,8 +171,11 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
             </div>
         </div>
     </div>
+
+    <!-- 3. SPACER HEIGHT -->
     <div class="h-16 md:h-20"></div>
 
+    <!-- 4. LOGIKA JAVASCRIPT -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const hamburgerBtn = document.getElementById("hamburger-btn");
@@ -183,26 +186,25 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
 
             // Fungsi Buka Menu
             if (hamburgerBtn) {
-                hamburgerBtn.addEventListener("click", () => {
+                // Menggunakan 'click' tapi ditambahkan padding area sentuh
+                hamburgerBtn.addEventListener("click", (e) => {
+                    e.preventDefault();
                     if (mobileMenu) {
                         mobileMenu.classList.remove("-translate-y-full", "opacity-0", "pointer-events-none");
                         mobileMenu.classList.add("translate-y-0", "opacity-100", "pointer-events-auto");
                     }
-
-                    // Sembunyikan ikon nav asli agar tidak tabrakan dengan tombol X
                     if (navIcons) navIcons.classList.add("opacity-0");
                     document.body.style.overflow = "hidden";
                 });
             }
 
             // Fungsi Tutup Menu
-            const closeMenuAction = () => {
+            const closeMenuAction = (e) => {
+                if (e) e.preventDefault();
                 if (mobileMenu) {
                     mobileMenu.classList.remove("translate-y-0", "opacity-100", "pointer-events-auto");
                     mobileMenu.classList.add("-translate-y-full", "opacity-0", "pointer-events-none");
                 }
-
-                // Munculkan kembali ikon nav
                 if (navIcons) navIcons.classList.remove("opacity-0");
                 document.body.style.overflow = "";
             };
@@ -211,7 +213,6 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
                 closeBtn.addEventListener("click", closeMenuAction);
             }
 
-            // Tutup menu otomatis jika link diklik
             mobileLinks.forEach((link) => {
                 link.addEventListener("click", closeMenuAction);
             });
