@@ -138,6 +138,7 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
         <div class="flex-1 flex flex-col items-center justify-start pt-8 bg-aurelis-dark">
             <ul class="flex flex-col items-center w-full list-none">
                 <li class="w-full border-b border-white/5">
+
                     <a href="<?= $base_url ?>" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-white/5 hover:text-aurelis-gold transition-all duration-300">HOME</a>
                 </li>
                 <li class="w-full border-b border-white/5">
