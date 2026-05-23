@@ -96,10 +96,10 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
             </div>
 
             <ul class="hidden md:flex items-center gap-8 list-none">
-                <li><a href="index.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Home</a></li>
-                <li><a href="gallery.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Gallery</a></li>
-                <li><a href="workshop.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Workshop</a></li>
-                <li><a href="contact.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Contact</a></li>
+                <li><a href="<?= $base_url ?>" class="...">Home</a></li>
+                <li><a href="<?= $base_url ?>/gallery" class="...">Gallery</a></li>
+                <li><a href="<?= $base_url ?>/workshop" class="...">Workshop</a></li>
+                <li><a href="<?= $base_url ?>/contact" class="...">Contact</a></li>
             </ul>
 
             <div class="flex items-center gap-4 md:gap-5">

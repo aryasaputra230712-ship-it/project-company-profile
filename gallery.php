@@ -35,27 +35,27 @@ include ROOTPATH . "/layouts/header.php";
     <!-- FILTER MENU -->
     <div class="flex justify-center gap-10 mb-20 text-sm">
 
-        <button 
-        class="filter-btn border-b-2 border-orange-500 text-white tracking-[2px] pb-2"
-        data-filter="all">
+        <button
+            class="filter-btn border-b-2 border-orange-500 text-white tracking-[2px] pb-2"
+            data-filter="all">
             All
         </button>
 
-        <button 
-        class="filter-btn text-white tracking-[2px] pb-2 hover:text-orange-400"
-        data-filter="rings">
+        <button
+            class="filter-btn text-white tracking-[2px] pb-2 hover:text-orange-400"
+            data-filter="rings">
             Rings
         </button>
 
-        <button 
-        class="filter-btn text-white tracking-[2px] pb-2 hover:text-orange-400"
-        data-filter="necklace">
+        <button
+            class="filter-btn text-white tracking-[2px] pb-2 hover:text-orange-400"
+            data-filter="necklace">
             Necklace
         </button>
 
-        <button 
-        class="filter-btn text-white tracking-[2px] pb-2 hover:text-orange-400"
-        data-filter="earrings">
+        <button
+            class="filter-btn text-white tracking-[2px] pb-2 hover:text-orange-400"
+            data-filter="earrings">
             Earrings
         </button>
 
@@ -66,7 +66,7 @@ include ROOTPATH . "/layouts/header.php";
 
         <div class="item rings overflow-hidden h-[400px]">
             <a href="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="product1" target="_blank">
-                <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg"class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
+                <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
             </a>
 
             <!-- PRODUCT INFO -->
@@ -84,7 +84,7 @@ include ROOTPATH . "/layouts/header.php";
 
             </div>
         </div>
-        
+
         <div class="item necklace overflow-hidden">
             <a href="<?= BASE_URL ?>/assets/imgs/product2.jpeg" alt="product2" target="_blank">
                 <img src="<?= BASE_URL ?>/assets/imgs/product2.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
@@ -105,7 +105,7 @@ include ROOTPATH . "/layouts/header.php";
 
             </div>
         </div>
-        
+
         <div class="item earrings overflow-hidden">
             <a href="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="product3" target="_blank">
                 <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
@@ -126,7 +126,7 @@ include ROOTPATH . "/layouts/header.php";
 
             </div>
         </div>
-        
+
         <div class="item rings overflow-hidden">
             <a href="<?= BASE_URL ?>/assets/imgs/product4.jpeg" alt="product4" target="_blank">
                 <img src="<?= BASE_URL ?>/assets/imgs/product4.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
@@ -147,7 +147,7 @@ include ROOTPATH . "/layouts/header.php";
 
             </div>
         </div>
-        
+
         <div class="item rings overflow-hidden">
             <a href="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="product1" target="_blank">
                 <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
@@ -168,7 +168,7 @@ include ROOTPATH . "/layouts/header.php";
 
             </div>
         </div>
-        
+
         <div class="item earrings overflow-hidden">
             <a href="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="product3" target="_blank">
                 <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" class="w-full h-[270px] object-cover hover:scale-110 transition duration-300">
