@@ -27,7 +27,6 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <title><?php echo isset($title) ? $title : "Aurelis Jewelry | Official Store"; ?></title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="<?= BASE_URL ?>/assets/js/main.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -172,3 +171,48 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
         </div>
     </header>
     <div class="h-16 md:h-20"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const hamburgerBtn = document.getElementById("hamburger-btn");
+            const closeBtn = document.getElementById("close-menu");
+            const mobileMenu = document.getElementById("mobile-menu");
+            const navIcons = document.getElementById("nav-icons");
+            const mobileLinks = document.querySelectorAll(".mobile-link");
+
+            // Fungsi Buka Menu
+            if (hamburgerBtn) {
+                hamburgerBtn.addEventListener("click", () => {
+                    if (mobileMenu) {
+                        mobileMenu.classList.remove("-translate-y-full", "opacity-0", "pointer-events-none");
+                        mobileMenu.classList.add("translate-y-0", "opacity-100", "pointer-events-auto");
+                    }
+
+                    // Sembunyikan ikon nav asli agar tidak tabrakan dengan tombol X
+                    if (navIcons) navIcons.classList.add("opacity-0");
+                    document.body.style.overflow = "hidden";
+                });
+            }
+
+            // Fungsi Tutup Menu
+            const closeMenuAction = () => {
+                if (mobileMenu) {
+                    mobileMenu.classList.remove("translate-y-0", "opacity-100", "pointer-events-auto");
+                    mobileMenu.classList.add("-translate-y-full", "opacity-0", "pointer-events-none");
+                }
+
+                // Munculkan kembali ikon nav
+                if (navIcons) navIcons.classList.remove("opacity-0");
+                document.body.style.overflow = "";
+            };
+
+            if (closeBtn) {
+                closeBtn.addEventListener("click", closeMenuAction);
+            }
+
+            // Tutup menu otomatis jika link diklik
+            mobileLinks.forEach((link) => {
+                link.addEventListener("click", closeMenuAction);
+            });
+        });
+    </script>
