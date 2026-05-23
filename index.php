@@ -13,11 +13,57 @@ define('BASE_URL', $base_url);
 include_once ROOTPATH . "/config/config.php";
 
 // LOGIK DATABASE
-$query = mysqli_query($conn, "SELECT * FROM slide_utama WHERE status = 'active'");
+$sql_about = "SELECT * FROM slide_tentang WHERE status = 'aktif' LIMIT 1";
+$res_about = mysqli_query($conn, $sql_about);
+$about = mysqli_fetch_assoc($res_about);
+
+// Ambil semua data founder yang aktif
+$sql_founder = "SELECT * FROM founder_utama WHERE status = 'aktif' LIMIT 1";
+$res_founder = mysqli_query($conn, $sql_founder);
+$founder = mysqli_fetch_assoc($res_founder);
+
+// Ambil semua data sejarah yang aktif
+$sql_history = "SELECT * FROM sejarah_utama WHERE status = 'aktif' LIMIT 1";
+$res_history = mysqli_query($conn, $sql_history);
+$history = mysqli_fetch_assoc($res_history);
+
+// Ambil semua data motto yang aktif
+$sql_motto = "SELECT * FROM motto_utama WHERE status = 'aktif' ORDER BY nomor ASC";
+$res_motto = mysqli_query($conn, $sql_motto);
+
+// Ambil data Quote yang aktif
+$sql_quote = "SELECT * FROM kutipan_utama WHERE status = 'aktif' LIMIT 1";
+$res_quote = mysqli_query($conn, $sql_quote);
+$quote = mysqli_fetch_assoc($res_quote);
+
+// Ambil semua produk masterpieces yang aktif
+$sql_produk = "SELECT * FROM produk_pilihan WHERE status = 'aktif'";
+$res_produk = mysqli_query($conn, $sql_produk);
+
+// Ambil data keunggulan/why aurelis
+$sql_why = "SELECT * FROM keunggulan_utama WHERE status = 'aktif' ORDER BY id ASC";
+$res_why = mysqli_query($conn, $sql_why);
+
+// Tambahkan di bagian atas index.php
+$sql_gallery = "SELECT * FROM galeri_utama WHERE status = 'aktif' ORDER BY id DESC";
+$res_gallery = mysqli_query($conn, $sql_gallery);
+
+$sql = "SELECT s.*, v.jalur_video 
+        FROM slide_utama s 
+        INNER JOIN video_utama v ON s.video_id = v.id 
+        WHERE v.status = 'aktif' 
+        LIMIT 1";
+
+$result = mysqli_query($conn, $sql);
 $slides = [];
-while ($row = mysqli_fetch_assoc($query)) {
-    $slides[] = $row;
+
+if ($result && mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $slides[] = $row;
+    }
 }
+
+
 
 if (empty($slides)) {
     die("Error: Tidak ada data slide.");
@@ -52,7 +98,7 @@ include ROOTPATH . "/layouts/header.php";
 <main class="relative w-full min-h-screen overflow-hidden">
     <div class="absolute inset-0 w-full h-full overflow-hidden">
         <video class="w-full h-full object-cover brightness-90" muted autoplay loop playsinline>
-            <source src="https://aurelis.yuda-aditya.cloud/jew.mp4" type="video/mp4">
+            <source src="<?= BASE_URL ?>/assets/videos/<?= $slides[0]['jalur_video'] ?>" type="video/mp4">
         </video>
         <div class="absolute inset-0 bg-gradient-to-r from-[rgba(4,7,22,0.35)] to-[rgba(2,3,13,0.85)] pointer-events-none"></div>
     </div>
@@ -76,32 +122,41 @@ include ROOTPATH . "/layouts/header.php";
 <section class="py-24 px-6 md:px-10 bg-aurelis-navy text-[#f5f7f7]">
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div class="text-center md:text-left order-2 md:order-1">
-            <h3 class="text-aurelis-gold tracking-[0.2em] mb-4 text-sm font-semibold">SINCE 2006</h3>
-            <h2 class="text-3xl md:text-5xl font-serif-aurelis leading-tight mb-6">PERJALANAN & LAHIRNYA AURELIS</h2>
+            <h3 class="text-aurelis-gold tracking-[0.2em] mb-4 text-sm font-semibold">
+                <?= htmlspecialchars($about['tagline']) ?>
+            </h3>
+
+            <h2 class="text-3xl md:text-5xl font-serif-aurelis leading-tight mb-6 uppercase">
+                <?= htmlspecialchars($about['judul']) ?>
+            </h2>
+
             <p class="text-gray-300 leading-relaxed mb-8 max-w-xl mx-auto md:mx-0">
-                Aurelis bukan sekadar brand perhiasan. Ini adalah simbol ketangguhan dan keindahan yang lahir dari pengalaman panjang. Setiap lekukan desain kami membawa cerita tentang kekuatan hati.
+                <?= nl2br(htmlspecialchars($about['deskripsi'])) ?>
             </p>
-            <a href="#" class="inline-block bg-aurelis-gold text-aurelis-dark px-8 py-3 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-[#ffdb99] transition-all transform hover:-translate-y-1 shadow-lg hover:shadow-aurelis-gold/40">
-                Pelajari Selengkapnya
+
+            <a href="<?= $about['link_tombol'] ?>" class="inline-block bg-aurelis-gold text-aurelis-dark px-8 py-3 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-[#ffdb99] transition-all transform hover:-translate-y-1 shadow-lg">
+                <?= htmlspecialchars($about['teks_tombol']) ?>
             </a>
         </div>
+
         <div class="order-1 md:order-2">
-            <img src="<?= BASE_URL ?>/assets/imgs/about.png" alt="About" class="w-full rounded-2xl shadow-2xl">
+            <img src="<?= BASE_URL ?>/assets/imgs/<?= $about['gambar'] ?>" alt="About Aurelis" class="w-full rounded-2xl shadow-2xl">
         </div>
     </div>
 </section>
 
 <section class="flex flex-col md:flex-row bg-aurelis-blue min-h-[600px] overflow-hidden shadow-2xl">
     <div class="w-full md:w-2/5 group overflow-hidden">
-        <img src="<?= BASE_URL ?>/assets/imgs/founder.png" alt="Founder" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+        <img src="<?= BASE_URL ?>/assets/imgs/<?= $founder['gambar'] ?>" alt="Founder" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
     </div>
     <div class="w-full md:w-3/5 p-12 md:p-24 flex flex-col justify-center items-center text-center">
-        <h2 class="text-white text-3xl md:text-5xl font-serif-aurelis tracking-widest uppercase mb-4">THE FOUNDER</h2>
+        <h2 class="text-white text-3xl md:text-5xl font-serif-aurelis tracking-widest uppercase mb-4">
+            <?= htmlspecialchars($founder['judul']) ?>
+        </h2>
         <div class="w-20 h-1 bg-aurelis-gold mb-10"></div>
+
         <div class="space-y-6 text-[#e6e9ff] max-w-xl opacity-90 leading-relaxed">
-            <p>Lahir di Banyuwangi dari keluarga petani sederhana, keterbatasan justru menjadi fondasi ketangguhan Astutik.</p>
-            <p>Belajar langsung dari mentor internasional asal Jepang, Taku Kitayama, membentuk disiplin dan standar kualitas global pada setiap karyanya.</p>
-            <p>Kini berdomisili di Bali, beliau mengembangkan Aurelis sebagai simbol perhiasan yang merepresentasikan karakter kuat seorang perempuan.</p>
+            <?= nl2br(htmlspecialchars($founder['deksripsi'])) ?>
         </div>
     </div>
 </section>
@@ -109,37 +164,41 @@ include ROOTPATH . "/layouts/header.php";
 <section class="bg-aurelis-dark py-20 px-6 md:px-10 border-t border-white/5">
     <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-20">
         <div class="flex-1 relative">
-            <img src="<?= BASE_URL ?>/assets/imgs/history.png" alt="History" class="w-full rounded-lg shadow-[0_30px_60px_rgba(0,0,0,0.4)] relative z-10">
+            <img src="<?= BASE_URL ?>/assets/imgs/<?= $history['gambar'] ?>" alt="History" class="w-full rounded-lg relative z-10">
             <div class="absolute -top-4 -left-4 w-4/5 h-[90%] border border-white/10 hidden md:block"></div>
         </div>
         <div class="flex-[1.2] text-center lg:text-left">
-            <h3 class="text-[#bfa37e] tracking-[0.4em] text-sm mb-6">SINCE 2006</h3>
-            <h2 class="text-white text-3xl md:text-5xl font-serif-aurelis leading-tight mb-10 uppercase tracking-wider">PERJALANAN ASTUTIK & LAHIRNYA AURELIS</h2>
+            <h3 class="text-[#bfa37e] tracking-[0.4em] text-sm mb-6"><?= htmlspecialchars($history['tagline']) ?></h3>
+            <h2 class="text-white text-3xl md:text-5xl font-serif-aurelis leading-tight mb-10 uppercase tracking-wider">
+                <?= htmlspecialchars($history['judul']) ?>
+            </h2>
             <div class="space-y-6 text-[#e6e9ff] opacity-85 text-[1rem] leading-loose tracking-wide">
-                <p>TIDAK SEMUA BRAND BESAR LAHIR DARI KEMEWAHAN. SEBAGIAN JUSTRU TUMBUH DARI KETEKUNAN, JATUH BANGUN, DAN MIMPI SEORANG PEREMPUAN YANG TIDAK PERNAH MENYERAH.</p>
-                <p>ASTUTIK PERTAMA KALI MENGENAL DUNIA PERHIASAN PADA TAHUN 2006. BERAWAL DARI RASA SUKA, TUMBUHLAH PROSES BELAJAR MANDIRI; MEMAHAMI KARAKTER BATU HINGGA MENGENAL SELERA PASAR DUNIA.</p>
+                <p><?= nl2br(htmlspecialchars($history['cerita_1'])) ?></p>
+                <p><?= nl2br(htmlspecialchars($history['cerita_2'])) ?></p>
             </div>
         </div>
     </div>
 </section>
 
 <section class="bg-[#fdfbf7] py-24 px-10 text-center">
-    <h1 class="font-serif-aurelis italic text-3xl md:text-5xl uppercase tracking-widest text-aurelis-dark mb-20">"Lebih dari Sekadar Perhiasan"</h1>
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
-        <?php
-        $motto = [
-            ['01.', 'Perjalanan Hidup', 'Mewakili setiap langkah dan cerita yang membentuk pribadi perempuan.'],
-            ['02.', 'Kekuatan', 'Melambangkan keberanian untuk bangkit dan berdiri lebih tegak.'],
-            ['03.', 'Makna', 'Menyimpan filosofi mendalam di balik setiap lengkungan desain.'],
-            ['04.', 'Makna', 'Menyimpan filosofi mendalam di balik setiap lengkungan desain.']
-        ];
-        foreach ($motto as $item): ?>
+    <h1 class="font-serif-aurelis italic text-3xl md:text-5xl uppercase tracking-widest text-aurelis-dark mb-20">
+        "Lebih dari Sekadar Perhiasan"
+    </h1>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-16">
+        <?php while ($row_motto = mysqli_fetch_assoc($res_motto)): ?>
             <div class="group hover:-translate-y-3 transition-all duration-300">
-                <h3 class="text-aurelis-gold font-serif-aurelis text-4xl mb-4"><?= $item[0] ?></h3>
-                <h4 class="text-aurelis-dark font-bold tracking-[0.2em] uppercase mb-6"><?= $item[1] ?></h4>
-                <p class="text-gray-600 leading-relaxed max-w-[300px] mx-auto"><?= $item[2] ?></p>
+                <h3 class="text-aurelis-gold font-serif-aurelis text-4xl mb-4">
+                    <?= htmlspecialchars($row_motto['nomor']) ?>
+                </h3>
+                <h4 class="text-aurelis-dark font-bold tracking-[0.2em] uppercase mb-6">
+                    <?= htmlspecialchars($row_motto['judul']) ?>
+                </h4>
+                <p class="text-gray-600 leading-relaxed max-w-[300px] mx-auto">
+                    <?= htmlspecialchars($row_motto['deskripsi']) ?>
+                </p>
             </div>
-        <?php endforeach; ?>
+        <?php endwhile; ?>
     </div>
 </section>
 
@@ -152,14 +211,14 @@ include ROOTPATH . "/layouts/header.php";
 
         <blockquote class="relative">
             <h2 class="font-serif-aurelis italic text-2xl md:text-4xl uppercase tracking-[0.05em] leading-relaxed text-white">
-                "Aurelis lahir untuk perempuan yang berani bermimpi besar, yang percaya bahwa keindahan sejati datang dari kekuatan hati."
+                "<?= htmlspecialchars($quote['isi_kutipan']) ?>"
             </h2>
         </blockquote>
 
         <div class="w-32 h-[1px] bg-aurelis-gold opacity-60"></div>
 
         <p class="uppercase tracking-[0.3em] text-[10px] md:text-xs text-gray-500 font-medium">
-            Aurelis International Vision — 2025
+            <?= htmlspecialchars($quote['sumber']) ?>
         </p>
 
     </div>
@@ -172,98 +231,43 @@ include ROOTPATH . "/layouts/header.php";
         </h2>
     </div>
 
-    <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-16">
-
-        <div class="group cursor-pointer">
-            <div class="overflow-hidden mb-6 aspect-[3/4]">
-                <img src="<?= BASE_URL ?>/assets/imgs/product1.jpeg" alt="Diamond Ring"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
+        <?php while ($row_produk = mysqli_fetch_assoc($res_produk)): ?>
+            <div class="group cursor-pointer">
+                <div class="overflow-hidden mb-6 aspect-[3/4]">
+                    <img src="<?= BASE_URL ?>/assets/imgs/<?= $row_produk['gambar'] ?>"
+                        alt="<?= htmlspecialchars($row_produk['nama_produk']) ?>"
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                </div>
+                <h3 class="text-center font-serif-aurelis uppercase tracking-[0.2em] text-aurelis-dark text-lg">
+                    <?= htmlspecialchars($row_produk['nama_produk']) ?>
+                </h3>
             </div>
-            <h3 class="text-center font-serif-aurelis uppercase tracking-[0.2em] text-aurelis-dark text-lg">
-                Diamond Ring
-            </h3>
-        </div>
-
-        <div class="group cursor-pointer">
-            <div class="overflow-hidden mb-6 aspect-[3/4]">
-                <img src="<?= BASE_URL ?>/assets/imgs/product2.jpeg" alt="Emerald Necklace"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            </div>
-            <h3 class="text-center font-serif-aurelis uppercase tracking-[0.2em] text-aurelis-dark text-lg">
-                Emerald Necklace
-            </h3>
-        </div>
-
-        <div class="group cursor-pointer">
-            <div class="overflow-hidden mb-6 aspect-[3/4]">
-                <img src="<?= BASE_URL ?>/assets/imgs/product3.jpeg" alt="Luxury Earrings"
-                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-            </div>
-            <h3 class="text-center font-serif-aurelis uppercase tracking-[0.2em] text-aurelis-dark text-lg">
-                Luxury Earrings
-            </h3>
-        </div>
-
+        <?php endwhile; ?>
     </div>
 </section>
 
-<section class="bg-aurelis-dark py-24 px-10 text-center border-t border-white/5">
-    <h2 class="font-serif-aurelis text-3xl md:text-4xl uppercase tracking-[0.4em] text-white mb-20">
-        Why Aurelis?
+<section class="bg-aurelis-dark py-24 px-10 text-center">
+    <h2 class="font-serif-aurelis text-white text-3xl md:text-5xl uppercase tracking-[0.6em] mb-20">
+        WHY AURELIS?
     </h2>
 
-    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-6">
+    <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 md:gap-8">
+        <?php while ($row_why = mysqli_fetch_assoc($res_why)): ?>
+            <div class="flex flex-col items-center group">
+                <div class="text-aurelis-gold text-3xl mb-8 transition-transform duration-500 group-hover:scale-125">
+                    <i class="fa-solid <?= htmlspecialchars($row_why['ikon']) ?>"></i>
+                </div>
 
-        <div class="flex flex-col items-center group">
-            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
-                <i class="fa-solid fa-infinity text-aurelis-gold text-xl"></i>
+                <h4 class="text-white font-bold tracking-[0.3em] uppercase text-xs mb-4">
+                    <?= htmlspecialchars($row_why['judul']) ?>
+                </h4>
+
+                <p class="text-gray-400 text-[10px] md:text-xs leading-relaxed italic max-w-[150px]">
+                    <?= htmlspecialchars($row_why['deskripsi']) ?>
+                </p>
             </div>
-            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Abadi</h4>
-            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
-                Keindahan klasik tak lekang waktu.
-            </p>
-        </div>
-
-        <div class="flex flex-col items-center group">
-            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
-                <i class="fa-solid fa-shield text-aurelis-gold text-xl"></i>
-            </div>
-            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Tangguh</h4>
-            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
-                Dibuat kokoh untuk bertahan lama.
-            </p>
-        </div>
-
-        <div class="flex flex-col items-center group">
-            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
-                <i class="fa-solid fa-leaf text-aurelis-gold text-xl"></i>
-            </div>
-            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Asli</h4>
-            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
-                Material asli mutu terjamin.
-            </p>
-        </div>
-
-        <div class="flex flex-col items-center group">
-            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
-                <i class="fa-solid fa-crown text-aurelis-gold text-xl"></i>
-            </div>
-            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Premium</h4>
-            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
-                Detail sempurna standar tinggi.
-            </p>
-        </div>
-
-        <div class="flex flex-col items-center group">
-            <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-full flex items-center justify-center mb-6 transition-all duration-300 group-hover:bg-aurelis-gold/20 group-hover:border-aurelis-gold/50 shadow-lg">
-                <i class="fa-solid fa-tree text-aurelis-gold text-xl"></i>
-            </div>
-            <h4 class="font-bold tracking-[0.2em] uppercase text-xs mb-3 text-aurelis-gold">Alami</h4>
-            <p class="font-serif-aurelis italic text-gray-400 text-[13px] leading-relaxed max-w-[150px]">
-                Pesona alami sentuhan elegan.
-            </p>
-        </div>
-
+        <?php endwhile; ?>
     </div>
 </section>
 

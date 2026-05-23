@@ -27,12 +27,9 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <title><?php echo isset($title) ? $title : "Aurelis Jewelry | Official Store"; ?></title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="<?= BASE_URL ?>/assets/js/main.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
 
     <?php if (isset($page_css)) : ?>
         <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/<?php echo trim($page_css, '/'); ?>.css">
@@ -60,7 +57,6 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     </script>
 
     <style>
-        /* Base Styling untuk Body sesuai CSS lamamu */
         body {
             font-family: 'Poppins', sans-serif;
             background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), transparent 35%),
@@ -82,10 +78,11 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <script>
         new WOW().init();
     </script>
-
 </head>
 
 <body class="w-full min-h-full bg-aurelis-dark">
+
+    <!-- 1. HEADER UTAMA (Hanya membungkus Navigasi Atas) -->
     <header class="fixed top-0 left-0 w-full z-[999] glass-header transition-all duration-300">
         <nav class="max-w-[1180px] mx-auto px-6 py-4 flex justify-between items-center">
 
@@ -96,14 +93,14 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
             </div>
 
             <ul class="hidden md:flex items-center gap-8 list-none">
-                <li><a href="index.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Home</a></li>
-                <li><a href="gallery.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Gallery</a></li>
-                <li><a href="workshop.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Workshop</a></li>
-                <li><a href="contact.php" class="text-aurelis-krem text-[0.9rem] font-medium hover:text-aurelis-gold transition">Contact</a></li>
+                <li><a href="<?= $base_url ?>" class="text-aurelis-krem hover:text-aurelis-gold transition">Home</a></li>
+                <li><a href="<?= $base_url ?>/gallery" class="text-aurelis-krem hover:text-aurelis-gold transition">Gallery</a></li>
+                <li><a href="<?= $base_url ?>/workshop" class="text-aurelis-krem hover:text-aurelis-gold transition">Workshop</a></li>
+                <li><a href="<?= $base_url ?>/contact" class="text-aurelis-krem hover:text-aurelis-gold transition">Contact</a></li>
             </ul>
 
             <div class="flex items-center gap-4 md:gap-5">
-                <!-- Language Switcher for Desktop -->
+                <!-- Language Switcher Desktop -->
                 <div class="hidden md:flex items-center gap-3">
                     <button class="flex items-center gap-2 text-sm font-semibold text-aurelis-gold transition group">
                         <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm opacity-80 group-hover:opacity-100"> ID
@@ -119,25 +116,29 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
                     <a href="#" class="text-aurelis-krem text-lg hover:text-aurelis-gold"><i class="fa-solid fa-cart-shopping"></i></a>
                 </div>
 
-                <button id="hamburger-btn" class="md:hidden text-aurelis-krem text-2xl focus:outline-none">
+                <!-- Tombol Hamburger (Diberi padding p-2 agar area sentuh di HP lebih luas) -->
+                <button id="hamburger-btn" class="md:hidden text-aurelis-krem text-2xl focus:outline-none p-2 relative z-[1000]">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
         </nav>
+    </header> <!-- Penutup Header di sini agar tidak mengurung mobile menu -->
 
-        <div id="mobile-menu" class="fixed inset-0 bg-aurelis-dark z-[9999] flex flex-col transition-all duration-500 transform -translate-y-full opacity-0 pointer-events-none">
 
-            <div class="flex justify-between items-center px-6 py-4 border-b border-gray-100">
-                <img src="<?php echo $base_url; ?>/assets/imgs/logo_gold.png" alt="Logo" class="h-8 w-auto object-contain">
-                <button id="close-menu" class="text-aurelis-krem text-2xl focus:outline-none">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
+    <!-- 2. MOBILE MENU (Sekarang berdiri mandiri di luar elemen Glass) -->
+    <div id="mobile-menu" class="fixed inset-0 bg-aurelis-dark z-[9999] flex flex-col transition-all duration-500 transform -translate-y-full opacity-0 pointer-events-none">
+
+        <div class="flex justify-between items-center px-6 py-4 border-b border-white/10">
+            <img src="<?php echo $base_url; ?>/assets/imgs/logo_gold.png" alt="Logo" class="h-8 w-auto object-contain">
+            <button id="close-menu" class="text-aurelis-krem text-2xl focus:outline-none p-2">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
 
             <div class="flex-1 flex flex-col items-center justify-start pt-12 bg-[#050816] ">
                 <ul class="flex flex-col items-center w-full list-none ">
                     <li class="w-full border-b border-gray-50 ">
-                        <a href="index.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">HOME</a>
+                        <a href="index.php" class="mobile-link  block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">HOME</a>
                     </li>
                     <li class="w-full border-b border-gray-50">
                         <a href="gallery.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">GALLERY</a>
@@ -150,25 +151,70 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
                     </li>
                 </ul>
 
-                <div class="mt-16 text-center w-full">
-                    <span class="text-[0.6rem] text-gray-500 tracking-[0.5em] font-bold uppercase mb-6 block">SELECT LANGUAGE</span>
-                    <div class="flex justify-center gap-6">
-                        <button class="flex items-center gap-3 text-sm font-semibold text-aurelis-gold transition group">
-                            <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm opacity-80 group-hover:opacity-100"> ID
-                        </button>
-                        <div class="w-[1px] h-4 bg-white/10 self-center"></div>
-                        <button class="flex items-center gap-3 text-sm font-semibold text-gray-500 hover:text-aurelis-krem transition group">
-                            <img src="https://flagcdn.com/w20/us.png" alt="EN" class="w-4 h-auto rounded-sm opacity-50 group-hover:opacity-80"> EN
-                        </button>
-                    </div>
-                </div>
-
-                <div class="mt-12 flex gap-8">
-                    <a href="#" class="text-white/40 hover:text-aurelis-gold transition text-lg"><i class="fa-brands fa-instagram"></i></a>
-                    <a href="#" class="text-white/40 hover:text-aurelis-gold transition text-lg"><i class="fa-brands fa-whatsapp"></i></a>
-                    <a href="#" class="text-white/40 hover:text-aurelis-gold transition text-lg"><i class="fa-regular fa-envelope"></i></a>
+            <div class="mt-16 text-center w-full">
+                <span class="text-[0.6rem] text-gray-500 tracking-[0.5em] font-bold uppercase mb-6 block">SELECT LANGUAGE</span>
+                <div class="flex justify-center gap-6">
+                    <button class="flex items-center gap-3 text-sm font-semibold text-aurelis-gold transition group">
+                        <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm opacity-80 group-hover:opacity-100"> ID
+                    </button>
+                    <div class="w-[1px] h-4 bg-white/10 self-center"></div>
+                    <button class="flex items-center gap-3 text-sm font-semibold text-gray-500 hover:text-aurelis-krem transition group">
+                        <img src="https://flagcdn.com/w20/us.png" alt="EN" class="w-4 h-auto rounded-sm opacity-50 group-hover:opacity-80"> EN
+                    </button>
                 </div>
             </div>
+
+            <div class="mt-12 flex gap-8">
+                <a href="#" class="text-white/40 hover:text-aurelis-gold transition text-lg"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="text-white/40 hover:text-aurelis-gold transition text-lg"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="#" class="text-white/40 hover:text-aurelis-gold transition text-lg"><i class="fa-regular fa-envelope"></i></a>
+            </div>
         </div>
-    </header>
+    </div>
+
+    <!-- 3. SPACER HEIGHT -->
     <div class="h-16 md:h-20"></div>
+
+    <!-- 4. LOGIKA JAVASCRIPT -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const hamburgerBtn = document.getElementById("hamburger-btn");
+            const closeBtn = document.getElementById("close-menu");
+            const mobileMenu = document.getElementById("mobile-menu");
+            const navIcons = document.getElementById("nav-icons");
+            const mobileLinks = document.querySelectorAll(".mobile-link");
+
+            // Fungsi Buka Menu
+            if (hamburgerBtn) {
+                // Menggunakan 'click' tapi ditambahkan padding area sentuh
+                hamburgerBtn.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    if (mobileMenu) {
+                        mobileMenu.classList.remove("-translate-y-full", "opacity-0", "pointer-events-none");
+                        mobileMenu.classList.add("translate-y-0", "opacity-100", "pointer-events-auto");
+                    }
+                    if (navIcons) navIcons.classList.add("opacity-0");
+                    document.body.style.overflow = "hidden";
+                });
+            }
+
+            // Fungsi Tutup Menu
+            const closeMenuAction = (e) => {
+                if (e) e.preventDefault();
+                if (mobileMenu) {
+                    mobileMenu.classList.remove("translate-y-0", "opacity-100", "pointer-events-auto");
+                    mobileMenu.classList.add("-translate-y-full", "opacity-0", "pointer-events-none");
+                }
+                if (navIcons) navIcons.classList.remove("opacity-0");
+                document.body.style.overflow = "";
+            };
+
+            if (closeBtn) {
+                closeBtn.addEventListener("click", closeMenuAction);
+            }
+
+            mobileLinks.forEach((link) => {
+                link.addEventListener("click", closeMenuAction);
+            });
+        });
+    </script>

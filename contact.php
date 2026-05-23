@@ -68,12 +68,12 @@ include ROOTPATH . "/layouts/header.php";
                 <tr>
                     <td class="pb-5"><input class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-aurelis-gold" type="text" placeholder="Subject"></td>
                 </tr>
-                
+
                 <tr>
                     <td><textarea class="w-full border-[3px] text-black rounded-sm border-gray-500 px-4 py-3 focus:outline-none focus:border-aurelis-gold max-h-[250px] h-[150px]" placeholder="Message"></textarea></td>
                 </tr>
             </table>
-            
+
             <button class="bg-none bg-blue-500 rounded-sm tracking-[2px] px-6 py-3 uppercase mt-6 transition-all duration-200 hover:bg-blue-600" type="submit">Send Message</button>
         </form>
 
@@ -99,7 +99,7 @@ include ROOTPATH . "/layouts/header.php";
         <a href="#"><i class="fa-brands fa-facebook transition-all duration-200 hover:text-aurelis-gold"></i></a>
         <a href="#"><i class="fa-brands fa-tiktok transition-all duration-200 hover:text-aurelis-gold"></i></a>
     </div>
-    
+
 </section>
 
 <?php include ROOTPATH . "/layouts/footer.php" ?>

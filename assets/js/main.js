@@ -24,45 +24,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 600);
     }, 5000);
   }
-
-  // --- LOGIKA MOBILE MENU (Perbaikan di Sini) ---
-  const hamburgerBtn = document.getElementById("hamburger-btn");
-  const closeBtn = document.getElementById("close-menu");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const navIcons = document.getElementById("nav-icons"); // Wadah ikon user & cart
-  const mobileLinks = document.querySelectorAll(".mobile-link");
-
-  // Fungsi Buka Menu
-  if (hamburgerBtn) {
-    hamburgerBtn.addEventListener("click", () => {
-      // Munculkan Menu
-      mobileMenu.classList.remove("-translate-y-full", "opacity-0", "pointer-events-none");
-      mobileMenu.classList.add("translate-y-0", "opacity-100", "pointer-events-auto");
-
-      // Sembunyikan ikon nav asli agar tidak tabrakan dengan tombol X
-      if (navIcons) navIcons.classList.add("opacity-0");
-
-      document.body.style.overflow = "hidden";
-    });
-  }
-
-  // Fungsi Tutup Menu
-  const closeMenuAction = () => {
-    mobileMenu.classList.remove("translate-y-0", "opacity-100", "pointer-events-auto");
-    mobileMenu.classList.add("-translate-y-full", "opacity-0", "pointer-events-none");
-
-    // Munculkan kembali ikon nav
-    if (navIcons) navIcons.classList.remove("opacity-0");
-
-    document.body.style.overflow = "";
-  };
-
-  if (closeBtn) {
-    closeBtn.addEventListener("click", closeMenuAction);
-  }
-
-  // Tutup menu otomatis jika link diklik
-  mobileLinks.forEach((link) => {
-    link.addEventListener("click", closeMenuAction);
-  });
 });
