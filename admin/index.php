@@ -107,7 +107,7 @@ $q_produk = mysqli_query($conn, "SELECT * FROM galeri_utama ORDER BY id DESC LIM
         <!-- HEADER -->
         <header class="flex justify-between items-center mb-10">
             <div>
-                <h1 class="text-2xl font-bold">Aurelis Control Panel Panel Panel Panel Panel Panel Panel Panel</h1>
+                <h1 class="text-2xl font-bold">Aurelis Control Panel</h1>
                 <p class="text-gray-500 text-sm">Data statistik sinkron langsung dengan database online</p>
             </div>
             <a href="../index.php" target="_blank" class="text-xs text-aurelis-gold border border-aurelis-gold/30 px-4 py-2 rounded-full hover:bg-aurelis-gold hover:text-aurelis-dark transition">
