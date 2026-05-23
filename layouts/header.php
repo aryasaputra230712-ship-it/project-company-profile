@@ -137,7 +137,7 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
             <div class="flex-1 flex flex-col items-center justify-start pt-12 bg-[#050816] ">
                 <ul class="flex flex-col items-center w-full list-none ">
                     <li class="w-full border-b border-gray-50 ">
-                        <a href="index.php" class="mobile-link  block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">HOME</a>
+                        <a href="index.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">HOME</a>
                     </li>
                     <li class="w-full border-b border-gray-50">
                         <a href="gallery.php" class="mobile-link block py-6 text-aurelis-krem text-lg font-playfair tracking-[0.3em] text-center hover:bg-gray-50 transition">GALLERY</a>
