@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // 1. Perbaiki ROOTPATH: Naik 2 tingkat (dari 'process' -> 'admin' -> 'root')
 if (!defined('ROOTPATH')) {
     define('ROOTPATH', dirname(dirname(__DIR__)));
@@ -25,30 +27,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         die("Koneksi gagal: " . mysqli_connect_error());
     }
 
-    $id     = mysqli_real_escape_string($conn, $_POST['id']);
-    $nama   = mysqli_real_escape_string($conn, $_POST['nama_perusahaan']);
-    $wa     = mysqli_real_escape_string($conn, $_POST['whatsapp']);
-    $email  = mysqli_real_escape_string($conn, $_POST['email']);
-    $ig     = mysqli_real_escape_string($conn, $_POST['instagram']);
-    $alamat = mysqli_real_escape_string($conn, $_POST['alamat']);
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $password = $_POST['password'];
 
-    $sql = "UPDATE pengaturan SET 
-            nama_perusahaan = '$nama', 
-            whatsapp = '$wa', 
-            email = '$email', 
-            instagram = '$ig', 
-            alamat = '$alamat' 
-            WHERE id = '$id'";
+    // Ambil data user berdasarkan username
+    // Catatan: Ganti 'users' dengan nama tabel admin Anda jika berbeda
+    $query = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username'");
 
-    if (mysqli_query($conn, $sql)) {
-        // KARENA FILE INI DI DALAM FOLDER 'process', 
-        // MAKA UNTUK KEMBALI KE 'setting.php' HARUS NAIK SATU TINGKAT (../)
-        header("Location: ../index.php?status=success");
-    } else {
-        header("Location: ../index.php?status=error");
+    if (mysqli_num_rows($query) === 1) {
+        $user = mysqli_fetch_assoc($query);
+
+        // Verifikasi password menggunakan password_hash yang dibuat di create_password.php
+        if (password_verify($password, $user['password'])) {
+            // Set session login
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['admin_nama'] = $user['nama']; // Opsional: simpan nama admin
+
+            header("Location: ../index.php");
+            exit;
+        }
     }
+
+    // Jika username tidak ditemukan atau password salah
+    header("Location: ../login.php?pesan=gagal");
     exit;
 } else {
-    header("Location: ../setting.php");
+    header("Location: ../login.php");
     exit;
 }

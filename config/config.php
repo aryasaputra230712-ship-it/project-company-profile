@@ -11,7 +11,7 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1') 
 
 } else {
     // Jika dijalankan di jaringan (bukan localhost), gunakan konfigurasi server
-    $host = "185.151.49.65"; // Tetap localhost karena kodingan & DB sama-sama di hosting
+    $host = "localhost"; // Biasanya hosting menggunakan localhost untuk koneksi DB internal
     $user = "vibewebs_id_rsa"; // User yang kamu buat di cPanel
     $pass = "Aryasaputra23"; // Password yang kamu reset tadi
     $db   = "vibewebs_db"; // Nama database di cPanel
@@ -24,4 +24,3 @@ if (!$conn) {
     error_log("Koneksi gagal: " . mysqli_connect_error());
     die("Maaf, terjadi gangguan pada sistem.");
 }
-?>
