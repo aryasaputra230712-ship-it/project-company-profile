@@ -87,17 +87,16 @@ include ROOTPATH . "/layouts/header.php";
         }
     }
 </script>
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
 
-    .font-serif-aurelis {
-        font-family: 'Playfair Display', serif;
-    }
-</style>
 
 <main class="relative w-full min-h-screen overflow-hidden">
     <div class="absolute inset-0 w-full h-full overflow-hidden">
-        <video class="w-full h-full object-cover brightness-90" muted autoplay loop playsinline>
+        <video
+            class="w-full h-full object-cover brightness-90"
+            muted autoplay loop playsinline
+            preload="auto"
+            fetchpriority="high"
+            poster="<?= BASE_URL ?>/assets/imgs/hero-poster.webp">
             <source src="<?= BASE_URL ?>/assets/videos/<?= $slides[0]['jalur_video'] ?>" type="video/mp4">
         </video>
         <div class="absolute inset-0 bg-gradient-to-r from-[rgba(4,7,22,0.35)] to-[rgba(2,3,13,0.85)] pointer-events-none"></div>
@@ -105,6 +104,7 @@ include ROOTPATH . "/layouts/header.php";
 
     <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 min-h-screen gap-6">
         <img src="<?= BASE_URL ?>/assets/imgs/logo.png"
+            fetchpriority="high"
             class="wow animate__animated animate__bounceIn w-[100px] md:w-[130px] drop-shadow-2xl">
 
         <h1 id="dynamic-title"
@@ -156,7 +156,7 @@ include ROOTPATH . "/layouts/header.php";
         <div class="w-20 h-1 bg-aurelis-gold mb-10"></div>
 
         <div class="space-y-6 text-[#e6e9ff] max-w-xl opacity-90 leading-relaxed">
-            <?= nl2br(htmlspecialchars($founder['deksripsi'])) ?>
+            <?= nl2br(htmlspecialchars($founder['deskripsi'])) ?>
         </div>
     </div>
 </section>
@@ -237,6 +237,7 @@ include ROOTPATH . "/layouts/header.php";
                 <div class="overflow-hidden mb-6 aspect-[3/4]">
                     <img src="<?= BASE_URL ?>/assets/imgs/<?= $row_produk['gambar'] ?>"
                         alt="<?= htmlspecialchars($row_produk['nama_produk']) ?>"
+                        loading="lazy"
                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 </div>
                 <h3 class="text-center font-serif-aurelis uppercase tracking-[0.2em] text-aurelis-dark text-lg">

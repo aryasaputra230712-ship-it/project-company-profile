@@ -27,13 +27,15 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     <title><?php echo isset($title) ? $title : "Aurelis Jewelry | Official Store"; ?></title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-    <?php if (isset($page_css)) : ?>
-        <link rel="stylesheet" href="<?php echo $base_url; ?>/assets/css/<?php echo trim($page_css, '/'); ?>.css">
-    <?php endif; ?>
+    <link rel="preload" as="image" href="<?= BASE_URL ?>/assets/imgs/hero-poster.webp" fetchpriority="high">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <script>
         tailwind.config = {
@@ -43,8 +45,6 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
                         'aurelis-gold': '#f7c66b',
                         'aurelis-dark': '#050816',
                         'aurelis-blue': '#070b1e',
-                        'aurelis-light': '#e6e9ff',
-                        'aurelis-hover': '#9bb7ff',
                         'aurelis-krem': '#FDFBF7',
                     },
                     fontFamily: {
@@ -57,27 +57,23 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     </script>
 
     <style>
+        /* Hapus @import dari sini! */
         body {
             font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at top, rgba(255, 255, 255, 0.06), transparent 35%),
-                linear-gradient(180deg, #070b1e 0%, #02050f 100%);
+            background: #050816;
             color: #f7f7f7;
-            min-height: 100vh;
         }
 
-        /* Glassmorphism Header */
+        .font-serif-aurelis {
+            font-family: 'Playfair Display', serif;
+        }
+
         .glass-header {
             background: rgba(5, 8, 22, 0.45);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
     </style>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-    <script>
-        new WOW().init();
-    </script>
 </head>
 
 <body class="w-full min-h-full bg-aurelis-dark">
