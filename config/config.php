@@ -20,5 +20,8 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1') 
 $conn = mysqli_connect($host, $user, $pass, $db);
 
 if (!$conn) {
-    die("Koneksi gagal : " . mysqli_connect_error());
+    // Di server online, sebaiknya jangan pakai die() agar tidak muncul 500 tanpa pesan
+    error_log("Koneksi gagal: " . mysqli_connect_error());
+    die("Maaf, terjadi gangguan pada sistem.");
 }
+?>

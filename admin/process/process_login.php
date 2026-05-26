@@ -43,9 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (mysqli_query($conn, $sql)) {
         // KARENA FILE INI DI DALAM FOLDER 'process', 
         // MAKA UNTUK KEMBALI KE 'setting.php' HARUS NAIK SATU TINGKAT (../)
-        header("Location: ../setting.php?status=success");
+        header("Location: ../index.php?status=success");
     } else {
-        header("Location: ../setting.php?status=error");
+        header("Location: ../index.php?status=error");
     }
     exit;
 } else {
