@@ -56,7 +56,7 @@ if (isset($_SESSION['admin_logged_in'])) {
                 <div class="flex-1 border-t border-white/5"></div>
             </div>
 
-            <form action="process/proses_login.php" method="POST" class="space-y-5 text-left">
+            <form action="process/process_login.php" method="POST" class="space-y-5 text-left">
                 <div>
                     <label class="text-[11px] font-medium text-gray-400 tracking-wider block mb-2">Username</label>
                     <div class="relative flex items-center">
