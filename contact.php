@@ -37,6 +37,8 @@ include ROOTPATH . "/layouts/header.php";
 </section>
 
 <section>
+
+
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 text-center max-w-6xl m-auto p-[50px] uppercase gap-10 mb-10 text-white">
         <div>
             <span><i class="fa-solid fa-phone mb-3 text-xl text-aurelis-gold"></i></span>
@@ -57,22 +59,28 @@ include ROOTPATH . "/layouts/header.php";
         </div>
     </div>
 
+
     <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-6xl m-auto gap-12 mb-[80px] px-6">
-        <form action="" method="post">
+        <form action="admin/process/process_contact.php" method="post">
             <h2 class="pb-7 tracking-[2px] uppercase text-2xl font-serif text-white">Send Us a Message</h2>
 
             <table class="text-sm w-full">
                 <tr>
-                    <td class="pb-5"><input class="w-full border-b-[1px] bg-transparent text-white border-gray-700 px-4 py-3 focus:outline-none focus:border-aurelis-gold transition-all" type="text" placeholder="Your Name"></td>
+                    <td class="pb-5"><input class="w-full border-b-[1px] bg-transparent text-white border-gray-700 px-4 py-3 focus:outline-none focus:border-aurelis-gold transition-all" type="text" name="name" placeholder="Your Name">
+                    </td>
                 </tr>
                 <tr>
-                    <td class="pb-5"><input class="w-full border-b-[1px] bg-transparent text-white border-gray-700 px-4 py-3 focus:outline-none focus:border-aurelis-gold transition-all" type="email" placeholder="Your Email"></td>
+                    <td class="pb-5">
+                        <input class="w-full border-b-[1px] bg-transparent text-white border-gray-700 px-4 py-3 focus:outline-none focus:border-aurelis-gold transition-all" type="email" name="email" placeholder="Your Email">
+                    </td>
                 </tr>
                 <tr>
-                    <td class="pb-5"><input class="w-full border-b-[1px] bg-transparent text-white border-gray-700 px-4 py-3 focus:outline-none focus:border-aurelis-gold transition-all" type="text" placeholder="Subject"></td>
+                    <td class="pb-5"><input class="w-full border-b-[1px] bg-transparent text-white border-gray-700 px-4 py-3 focus:outline-none focus:border-aurelis-gold transition-all" type="text" name="subject" placeholder="Subject"></td>
                 </tr>
                 <tr>
-                    <td><textarea class="w-full border-b-[1px] bg-transparent text-white border-gray-700 px-4 py-3 focus:outline-none focus:border-aurelis-gold max-h-[250px] h-[150px]" placeholder="Message"></textarea></td>
+                    <td>
+                        <textarea class="w-full border-b-[1px] bg-transparent text-white border-gray-700 px-4 py-3 focus:outline-none focus:border-aurelis-gold max-h-[250px] h-[150px]" placeholder="Message" name="message"></textarea>
+                    </td>
                 </tr>
             </table>
 

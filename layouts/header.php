@@ -17,9 +17,15 @@ $base_url = $protocol . "://" . $host . ($script_name == '/' ? '' : $script_name
 if (file_exists(ROOTPATH . "/config/config.php")) {
     include_once ROOTPATH . "/config/config.php";
 }
+
+// 4. Pengaman & Pembaca Sistem Bahasa Melalui Session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
 ?>
 <!DOCTYPE html>
-<html lang="id" class="w-full min-h-full overflow-x-hidden">
+<html lang="<?= $bahasa_aktif ?>" class="w-full min-h-full overflow-x-hidden">
 
 <head>
     <meta charset="UTF-8">
@@ -96,15 +102,17 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
             </ul>
 
             <div class="flex items-center gap-4 md:gap-5">
-                <!-- Language Switcher Desktop -->
+                <!-- Language Switcher Desktop (Mengarah ke url_lang.php agar URL Bersih) -->
                 <div class="hidden md:flex items-center gap-3">
-                    <button class="flex items-center gap-2 text-sm font-semibold text-aurelis-gold transition group">
-                        <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm opacity-80 group-hover:opacity-100"> ID
-                    </button>
+                    <a href="<?= $base_url ?>/url_lang.php?lang=id" class="flex items-center gap-2 text-sm font-semibold transition group <?= ($bahasa_aktif == 'id') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
+                        <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm transition-opacity <?= ($bahasa_aktif == 'id') ? 'opacity-100' : 'opacity-40 group-hover:opacity-80' ?>"> ID
+                    </a>
+
                     <div class="w-[1px] h-4 bg-white/10 self-center"></div>
-                    <button class="flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-aurelis-krem transition group">
-                        <img src="https://flagcdn.com/w20/us.png" alt="EN" class="w-4 h-auto rounded-sm opacity-50 group-hover:opacity-80"> EN
-                    </button>
+
+                    <a href="<?= $base_url ?>/url_lang.php?lang=en" class="flex items-center gap-2 text-sm font-semibold transition group <?= ($bahasa_aktif == 'en') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
+                        <img src="https://flagcdn.com/w20/us.png" alt="EN" class="w-4 h-auto rounded-sm transition-opacity <?= ($bahasa_aktif == 'en') ? 'opacity-100' : 'opacity-40 group-hover:opacity-80' ?>"> EN
+                    </a>
                 </div>
 
                 <div id="nav-icons" class="flex items-center gap-5 transition-opacity duration-300">
@@ -112,16 +120,16 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
                     <a href="#" class="text-aurelis-krem text-lg hover:text-aurelis-gold"><i class="fa-solid fa-cart-shopping"></i></a>
                 </div>
 
-                <!-- Tombol Hamburger (Diberi padding p-2 agar area sentuh di HP lebih luas) -->
+                <!-- Tombol Hamburger -->
                 <button id="hamburger-btn" class="md:hidden text-aurelis-krem text-2xl focus:outline-none p-2 relative z-[1000]">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
         </nav>
-    </header> <!-- Penutup Header di sini agar tidak mengurung mobile menu -->
+    </header> <!-- Penutup Header -->
 
 
-    <!-- 2. MOBILE MENU (Sekarang berdiri mandiri di luar elemen Glass) -->
+    <!-- 2. MOBILE MENU -->
     <div id="mobile-menu" class="fixed inset-0 bg-aurelis-dark z-[9999] flex flex-col transition-all duration-500 transform -translate-y-full opacity-0 pointer-events-none">
 
         <div class="flex justify-between items-center px-6 py-4 border-b border-white/10">
@@ -147,16 +155,19 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
                 </li>
             </ul>
 
+            <!-- Language Switcher Mobile (Mengarah ke url_lang.php agar URL Bersih) -->
             <div class="mt-16 text-center w-full">
                 <span class="text-[0.6rem] text-gray-500 tracking-[0.5em] font-bold uppercase mb-6 block">SELECT LANGUAGE</span>
                 <div class="flex justify-center gap-6">
-                    <button class="flex items-center gap-3 text-sm font-semibold text-aurelis-gold transition group">
-                        <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm opacity-80 group-hover:opacity-100"> ID
-                    </button>
+                    <a href="<?= $base_url ?>/url_lang.php?lang=id" class="flex items-center gap-3 text-sm font-semibold transition group <?= ($bahasa_aktif == 'id') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
+                        <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm <?= ($bahasa_aktif == 'id') ? 'opacity-100' : 'opacity-40' ?>"> ID
+                    </a>
+
                     <div class="w-[1px] h-4 bg-white/10 self-center"></div>
-                    <button class="flex items-center gap-3 text-sm font-semibold text-gray-500 hover:text-aurelis-krem transition group">
-                        <img src="https://flagcdn.com/w20/us.png" alt="EN" class="w-4 h-auto rounded-sm opacity-50 group-hover:opacity-80"> EN
-                    </button>
+
+                    <a href="<?= $base_url ?>/url_lang.php?lang=en" class="flex items-center gap-3 text-sm font-semibold transition group <?= ($bahasa_aktif == 'en') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
+                        <img src="https://flagcdn.com/w20/us.png" alt="EN" class="w-4 h-auto rounded-sm <?= ($bahasa_aktif == 'en') ? 'opacity-100' : 'opacity-40' ?>"> EN
+                    </a>
                 </div>
             </div>
 
@@ -182,7 +193,6 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
 
             // Fungsi Buka Menu
             if (hamburgerBtn) {
-                // Menggunakan 'click' tapi ditambahkan padding area sentuh
                 hamburgerBtn.addEventListener("click", (e) => {
                     e.preventDefault();
                     if (mobileMenu) {
