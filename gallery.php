@@ -35,7 +35,7 @@ include ROOTPATH . "/layouts/header.php";
         <h1 class="tracking-[10px] text-4xl text-center md:text-5xl md:tracking-[20px] font-serif">
             <?= $header['judul'] ?>
         </h1>
-        <p class="tracking-[5px] font-light text-xs text-orange-200">
+        <p class="tracking-[2px] text-orange-200 font-light text-xs md:tracking-[5px]">
             <?= $header['subjudul'] ?>
         </p>
     </div>
