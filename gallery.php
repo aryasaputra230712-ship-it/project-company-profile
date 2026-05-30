@@ -64,7 +64,7 @@ $hero_sub   = ($lang == 'en' && !empty($header['subjudul_en'])) ? $header['subju
             <?= htmlspecialchars($hero_title) ?>
         </h1>
         <p class="tracking-[5px] font-light text-xs text-orange-200">
-            <?= $header['subjudul'] ?>
+            <?= htmlspecialchars($hero_sub) ?>
         </p>
     </div>
 </section>
