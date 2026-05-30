@@ -29,8 +29,75 @@ $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
 $query_home = mysqli_query($conn, "SELECT * FROM konten_homepage WHERE id = 1 LIMIT 1");
 $home = mysqli_fetch_assoc($query_home);
 
-$hero_judul     = ($bahasa_aktif == 'en' && !empty($home['hero_judul_en'])) ? $home['hero_judul_en'] : $home['hero_judul_id'];
-$hero_sub       = ($bahasa_aktif == 'en' && !empty($home['hero_sub_en'])) ? $home['hero_sub_en'] : $home['hero_sub_id'];
+/**
+ * Susun slide hero untuk rotasi teks (judul + subjudul).
+ * Sumber: slide_utama (banyak baris) atau konten_homepage (pisah dengan | atau baris baru).
+ */
+function build_hero_slides(array $home, mysqli $conn, string $bahasa_aktif): array
+{
+    $slides = [];
+
+    $res_slides = mysqli_query(
+        $conn,
+        "SELECT judul, subjudul FROM slide_utama WHERE status IN ('active', 'aktif') ORDER BY id ASC"
+    );
+    if ($res_slides) {
+        while ($row = mysqli_fetch_assoc($res_slides)) {
+            $judul = trim($row['judul'] ?? '');
+            if ($judul !== '') {
+                $slides[] = [
+                    'judul'    => $judul,
+                    'subjudul' => trim($row['subjudul'] ?? ''),
+                ];
+            }
+        }
+    }
+
+    if (count($slides) >= 2) {
+        return $slides;
+    }
+
+    $judul_raw = ($bahasa_aktif === 'en' && !empty($home['hero_judul_en']))
+        ? (string) $home['hero_judul_en']
+        : (string) ($home['hero_judul_id'] ?? '');
+    $sub_raw = ($bahasa_aktif === 'en' && !empty($home['hero_sub_en']))
+        ? (string) $home['hero_sub_en']
+        : (string) ($home['hero_sub_id'] ?? '');
+
+    $titles = preg_split('/\s*\|\s*|\r\n|\n/', $judul_raw, -1, PREG_SPLIT_NO_EMPTY);
+    $subs   = preg_split('/\s*\|\s*|\r\n|\n/', $sub_raw, -1, PREG_SPLIT_NO_EMPTY);
+
+    if (count($titles) > 1) {
+        $parsed = [];
+        foreach ($titles as $i => $title) {
+            $parsed[] = [
+                'judul'    => trim($title),
+                'subjudul' => trim($subs[$i] ?? ($subs[0] ?? '')),
+            ];
+        }
+        return $parsed;
+    }
+
+    if (!empty($slides)) {
+        return $slides;
+    }
+
+    if (trim($judul_raw) !== '') {
+        return [[
+            'judul'    => trim($judul_raw),
+            'subjudul' => trim($sub_raw),
+        ]];
+    }
+
+    return [[
+        'judul'    => 'Aurelis Jewelry',
+        'subjudul' => '',
+    ]];
+}
+
+$hero_slides = build_hero_slides($home ?: [], $conn, $bahasa_aktif);
+$hero_judul  = $hero_slides[0]['judul'];
+$hero_sub    = $hero_slides[0]['subjudul'];
 $sejarah_judul  = ($bahasa_aktif == 'en' && !empty($home['sejarah_judul_en'])) ? $home['sejarah_judul_en'] : $home['sejarah_judul_id'];
 $sejarah_konten = ($bahasa_aktif == 'en' && !empty($home['sejarah_konten_en'])) ? $home['sejarah_konten_en'] : $home['sejarah_konten_id'];
 $founder_nama   = !empty($home['founder_nama']) ? $home['founder_nama'] : 'THE FOUNDER';
@@ -130,13 +197,13 @@ include ROOTPATH . "/layouts/header.php";
             class="wow animate__animated animate__bounceIn w-[100px] md:w-[130px] drop-shadow-2xl">
 
         <h1 id="dynamic-title"
-            class="animate__animated animate__fadeInUp text-white text-[2rem] md:text-[3.5rem] lg:text-[4.2rem] font-bold leading-[1.05] tracking-tight max-w-[900px] font-serif-aurelis">
-            <?= htmlspecialchars($hero_judul); ?>
+            class="animate__animated animate__fadeInUp text-white text-[2rem] md:text-[3.5rem] lg:text-[4.2rem] font-bold leading-[1.05] tracking-tight max-w-[900px] font-serif-aurelis min-h-[1.2em]">
+            <?= htmlspecialchars($hero_judul) ?>
         </h1>
 
         <p id="dynamic-subtitle"
-            class="animate__animated animate__fadeInUp text-[#e6e9ff] text-[1rem] md:text-[1.2rem] max-w-[720px] opacity-90">
-            <?= htmlspecialchars($hero_sub); ?>
+            class="animate__animated animate__fadeInUp text-[#e6e9ff] text-[1rem] md:text-[1.2rem] max-w-[720px] opacity-90 min-h-[1.5em]">
+            <?= htmlspecialchars($hero_sub) ?>
         </p>
     </div>
 </main>
@@ -321,7 +388,7 @@ include ROOTPATH . "/layouts/header.php";
 </section>
 
 <script>
-    window.dataSlides = [<?php echo json_encode($home); ?>];
+    window.dataSlides = <?= json_encode($hero_slides, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) ?>;
 </script>
 <script src="<?= BASE_URL ?>/assets/js/main.js"></script>
 

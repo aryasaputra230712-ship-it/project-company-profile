@@ -182,6 +182,13 @@ function edit_payload_attr(array $data): string
                             <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Main Title (EN) 🇺🇸</label>
                             <input type="text" name="hero_judul_en" value="<?= htmlspecialchars($home_data['hero_judul_en'] ?? '') ?>" placeholder="Enter main title in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
                         </div>
+                        <div class="md:col-span-2 p-3 rounded-xl bg-aurelis-gold/5 border border-aurelis-gold/20">
+                            <p class="text-[9px] text-aurelis-gold leading-relaxed">
+                                <i class="fa-solid fa-circle-info mr-1"></i>
+                                Untuk teks hero yang <strong>berganti otomatis</strong>, pisahkan beberapa kalimat dengan tanda <strong>|</strong>
+                                (contoh: Judul 1 | Judul 2 | Judul 3). Sub-judul juga bisa dipisah dengan <strong>|</strong> sesuai urutan.
+                            </p>
+                        </div>
                         <div class="md:col-span-1">
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Isi Deskripsi / Sub-judul (ID) 🇮🇩</label>
                             <textarea name="hero_sub_id" rows="5" placeholder="Masukkan narasi sub-judul dalam Bahasa Indonesia..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['hero_sub_id'] ?? '') ?></textarea>

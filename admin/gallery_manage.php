@@ -41,6 +41,17 @@ if ($tab == 'perhiasan') {
     // Ambil data dengan LIMIT
     $items = mysqli_query($conn, "SELECT * FROM galeri_utama ORDER BY id DESC LIMIT $start, $limit");
 }
+
+$kategori_list = mysqli_query($conn, "SELECT * FROM kategori_galeri ORDER BY nama_kategori ASC");
+
+function gallery_edit_payload(array $data): string
+{
+    return htmlspecialchars(
+        json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE),
+        ENT_QUOTES,
+        'UTF-8'
+    );
+}
 ?>
 
 <!DOCTYPE html>
@@ -208,7 +219,15 @@ if ($tab == 'perhiasan') {
                                     </div>
                                 </div>
                                 <div class="flex gap-2 mt-4 pt-3 border-t border-white/5">
-                                    <button type="button" class="flex-1 text-center text-[8px] font-bold bg-white/5 py-2.5 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300">Edit</button>
+                                    <button type="button"
+                                        class="btn-edit-jewelry flex-1 text-center text-[8px] font-bold bg-white/5 py-2.5 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300"
+                                        data-edit="<?= gallery_edit_payload([
+                                            'id' => $row['id'],
+                                            'nama_produk' => $row['nama_produk'],
+                                            'nama_produk_en' => $row['nama_produk_en'] ?? '',
+                                            'harga' => $row['harga'] ?? 0,
+                                            'kategori' => $row['kategori'] ?? '',
+                                        ]) ?>">Edit</button>
                                     <a href="process/process_gallery.php?action=hapus&id=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus perhiasan ini?')" class="text-center text-[8px] font-bold bg-red-500/10 text-red-400 px-3 py-2.5 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">
                                         <i class="fa-regular fa-trash-can"></i>
                                     </a>
@@ -241,7 +260,8 @@ if ($tab == 'perhiasan') {
                 <h3 class="font-serif-lux text-lg text-white tracking-wide">Tambah Koleksi Perhiasan</h3>
                 <button onclick="toggleModal('modal-add')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <form action="process/process_add_jewelry.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <form action="process/process_gallery.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <input type="hidden" name="action" value="tambah_item">
                 <div>
                     <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Nama Perhiasan (ID) 🇮🇩</label>
                     <input type="text" name="nama_produk" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
@@ -249,6 +269,20 @@ if ($tab == 'perhiasan') {
                 <div>
                     <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-1 block">Jewelry Name (EN) 🇺🇸</label>
                     <input type="text" name="nama_produk_en" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Harga (Rp)</label>
+                        <input type="number" name="harga" min="0" required placeholder="5000000" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Kategori</label>
+                        <select name="kategori" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                            <?php mysqli_data_seek($kategori_list, 0); while ($kat = mysqli_fetch_assoc($kategori_list)): ?>
+                                <option value="<?= htmlspecialchars($kat['slug']) ?>"><?= htmlspecialchars($kat['nama_kategori']) ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
                 </div>
                 <div>
                     <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Foto Produk Perhiasan</label>
@@ -261,11 +295,115 @@ if ($tab == 'perhiasan') {
         </div>
     </div>
 
+    <div id="modal-edit" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between mb-6 pb-2 border-b border-white/5">
+                <h3 class="font-serif-lux text-lg text-white tracking-wide">Edit Koleksi Perhiasan</h3>
+                <button type="button" onclick="toggleModal('modal-edit')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form action="process/process_gallery.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <input type="hidden" name="action" value="edit_item">
+                <input type="hidden" name="id_item" id="edit-id">
+                <div>
+                    <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Nama Perhiasan (ID) 🇮🇩</label>
+                    <input type="text" name="nama_produk" id="edit-nama" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                </div>
+                <div>
+                    <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-1 block">Jewelry Name (EN) 🇺🇸</label>
+                    <input type="text" name="nama_produk_en" id="edit-nama-en" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Harga (Rp)</label>
+                        <input type="number" name="harga" id="edit-harga" min="0" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Kategori</label>
+                        <select name="kategori" id="edit-kategori" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                            <?php mysqli_data_seek($kategori_list, 0); while ($kat = mysqli_fetch_assoc($kategori_list)): ?>
+                                <option value="<?= htmlspecialchars($kat['slug']) ?>"><?= htmlspecialchars($kat['nama_kategori']) ?></option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Ganti Foto (opsional)</label>
+                    <input type="file" name="gambar" accept="image/*" class="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/5 file:text-aurelis-gold hover:file:bg-white/10 cursor-pointer">
+                    <p class="text-[9px] text-gray-500 italic mt-1">Biarkan kosong jika tidak ingin mengganti gambar.</p>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-3 rounded-xl uppercase tracking-widest text-[10px] mt-2">
+                    Update Perubahan
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
         function toggleModal(id) {
             const modal = document.getElementById(id);
-            modal.classList.toggle('hidden');
+            if (modal) modal.classList.toggle('hidden');
         }
+
+        function showModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove('hidden');
+        }
+
+        function setFieldValue(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.value = value ?? '';
+        }
+
+        function setKategoriValue(slug) {
+            const select = document.getElementById('edit-kategori');
+            if (!select) return;
+            const normalized = (slug || '').toLowerCase();
+            let matched = false;
+            for (const option of select.options) {
+                if (option.value.toLowerCase() === normalized) {
+                    option.selected = true;
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched && select.options.length > 0) {
+                select.selectedIndex = 0;
+            }
+        }
+
+        function openEditJewelry(data) {
+            setFieldValue('edit-id', data.id);
+            setFieldValue('edit-nama', data.nama_produk);
+            setFieldValue('edit-nama-en', data.nama_produk_en);
+            setFieldValue('edit-harga', data.harga);
+            setKategoriValue(data.kategori);
+            showModal('modal-edit');
+        }
+
+        document.querySelectorAll('.btn-edit-jewelry').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                try {
+                    const data = JSON.parse(btn.dataset.edit || '{}');
+                    openEditJewelry(data);
+                } catch (err) {
+                    console.error('Gagal membuka form edit:', err);
+                    alert('Gagal membuka form edit. Muat ulang halaman lalu coba lagi.');
+                }
+            });
+        });
+
+        const sidebar = document.getElementById('sidebar-main');
+        const overlay = document.getElementById('sidebar-overlay');
+        const openBtn = document.getElementById('open-sidebar');
+        const closeBtn = document.getElementById('close-sidebar');
+
+        function toggleSidebar() {
+            if (sidebar) sidebar.classList.toggle('-translate-x-full');
+            if (overlay) overlay.classList.toggle('hidden');
+        }
+        if (openBtn) openBtn.addEventListener('click', toggleSidebar);
+        if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
+        if (overlay) overlay.addEventListener('click', toggleSidebar);
     </script>
 </body>
 

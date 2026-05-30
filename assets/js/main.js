@@ -1,27 +1,35 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // --- LOGIKA SLIDER (Sudah Oke) ---
   const titleEl = document.getElementById("dynamic-title");
   const subtitleEl = document.getElementById("dynamic-subtitle");
-  const slides = window.dataSlides;
-  let currentIndex = 0;
+  const slides = Array.isArray(window.dataSlides) ? window.dataSlides : [];
 
-  if (slides && slides.length > 1) {
-    setInterval(() => {
-      titleEl.classList.remove("animate__fadeInUp");
-      titleEl.classList.add("animate__fadeOutDown");
-      subtitleEl.classList.remove("animate__fadeInUp");
-      subtitleEl.classList.add("animate__fadeOutDown");
-
-      setTimeout(() => {
-        currentIndex = (currentIndex + 1) % slides.length;
-        titleEl.textContent = slides[currentIndex].judul;
-        subtitleEl.textContent = slides[currentIndex].subjudul;
-
-        titleEl.classList.remove("animate__fadeOutDown");
-        titleEl.classList.add("animate__fadeInUp");
-        subtitleEl.classList.remove("animate__fadeOutDown");
-        subtitleEl.classList.add("animate__fadeInUp");
-      }, 600);
-    }, 5000);
+  if (!titleEl || !subtitleEl || slides.length <= 1) {
+    return;
   }
+
+  let currentIndex = 0;
+  const intervalMs = 5000;
+  const fadeMs = 600;
+
+  const swapText = () => {
+    titleEl.classList.remove("animate__fadeInUp");
+    titleEl.classList.add("animate__fadeOutDown");
+    subtitleEl.classList.remove("animate__fadeInUp");
+    subtitleEl.classList.add("animate__fadeOutDown");
+
+    setTimeout(() => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      const slide = slides[currentIndex] || {};
+
+      titleEl.textContent = slide.judul || "";
+      subtitleEl.textContent = slide.subjudul || "";
+
+      titleEl.classList.remove("animate__fadeOutDown");
+      titleEl.classList.add("animate__fadeInUp");
+      subtitleEl.classList.remove("animate__fadeOutDown");
+      subtitleEl.classList.add("animate__fadeInUp");
+    }, fadeMs);
+  };
+
+  setInterval(swapText, intervalMs);
 });
