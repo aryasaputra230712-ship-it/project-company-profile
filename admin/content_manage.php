@@ -115,7 +115,7 @@ if ($tab == 'motto') {
 
         <header class="mb-8">
             <h1 class="text-xl md:text-3xl font-serif-lux text-white mb-1 tracking-wide">Website Content Manager</h1>
-            <p class="text-gray-500 text-[10px] md:text-xs tracking-wide">Update narasi eksklusif [Aurelis Jewelry].</p>
+            <p class="text-gray-500 text-[10px] md:text-xs tracking-wide">Update luxury brand narratives and localized profiles.</p>
         </header>
 
         <?php if (isset($_SESSION['sukses'])): ?>
@@ -143,12 +143,12 @@ if ($tab == 'motto') {
                     <div class="w-10 h-10 bg-aurelis-gold/10 border border-aurelis-gold/20 rounded-xl flex items-center justify-center text-aurelis-gold">
                         <i class="fa-solid fa-<?= $tabs_list[$tab] ?>"></i>
                     </div>
-                    <h2 class="text-xs md:text-base text-white font-bold uppercase tracking-widest">Konfigurasi <?= str_replace('_', ' ', $tab) ?></h2>
+                    <h2 class="text-xs md:text-base text-white font-bold uppercase tracking-widest">Configuration Panel: <?= str_replace('_', ' ', $tab) ?></h2>
                 </div>
 
                 <?php if (in_array($tab, ['motto', 'why_us', 'masterpieces'])): ?>
                     <button class="bg-white/5 border border-white/10 px-3 py-2 rounded-lg text-[9px] font-bold text-aurelis-gold hover:bg-aurelis-gold hover:text-aurelis-dark transition uppercase">
-                        + Tambah Item
+                        + Add Item
                     </button>
                 <?php endif; ?>
             </div>
@@ -160,19 +160,19 @@ if ($tab == 'motto') {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Judul Utama (ID) 🇮🇩</label>
-                            <input type="text" name="hero_judul_id" value="<?= htmlspecialchars($home_data['hero_judul_id'] ?? '') ?>" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                            <input type="text" name="hero_judul_id" value="<?= htmlspecialchars($home_data['hero_judul_id'] ?? '') ?>" placeholder="Masukkan judul utama dalam Bahasa Indonesia..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Judul Utama (EN) 🇺🇸</label>
-                            <input type="text" name="hero_judul_en" value="<?= htmlspecialchars($home_data['hero_judul_en'] ?? '') ?>" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Main Title (EN) 🇺🇸</label>
+                            <input type="text" name="hero_judul_en" value="<?= htmlspecialchars($home_data['hero_judul_en'] ?? '') ?>" placeholder="Enter main title in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
                         </div>
                         <div class="md:col-span-1">
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Isi Deskripsi / Sub-judul (ID) 🇮🇩</label>
-                            <textarea name="hero_sub_id" rows="5" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['hero_sub_id'] ?? '') ?></textarea>
+                            <textarea name="hero_sub_id" rows="5" placeholder="Masukkan narasi sub-judul dalam Bahasa Indonesia..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['hero_sub_id'] ?? '') ?></textarea>
                         </div>
                         <div class="md:col-span-1">
-                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Isi Deskripsi / Sub-judul (EN) 🇺🇸</label>
-                            <textarea name="hero_sub_en" rows="5" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['hero_sub_en'] ?? '') ?></textarea>
+                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Sub-headline / Description (EN) 🇺🇸</label>
+                            <textarea name="hero_sub_en" rows="5" placeholder="Enter sub-headline text in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['hero_sub_en'] ?? '') ?></textarea>
                         </div>
 
                         <div class="md:col-span-2 border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
@@ -188,19 +188,19 @@ if ($tab == 'motto') {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Judul About (ID) 🇮🇩</label>
-                            <input type="text" name="about_judul_id" value="<?= htmlspecialchars($home_data['about_judul_id'] ?? '') ?>" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                            <input type="text" name="about_judul_id" value="<?= htmlspecialchars($home_data['about_judul_id'] ?? '') ?>" placeholder="Masukkan judul tentang kami..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Judul About (EN) 🇺🇸</label>
-                            <input type="text" name="about_judul_en" value="<?= htmlspecialchars($home_data['about_judul_en'] ?? '') ?>" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">About Section Title (EN) 🇺🇸</label>
+                            <input type="text" name="about_judul_en" value="<?= htmlspecialchars($home_data['about_judul_en'] ?? '') ?>" placeholder="Enter about section title in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
                         </div>
                         <div>
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Isi Deskripsi About (ID) 🇮🇩</label>
-                            <textarea name="about_deskripsi_id" rows="5" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['about_deskripsi_id'] ?? '') ?></textarea>
+                            <textarea name="about_deskripsi_id" rows="5" placeholder="Masukkan paragraf tentang kami..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['about_deskripsi_id'] ?? '') ?></textarea>
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Isi Deskripsi About (EN) 🇺🇸</label>
-                            <textarea name="about_deskripsi_en" rows="5" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['about_deskripsi_en'] ?? '') ?></textarea>
+                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">About Narrative Story (EN) 🇺sky</label>
+                            <textarea name="about_deskripsi_en" rows="5" placeholder="Enter about section story in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['about_deskripsi_en'] ?? '') ?></textarea>
                         </div>
 
                         <div class="md:col-span-2 border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
@@ -217,16 +217,16 @@ if ($tab == 'motto') {
                 <?php elseif ($tab == 'founder'): ?>
                     <div class="mb-4">
                         <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Nama Lengkap Founder</label>
-                        <input type="text" name="founder_nama" value="<?= htmlspecialchars($home_data['founder_nama'] ?? '') ?>" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                        <input type="text" name="founder_nama" value="<?= htmlspecialchars($home_data['founder_nama'] ?? '') ?>" placeholder="Contoh: Astutik" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Biografi Founder (ID) 🇮🇩</label>
-                            <textarea name="founder_bio_id" rows="6" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['founder_bio_id'] ?? '') ?></textarea>
+                            <textarea name="founder_bio_id" rows="6" placeholder="Masukkan biografi lengkap founder dalam Bahasa Indonesia..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['founder_bio_id'] ?? '') ?></textarea>
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Biografi Founder (EN) 🇺🇸</label>
-                            <textarea name="founder_bio_en" rows="6" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['founder_bio_en'] ?? '') ?></textarea>
+                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Founder Biography (EN) 🇺🇸</label>
+                            <textarea name="founder_bio_en" rows="6" placeholder="Enter complete founder biography in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['founder_bio_en'] ?? '') ?></textarea>
                         </div>
                     </div>
 
@@ -245,19 +245,19 @@ if ($tab == 'motto') {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Judul Sejarah (ID) 🇮🇩</label>
-                            <input type="text" name="sejarah_judul_id" value="<?= htmlspecialchars($home_data['sejarah_judul_id'] ?? '') ?>" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                            <input type="text" name="sejarah_judul_id" value="<?= htmlspecialchars($home_data['sejarah_judul_id'] ?? '') ?>" placeholder="Masukkan judul linimasa sejarah..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Judul Sejarah (EN) 🇺🇸</label>
-                            <input type="text" name="sejarah_judul_en" value="<?= htmlspecialchars($home_data['sejarah_judul_en'] ?? '') ?>" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">History Title (EN) 🇺🇸</label>
+                            <input type="text" name="sejarah_judul_en" value="<?= htmlspecialchars($home_data['sejarah_judul_en'] ?? '') ?>" placeholder="Enter historical timeline title in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
                         </div>
                         <div>
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Narasi Cerita Sejarah (ID) 🇮🇩</label>
-                            <textarea name="sejarah_konten_id" rows="6" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['sejarah_konten_id'] ?? '') ?></textarea>
+                            <textarea name="sejarah_konten_id" rows="6" placeholder="Masukkan cerita perkembangan perjalanan bisnis dalam Bahasa Indonesia..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['sejarah_konten_id'] ?? '') ?></textarea>
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Narasi Cerita Sejarah (EN) 🇺🇸</label>
-                            <textarea name="sejarah_konten_en" rows="6" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['sejarah_konten_en'] ?? '') ?></textarea>
+                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Historical Narrative Story (EN) 🇺🇸</label>
+                            <textarea name="sejarah_konten_en" rows="6" placeholder="Enter historical narrative storyline in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['sejarah_konten_en'] ?? '') ?></textarea>
                         </div>
 
                         <div class="md:col-span-2 border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
@@ -275,16 +275,16 @@ if ($tab == 'motto') {
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Kutipan Emas (ID) 🇮🇩</label>
-                            <textarea name="kutipan_id" rows="4" class="w-full bg-aurelis-input border border-white/5 rounded-2xl px-5 py-4 text-sm font-serif-lux italic text-aurelis-gold focus:border-aurelis-gold/50 outline-none"><?= htmlspecialchars($home_data['kutipan_id'] ?? '') ?></textarea>
+                            <textarea name="kutipan_id" rows="4" placeholder="Masukkan kalimat kutipan inspiratif dalam Bahasa Indonesia..." class="w-full bg-aurelis-input border border-white/5 rounded-2xl px-5 py-4 text-sm font-serif-lux italic text-aurelis-gold focus:border-aurelis-gold/50 outline-none"><?= htmlspecialchars($home_data['kutipan_id'] ?? '') ?></textarea>
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Kutipan Emas (EN) 🇺🇸</label>
-                            <textarea name="kutipan_en" rows="4" class="w-full bg-aurelis-input border border-white/5 rounded-2xl px-5 py-4 text-sm font-serif-lux italic text-aurelis-gold focus:border-aurelis-gold/50 outline-none"><?= htmlspecialchars($home_data['kutipan_en'] ?? '') ?></textarea>
+                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Golden Philosophy Quote (EN) 🇺🇸</label>
+                            <textarea name="kutipan_en" rows="4" placeholder="Enter inspirational philosophy quote statement in English..." class="w-full bg-aurelis-input border border-white/5 rounded-2xl px-5 py-4 text-sm font-serif-lux italic text-aurelis-gold focus:border-aurelis-gold/50 outline-none"><?= htmlspecialchars($home_data['kutipan_en'] ?? '') ?></textarea>
                         </div>
                     </div>
                     <div class="mt-4">
                         <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Link Video Utama (YouTube Embed/Jalur Video)</label>
-                        <input type="text" name="video_url" value="<?= htmlspecialchars($home_data['video_url'] ?? '') ?>" placeholder="Masukkan link video..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-5 py-3 text-xs text-white tracking-wide outline-none focus:border-aurelis-gold/50">
+                        <input type="text" name="video_url" value="<?= htmlspecialchars($home_data['video_url'] ?? '') ?>" placeholder="Contoh: https://www.youtube.com/embed/..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-5 py-3 text-xs text-white tracking-wide outline-none focus:border-aurelis-gold/50">
                     </div>
 
                 <?php elseif ($tab == 'motto' || $tab == 'why_us'): ?>
@@ -298,23 +298,23 @@ if ($tab == 'motto') {
                                     <div class="flex-1 min-w-0">
                                         <h4 class="font-bold text-white text-[12px] mb-1.5 uppercase tracking-wider truncate">
                                             <span class="text-gray-500 mr-1 text-[10px]">🇮🇩</span> <?= htmlspecialchars($row['judul']) ?>
-                                            <span class="text-aurelis-gold font-normal lowercase ml-2">
-                                                / <span class="text-gray-600 mr-0.5 text-[10px]">🇺🇸</span> <?= htmlspecialchars($row['judul_en'] ?? 'Belum ada terjemahan') ?>
+                                            <span class="text-aurelis-gold font-normal ml-2 font-mono text-[11px]">
+                                                / <span class="text-gray-600 mr-0.5 text-[10px]">🇺🇸</span> <?= htmlspecialchars($row['judul_en'] ?? '[No translation available]') ?>
                                             </span>
                                         </h4>
                                         <p class="text-[10px] text-gray-400 leading-relaxed mb-4 space-y-1">
-                                            <span class="block"><strong class="text-gray-600">ID:</strong> <?= htmlspecialchars($row['deskripsi']) ?></span>
-                                            <span class="block"><strong class="text-aurelis-gold/60">EN:</strong> <?= htmlspecialchars($row['deskripsi_en'] ?? '-') ?></span>
+                                            <span class="block"><strong class="text-gray-600 font-mono">ID:</strong> <?= htmlspecialchars($row['deskripsi']) ?></span>
+                                            <span class="block"><strong class="text-aurelis-gold/60 font-mono">EN:</strong> <?= htmlspecialchars($row['deskripsi_en'] ?? '-') ?></span>
                                         </p>
                                         <div class="flex gap-2">
                                             <button type="button" class="text-[8px] font-bold bg-white/5 px-4 py-2 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300">Edit</button>
-                                            <button type="button" class="text-[8px] font-bold bg-red-500/10 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">Hapus</button>
+                                            <button type="button" class="text-[8px] font-bold bg-red-500/10 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">Delete</button>
                                         </div>
                                     </div>
                                 </div>
                             <?php endwhile; ?>
                         <?php else: ?>
-                            <p class="text-xs text-gray-500 italic p-4">Belum ada data di bagian ini.</p>
+                            <p class="text-xs text-gray-500 italic p-4">No records found in this section.</p>
                         <?php endif; ?>
                     </div>
 
@@ -325,14 +325,14 @@ if ($tab == 'motto') {
                                 <div class="bg-white/[0.02] border border-white/5 p-4 rounded-2xl group hover:border-aurelis-gold/20 transition flex flex-col justify-between duration-300">
                                     <div>
                                         <div class="aspect-[3/4] rounded-xl overflow-hidden bg-gray-900 mb-4 border border-white/5">
-                                            <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($row['gambar']) ?>" alt="Produk" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                            <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($row['gambar']) ?>" alt="Product Collection" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                                         </div>
                                         <div class="space-y-1.5 px-1">
                                             <h4 class="font-bold text-white text-xs uppercase tracking-wide truncate">
                                                 <span class="text-gray-500 mr-1 text-[10px]">🇮🇩</span><?= htmlspecialchars($row['nama_produk']) ?>
                                             </h4>
                                             <h5 class="text-aurelis-gold text-[10px] tracking-wide truncate italic flex items-center">
-                                                <span class="text-gray-600 mr-1 text-[9px] not-italic">🇺🇸</span><?= htmlspecialchars($row['nama_produk_en'] ?? 'No translation yet') ?>
+                                                <span class="text-gray-600 mr-1 text-[9px] not-italic">🇺🇸</span><?= htmlspecialchars($row['nama_produk_en'] ?? '[No English name available]') ?>
                                             </h5>
                                         </div>
                                     </div>
@@ -344,7 +344,7 @@ if ($tab == 'motto') {
                             <?php endwhile; ?>
                         <?php else: ?>
                             <div class="col-span-full py-10 text-center">
-                                <p class="text-xs text-gray-500 italic">Belum ada item masterpieces yang ditambahkan.</p>
+                                <p class="text-xs text-gray-500 italic">No historical masterpiece products added yet.</p>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -353,7 +353,7 @@ if ($tab == 'motto') {
                 <?php if (in_array($tab, ['hero', 'about', 'founder', 'history', 'quotes'])): ?>
                     <div class="mt-8">
                         <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-4 rounded-xl shadow-xl hover:brightness-110 transition uppercase tracking-widest text-[10px]">
-                            <i class="fa-solid fa-floppy-disk mr-2"></i> Update Konten Dual-Bahasa
+                            <i class="fa-solid fa-floppy-disk mr-2"></i> Save Bilingual Content Changes
                         </button>
                     </div>
                 <?php endif; ?>

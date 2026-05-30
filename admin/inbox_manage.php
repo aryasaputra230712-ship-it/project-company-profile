@@ -5,7 +5,7 @@ if (!defined('ROOTPATH')) {
     define('ROOTPATH', dirname(__DIR__));
 }
 
-// Logika Base URL
+// Base URL Logic
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
 $host = $_SERVER['HTTP_HOST'];
 $script_name = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
@@ -23,20 +23,25 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // ==========================================
-// LOGIKA PAGINASI DATA PESAN MASUK
+// PAGINATION LOGIC
 // ==========================================
-$limit = 5; // Batasi 5 pesan per halaman agar rapi
+$limit = 5;
 $page  = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($page < 1) $page = 1;
 $offset = ($page - 1) * $limit;
 
-// Ambil total seluruh pesan masuk
-$total_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM pesan_masuk");
-$total_data  = mysqli_fetch_assoc($total_query)['total'] ?? 0;
-$total_pages = ceil($total_data / $limit);
+$total_data  = 0;
+$total_pages = 0;
+$res_inbox   = false;
 
-// Query ambil data pesan, urutkan dari yang paling baru masuk (DESC)
-$res_inbox = mysqli_query($conn, "SELECT * FROM pesan_masuk ORDER BY id DESC LIMIT $offset, $limit");
+$check_table = mysqli_query($conn, "SHOW TABLES LIKE 'pesan_masuk'");
+if (mysqli_num_rows($check_table) > 0) {
+    $total_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM pesan_masuk");
+    $total_data  = mysqli_fetch_assoc($total_query)['total'] ?? 0;
+    $total_pages = ceil($total_data / $limit);
+
+    $res_inbox = mysqli_query($conn, "SELECT * FROM pesan_masuk ORDER BY id DESC LIMIT $offset, $limit");
+}
 
 include "layouts/sidebar.php";
 ?>
@@ -53,10 +58,10 @@ include "layouts/sidebar.php";
     <header class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
             <h1 class="text-xl md:text-3xl font-serif-lux text-white mb-1 tracking-wide">Customer Messages</h1>
-            <p class="text-gray-500 text-[10px] md:text-xs tracking-wide">Manajemen pesan masuk, kritik, saran, dan pengajuan kolaborasi customer [Aurelis Jewelry].</p>
+            <p class="text-gray-500 text-[10px] md:text-xs tracking-wide">Manage incoming inquiries, feedback, suggestions, and collaboration requests from Aurelis Jewelry clients.</p>
         </div>
         <div class="bg-white/5 border border-white/5 rounded-xl px-4 py-2 text-xs font-mono text-gray-400">
-            Total: <span class="text-aurelis-gold font-bold"><?= $total_data; ?></span> Pesan
+            Total: <span class="text-aurelis-gold font-bold"><?= $total_data; ?></span> Messages
         </div>
     </header>
 
@@ -78,14 +83,13 @@ include "layouts/sidebar.php";
             <div class="w-8 h-8 bg-aurelis-gold/10 border border-aurelis-gold/20 rounded-lg flex items-center justify-center text-aurelis-gold">
                 <i class="fa-solid fa-envelope-open text-xs"></i>
             </div>
-            <h3 class="text-xs md:text-sm font-bold uppercase tracking-wider text-white">Kotak Masuk</h3>
+            <h3 class="text-xs md:text-sm font-bold uppercase tracking-wider text-white">Inbox</h3>
         </div>
 
         <div class="space-y-4">
-            <?php if (mysqli_num_rows($res_inbox) > 0): ?>
+            <?php if ($res_inbox && mysqli_num_rows($res_inbox) > 0): ?>
                 <?php while ($row = mysqli_fetch_assoc($res_inbox)):
-                    // Format tanggal agar lebih elegan
-                    $tanggal_formatted = date('d M Y | H:i', strtotime($row['tanggal'] ?? $row['created_at'] ?? 'now'));
+                    $tanggal_formatted = date('d M Y | H:i', strtotime($row['tanggal']));
                 ?>
                     <div class="bg-[#161925]/40 border border-white/5 p-5 rounded-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-4 group hover:border-aurelis-gold/20 transition duration-300">
                         <div class="flex-1 min-w-0 space-y-1.5">
@@ -94,17 +98,17 @@ include "layouts/sidebar.php";
                                 <span class="text-[9px] bg-white/5 text-gray-500 border border-white/10 px-2.5 py-0.5 rounded-full font-mono"><?= $tanggal_formatted; ?></span>
                             </div>
                             <p class="text-xs text-aurelis-gold font-mono truncate"><?= htmlspecialchars($row['email']) ?></p>
-                            <p class="text-xs text-gray-400 line-clamp-1 leading-relaxed pt-1"><strong class="text-gray-500">Subjek:</strong> <?= htmlspecialchars($row['subjek'] ?? 'No Subject') ?> — <?= htmlspecialchars($row['pesan']) ?></p>
+                            <p class="text-xs text-gray-400 line-clamp-1 leading-relaxed pt-1"><strong class="text-gray-500">Subject:</strong> <?= htmlspecialchars($row['subjek'] ?? 'No Subject') ?> — <?= htmlspecialchars($row['pesan']) ?></p>
                         </div>
 
                         <div class="flex items-center gap-2 w-full md:w-auto shrink-0 border-t border-white/5 md:border-0 pt-3 md:pt-0">
                             <button type="button"
                                 onclick="openMessageModal('<?= htmlspecialchars($row['nama'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['email'], ENT_QUOTES) ?>', '<?= htmlspecialchars($row['subjek'] ?? 'No Subject', ENT_QUOTES) ?>', '<?= htmlspecialchars(json_encode($row['pesan']), ENT_QUOTES) ?>', '<?= $tanggal_formatted; ?>')"
                                 class="flex-1 md:flex-none text-center text-[9px] font-bold bg-white/5 px-4 py-2.5 rounded-lg text-gray-300 hover:bg-aurelis-gold hover:text-aurelis-dark uppercase tracking-wider transition duration-300">
-                                <i class="fa-solid fa-envelope-open-text mr-1"></i> Baca Pesan
+                                <i class="fa-solid fa-envelope-open-text mr-1"></i> Read Message
                             </button>
                             <a href="process/process_inbox.php?action=hapus&id=<?= $row['id'] ?>"
-                                onclick="return confirm('Apakah Anda yakin ingin menghapus pesan dari <?= htmlspecialchars($row['nama']) ?>?')"
+                                onclick="return confirm('Are you sure you want to permanently delete the message from <?= htmlspecialchars($row['nama']) ?>?')"
                                 class="text-center text-[9px] font-bold bg-red-500/10 text-red-400 p-2.5 rounded-lg hover:bg-red-500 hover:text-white transition duration-300">
                                 <i class="fa-regular fa-trash-can text-xs"></i>
                             </a>
@@ -113,7 +117,7 @@ include "layouts/sidebar.php";
                 <?php endwhile; ?>
             <?php else: ?>
                 <div class="text-center text-gray-500 py-16 bg-[#161925]/20 border border-white/5 border-dashed rounded-2xl italic text-xs tracking-wider uppercase">
-                    <i class="fa-solid fa-mailbox text-2xl text-gray-600 block mb-3 not-italic"></i> Kotak masuk Anda masih kosong.
+                    <i class="fa-solid fa-mailbox text-2xl text-gray-600 block mb-3 not-italic"></i> Your inbox is currently empty.
                 </div>
             <?php endif; ?>
         </div>
@@ -121,7 +125,7 @@ include "layouts/sidebar.php";
         <?php if ($total_pages > 1): ?>
             <div class="mt-10 flex justify-center items-center gap-2 font-mono text-xs border-t border-white/5 pt-6">
                 <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <a href="inbox_manage.php?page=<?= $i ?>" class="w-9 h-9 flex items-center justify-center rounded-lg transition font-bold <?= $page == $i ? 'bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark shadow-md shadow-aurelis-gold/10' : 'bg-white/5 text-gray-400 hover:text-white hover:bg-white/10' ?>"><?= $i ?></a>
+                    <a href="inbox_manage.php?page=<?= $i ?>" class="w-9 h-9 flex items-center justify-center rounded-lg transition font-bold <?= $page == $i ? 'bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark shadow-md' : 'bg-white/5 text-gray-400 hover:text-white' ?>"><?= $i ?></a>
                 <?php endfor; ?>
             </div>
         <?php endif; ?>
@@ -132,30 +136,26 @@ include "layouts/sidebar.php";
     <div class="bg-[#0c0e17] border border-white/10 p-6 md:p-8 rounded-[1.5rem] max-w-xl w-full shadow-2xl relative space-y-4">
         <div class="flex justify-between items-start border-b border-white/5 pb-4">
             <div>
-                <h3 id="modal-nama" class="text-base font-bold text-white uppercase tracking-wide">Nama Pengirim</h3>
-                <p id="modal-email" class="text-xs text-aurelis-gold font-mono mt-0.5">email@customer.com</p>
+                <h3 id="modal-nama" class="text-base font-bold text-white uppercase tracking-wide">Sender Name</h3>
+                <p id="modal-email" class="text-xs text-aurelis-gold font-mono mt-0.5">client@email.com</p>
             </div>
-            <span id="modal-tanggal" class="text-[9px] text-gray-500 font-mono bg-white/5 px-2.5 py-1 rounded-full">Tanggal</span>
+            <span id="modal-tanggal" class="text-[9px] text-gray-500 font-mono bg-white/5 px-2.5 py-1 rounded-full">Date</span>
         </div>
-
         <div class="space-y-1">
-            <span class="text-[9px] font-bold text-gray-500 tracking-widest uppercase block">Subjek Pesan:</span>
-            <p id="modal-subjek" class="text-xs text-white font-semibold tracking-wide bg-white/5 p-3 rounded-lg border border-white/5">Subjek</p>
+            <span class="text-[9px] font-bold text-gray-500 tracking-widest uppercase block">Subject:</span>
+            <p id="modal-subjek" class="text-xs text-white font-semibold tracking-wide bg-white/5 p-3 rounded-lg border border-white/5">Subject Text</p>
         </div>
-
         <div class="space-y-1">
-            <span class="text-[9px] font-bold text-gray-500 tracking-widest uppercase block">Isi Pesan Lengkap:</span>
-            <div id="modal-pesan" class="text-xs text-gray-300 leading-relaxed bg-[#161925] border border-white/5 p-4 rounded-xl max-h-48 overflow-y-auto whitespace-pre-wrap">Isi pesan...</div>
+            <span class="text-[9px] font-bold text-gray-500 tracking-widest uppercase block">Message Content:</span>
+            <div id="modal-pesan" class="text-xs text-gray-300 leading-relaxed bg-[#161925] border border-white/5 p-4 rounded-xl max-h-48 overflow-y-auto whitespace-pre-wrap">Message body...</div>
         </div>
-
         <div class="pt-2 flex justify-end">
-            <button type="button" onclick="closeMessageModal()" class="bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold px-6 py-2.5 rounded-lg text-[10px] uppercase tracking-wider transition">Tutup Detail</button>
+            <button type="button" onclick="closeMessageModal()" class="bg-white/5 border border-white/10 hover:bg-white/10 text-white font-bold px-6 py-2.5 rounded-lg text-[10px] uppercase tracking-wider transition">Close Details</button>
         </div>
     </div>
 </div>
 
 <script>
-    // 1. Script Responsive Toggle Sidebar Mobile
     const sidebar = document.getElementById('sidebar-main');
     const overlay = document.getElementById('sidebar-overlay');
     const openBtn = document.getElementById('open-sidebar');
@@ -169,7 +169,6 @@ include "layouts/sidebar.php";
     if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
     if (overlay) overlay.addEventListener('click', toggleSidebar);
 
-    // 2. Script Buka & Tutup Modal Inbox
     const modal = document.getElementById('message-modal');
 
     function openMessageModal(nama, email, subjek, pesanJson, tanggal) {
@@ -177,18 +176,13 @@ include "layouts/sidebar.php";
         document.getElementById('modal-email').innerText = email;
         document.getElementById('modal-subjek').innerText = subjek;
         document.getElementById('modal-tanggal').innerText = tanggal;
-
-        // Parse JSON string agar karakter line-break (\n) bekerja dengan normal
         document.getElementById('modal-pesan').innerText = JSON.parse(pesanJson);
-
         modal.classList.remove('hidden');
     }
 
     function closeMessageModal() {
         modal.classList.add('hidden');
     }
-
-    // Tutup modal otomatis jika user klik area luar kotak hitam modal
     window.onclick = function(event) {
         if (event.target == modal) {
             closeMessageModal();
