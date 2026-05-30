@@ -34,9 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
-    // Langkah Awal: Simpan ke tabel database (Tabel sudah dibuat & aman)
-    $sql = "INSERT INTO pesan_kontak (nama, email, subjek, pesan, tanggal, status) 
-            VALUES ('$nama', '$email', '$subjek', '$pesan', NOW(), 'belum_dibaca')";
+    // Nama tabel disesuaikan ke 'pesan_masuk' & kolom disamakan dengan phpMyAdmin
+    $sql = "INSERT INTO pesan_masuk (nama, email, subjek, pesan, tanggal) 
+            VALUES ('$nama', '$email', '$subjek', '$pesan', NOW())";
     mysqli_query($conn, $sql);
 
     // Langkah Kedua: Konfigurasi Kirim Email Menggunakan PHPMailer

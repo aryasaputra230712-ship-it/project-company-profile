@@ -26,6 +26,16 @@ $tab = isset($_GET['tab']) ? $_GET['tab'] : 'hero';
 $home_query = mysqli_query($conn, "SELECT * FROM konten_homepage WHERE id = 1 LIMIT 1");
 $home_data  = mysqli_fetch_assoc($home_query);
 
+// ➕ QUERY TAMBAHAN: Ambil data asset gambar aktif untuk penunjang kotak preview
+$about_query = mysqli_query($conn, "SELECT gambar FROM slide_tentang WHERE status = 'aktif' LIMIT 1");
+$about_data  = mysqli_fetch_assoc($about_query);
+
+$founder_query = mysqli_query($conn, "SELECT gambar FROM founder_utama WHERE status = 'aktif' LIMIT 1");
+$founder_data  = mysqli_fetch_assoc($founder_query);
+
+$history_query = mysqli_query($conn, "SELECT gambar FROM sejarah_utama WHERE status = 'aktif' LIMIT 1");
+$history_data  = mysqli_fetch_assoc($history_query);
+
 // Logika pembagian query untuk data berkelompok (Multiple Rows)
 if ($tab == 'motto') {
     $items = mysqli_query($conn, "SELECT * FROM motto_utama ORDER BY nomor ASC");
@@ -143,7 +153,7 @@ if ($tab == 'motto') {
                 <?php endif; ?>
             </div>
 
-            <form action="process/process_update_content.php" method="POST" class="space-y-6">
+            <form action="process/process_update_content.php" method="POST" enctype="multipart/form-data" class="space-y-6">
                 <input type="hidden" name="tab_name" value="<?= $tab ?>">
 
                 <?php if ($tab == 'hero'): ?>
@@ -163,6 +173,14 @@ if ($tab == 'motto') {
                         <div class="md:col-span-1">
                             <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Isi Deskripsi / Sub-judul (EN) 🇺🇸</label>
                             <textarea name="hero_sub_en" rows="5" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['hero_sub_en'] ?? '') ?></textarea>
+                        </div>
+
+                        <div class="md:col-span-2 border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
+                            <div class="flex-1 w-full">
+                                <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Ganti Background Video (.mp4)</label>
+                                <input type="file" name="video_file" accept="video/mp4" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gradient-to-r file:from-aurelis-gold file:to-[#bfa37e] file:text-aurelis-dark hover:file:opacity-90 cursor-pointer">
+                                <p class="text-[11px] text-gray-500 mt-2 font-mono">Video Aktif: <?= htmlspecialchars($home_data['video_url'] ?? 'default.mp4') ?></p>
+                            </div>
                         </div>
                     </div>
 
@@ -184,6 +202,16 @@ if ($tab == 'motto') {
                             <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Isi Deskripsi About (EN) 🇺🇸</label>
                             <textarea name="about_deskripsi_en" rows="5" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['about_deskripsi_en'] ?? '') ?></textarea>
                         </div>
+
+                        <div class="md:col-span-2 border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
+                            <div class="mx-auto md:mx-0 shrink-0">
+                                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($about_data['gambar'] ?? 'default.jpg') ?>" class="w-32 h-24 object-cover rounded-xl border border-white/10 shadow-lg" alt="Current About">
+                            </div>
+                            <div class="flex-1 w-full">
+                                <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Ganti Gambar About</label>
+                                <input type="file" name="about_gambar" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gradient-to-r file:from-aurelis-gold file:to-[#bfa37e] file:text-aurelis-dark hover:file:opacity-90 cursor-pointer">
+                            </div>
+                        </div>
                     </div>
 
                 <?php elseif ($tab == 'founder'): ?>
@@ -199,6 +227,17 @@ if ($tab == 'motto') {
                         <div>
                             <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Biografi Founder (EN) 🇺🇸</label>
                             <textarea name="founder_bio_en" rows="6" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['founder_bio_en'] ?? '') ?></textarea>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5 mt-6">
+                        <div class="mx-auto md:mx-0 shrink-0">
+                            <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($founder_data['gambar'] ?? 'default.jpg') ?>" class="w-24 h-24 object-cover rounded-xl border border-white/10 shadow-lg" alt="Current Founder">
+                        </div>
+                        <div class="flex-1 w-full">
+                            <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Ganti Foto Potret Founder</label>
+                            <input type="file" name="founder_gambar" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gradient-to-r file:from-aurelis-gold file:to-[#bfa37e] file:text-aurelis-dark hover:file:opacity-90 cursor-pointer">
+                            <p class="text-[10px] text-gray-500 mt-2">Disarankan menggunakan aspek rasio potret vertikal (3:4).</p>
                         </div>
                     </div>
 
@@ -219,6 +258,16 @@ if ($tab == 'motto') {
                         <div>
                             <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Narasi Cerita Sejarah (EN) 🇺🇸</label>
                             <textarea name="sejarah_konten_en" rows="6" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['sejarah_konten_en'] ?? '') ?></textarea>
+                        </div>
+
+                        <div class="md:col-span-2 border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
+                            <div class="mx-auto md:mx-0 shrink-0">
+                                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($history_data['gambar'] ?? 'default.jpg') ?>" class="w-32 h-24 object-cover rounded-xl border border-white/10 shadow-lg" alt="Current History">
+                            </div>
+                            <div class="flex-1 w-full">
+                                <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Ganti Gambar Dokumentasi Sejarah</label>
+                                <input type="file" name="history_gambar" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gradient-to-r file:from-aurelis-gold file:to-[#bfa37e] file:text-aurelis-dark hover:file:opacity-90 cursor-pointer">
+                            </div>
                         </div>
                     </div>
 

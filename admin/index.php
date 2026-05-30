@@ -19,24 +19,43 @@ if (!defined('BASE_URL')) {
     define('BASE_URL', $base_url);
 }
 
-// 2. Ambil data dinamis
+// ==========================================
+// 2. DATA DINAMIS DATABASE (REAL-TIME COUNTER)
+// ==========================================
+
+// Counter 1: Total Foto Galeri
 $q_galeri = mysqli_query($conn, "SELECT COUNT(*) as total FROM galeri_utama");
-$r_galeri = mysqli_fetch_assoc($q_galeri);
-$total_galeri = $r_galeri['total'];
+$total_galeri = mysqli_fetch_assoc($q_galeri)['total'];
 
+// Counter 2: Kategori Produk Aktif
 $q_kategori = mysqli_query($conn, "SELECT COUNT(DISTINCT kategori) as total FROM galeri_utama WHERE status = 'aktif'");
-$r_kategori = mysqli_fetch_assoc($q_kategori);
-$total_kategori = $r_kategori['total'];
+$total_kategori = mysqli_fetch_assoc($q_kategori)['total'];
 
+// Counter 3: Keunggulan Utama
 $q_keunggulan = mysqli_query($conn, "SELECT COUNT(*) as total FROM keunggulan_utama WHERE status = 'aktif'");
-$r_keunggulan = mysqli_fetch_assoc($q_keunggulan);
-$total_keunggulan = $r_keunggulan['total'];
+$total_keunggulan = mysqli_fetch_assoc($q_keunggulan)['total'];
 
-$q_slide = mysqli_query($conn, "SELECT COUNT(*) as total FROM slide_tentang WHERE status = 'aktif'");
-$r_slide = mysqli_fetch_assoc($q_slide);
-$total_slide = $r_slide['total'];
+// 🔄 REPLACED: Mengganti Slide About yang tidak berguna dengan Total Pesan Masuk (Inbox)
+// Catatan: Sesuaikan 'pesan_masuk' dengan nama tabel inbox/konten pesan kamu jika berbeda
+$total_pesan = 0;
+$check_inbox_table = mysqli_query($conn, "SHOW TABLES LIKE 'pesan_masuk'");
+if (mysqli_num_rows($check_inbox_table) > 0) {
+    $q_pesan = mysqli_query($conn, "SELECT COUNT(*) as total FROM pesan_masuk");
+    $total_pesan = mysqli_fetch_assoc($q_pesan)['total'];
+} else {
+    $total_pesan = 0; // Fallback aman jika tabel inbox belum kamu buat
+}
 
 $q_produk = mysqli_query($conn, "SELECT * FROM galeri_utama ORDER BY id DESC LIMIT 4");
+
+// ==========================================
+// ⚙️ LOGIKA AMBIL HOST & DB SECARA DINAMIS
+// ==========================================
+$host_dinamis = $_SERVER['HTTP_HOST']; // Mengambil 'localhost' atau 'aurelisjewelry.com' secara otomatis
+
+$db_name_query = mysqli_query($conn, "SELECT DATABASE()");
+$db_name_row = mysqli_fetch_row($db_name_query);
+$db_name_dinamis = $db_name_row[0]; // Mengambil nama database aktif dari file config
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -68,12 +87,10 @@ $q_produk = mysqli_query($conn, "SELECT * FROM galeri_utama ORDER BY id DESC LIM
             background-color: #050816;
             color: #f7f7f7;
             font-family: 'Poppins', sans-serif;
-            /* Font Utama UI */
         }
 
         .font-serif {
             font-family: 'Playfair Display', serif;
-            /* Font Khusus Judul Mewah */
         }
 
         .glass {
@@ -138,10 +155,10 @@ $q_produk = mysqli_query($conn, "SELECT * FROM galeri_utama ORDER BY id DESC LIM
 
             <div class="glass p-6 rounded-[2rem] relative group hover:border-aurelis-gold/30 transition duration-300">
                 <div class="flex justify-between items-start mb-4">
-                    <div class="p-3 bg-aurelis-gold/10 rounded-lg text-aurelis-gold"><i class="fa-solid fa-sliders text-lg"></i></div>
+                    <div class="p-3 bg-aurelis-gold/10 rounded-lg text-aurelis-gold"><i class="fa-solid fa-envelope text-lg"></i></div>
                 </div>
-                <h3 class="text-3xl font-bold text-white"><?= $total_slide; ?></h3>
-                <p class="text-gray-400 text-[10px] uppercase tracking-widest mt-1">Slide 'About' Aktif</p>
+                <h3 class="text-3xl font-bold text-white"><?= $total_pesan; ?></h3>
+                <p class="text-gray-400 text-[10px] uppercase tracking-widest mt-1">Total Pesan Masuk</p>
             </div>
         </div>
 
@@ -174,8 +191,8 @@ $q_produk = mysqli_query($conn, "SELECT * FROM galeri_utama ORDER BY id DESC LIM
                         <p class="text-xs font-semibold text-white uppercase tracking-widest">Database Connected</p>
                     </div>
                     <div class="text-[10px] text-gray-500 space-y-2 pt-4 border-t border-white/5">
-                        <p class="flex justify-between"><span>HOST:</span> <span class="text-gray-300 font-mono">LOCAL/SERVER</span></p>
-                        <p class="flex justify-between"><span>DB:</span> <span class="text-gray-300 font-mono">VIBEWEBS_DB</span></p>
+                        <p class="flex justify-between"><span>HOST:</span> <span class="text-gray-300 font-mono text-right truncate max-w-[180px]"><?= $host_dinamis; ?></span></p>
+                        <p class="flex justify-between"><span>DB:</span> <span class="text-gray-300 font-mono text-right truncate max-w-[180px]"><?= strtoupper($db_name_dinamis); ?></span></p>
                     </div>
                 </div>
             </div>
