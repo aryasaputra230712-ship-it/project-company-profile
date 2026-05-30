@@ -5,6 +5,14 @@ if (!defined('ROOTPATH')) {
 
 include_once ROOTPATH . "/config/config.php";
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$flash_sukses = $_SESSION['sukses'] ?? null;
+$flash_error  = $_SESSION['error'] ?? null;
+unset($_SESSION['sukses'], $_SESSION['error']);
+
 // 1. Logika Base URL
 $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
 $host = $_SERVER['HTTP_HOST'];
@@ -38,6 +46,20 @@ include ROOTPATH . "/layouts/header.php";
 
 <section>
 
+    <?php if ($flash_sukses): ?>
+        <div class="max-w-6xl mx-auto px-6 pt-8">
+            <div class="p-4 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 rounded-xl text-sm">
+                <i class="fa-solid fa-circle-check mr-2"></i><?= htmlspecialchars($flash_sukses) ?>
+            </div>
+        </div>
+    <?php endif; ?>
+    <?php if ($flash_error): ?>
+        <div class="max-w-6xl mx-auto px-6 pt-8">
+            <div class="p-4 bg-red-500/10 border border-red-500/30 text-red-300 rounded-xl text-sm">
+                <i class="fa-solid fa-circle-exclamation mr-2"></i><?= htmlspecialchars($flash_error) ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 text-center max-w-6xl m-auto p-[50px] uppercase gap-10 mb-10 text-white">
         <div>
