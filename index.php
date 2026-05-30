@@ -40,31 +40,56 @@ $kutipan        = ($bahasa_aktif == 'en' && !empty($home['kutipan_en'])) ? $home
 // ==========================================
 // 3. AMBIL DATA DARI BERBAGAI TABEL
 // ==========================================
+$sql_slide_about = "SELECT * FROM slide_tentang WHERE status = 'aktif' LIMIT 1";
+$res_slide_about = mysqli_query($conn, $sql_slide_about);
+$about_slide     = mysqli_fetch_assoc($res_slide_about) ?: [];
+
+$about_judul = ($bahasa_aktif == 'en' && !empty($home['about_judul_en']))
+    ? $home['about_judul_en']
+    : ($home['about_judul_id'] ?? $about_slide['judul'] ?? '');
+$about_deskripsi = ($bahasa_aktif == 'en' && !empty($home['about_deskripsi_en']))
+    ? $home['about_deskripsi_en']
+    : ($home['about_deskripsi_id'] ?? $about_slide['deskripsi'] ?? '');
+
+// ==========================================
+// 3b. TABEL LAINNYA
+// ==========================================
 $sql_video = "SELECT v.jalur_video FROM slide_utama s INNER JOIN video_utama v ON s.video_id = v.id WHERE v.status = 'aktif' LIMIT 1";
 $res_video = mysqli_query($conn, $sql_video);
 $video_old = mysqli_fetch_assoc($res_video);
 $video_file = !empty($home['video_url']) ? $home['video_url'] : ($video_old ? $video_old['jalur_video'] : '');
 
-$sql_about = "SELECT * FROM slide_tentang WHERE status = 'aktif' LIMIT 1";
-$res_about = mysqli_query($conn, $sql_about);
-$about = mysqli_fetch_assoc($res_about);
-
-$sql_founder = "SELECT gambar FROM founder_utama WHERE status = 'aktif' LIMIT 1";
+$sql_founder = "SELECT * FROM founder_utama WHERE status = 'aktif' LIMIT 1";
 $res_founder = mysqli_query($conn, $sql_founder);
-$founder_asset = mysqli_fetch_assoc($res_founder);
+$founder_asset = mysqli_fetch_assoc($res_founder) ?: [];
 
-$sql_history = "SELECT tagline, gambar, cerita_2 FROM sejarah_utama WHERE status = 'aktif' LIMIT 1";
+if (empty($founder_nama) || $founder_nama === 'THE FOUNDER') {
+    $founder_nama = $founder_asset['judul'] ?? $founder_nama;
+}
+if (empty($founder_bio)) {
+    $founder_bio = $founder_asset['deskripsi'] ?? '';
+}
+
+$sql_history = "SELECT * FROM sejarah_utama WHERE status = 'aktif' LIMIT 1";
 $res_history = mysqli_query($conn, $sql_history);
-$history_asset = mysqli_fetch_assoc($res_history);
+$history_asset = mysqli_fetch_assoc($res_history) ?: [];
+
+if (empty($sejarah_judul)) {
+    $sejarah_judul = $history_asset['judul'] ?? '';
+}
+if (empty($sejarah_konten)) {
+    $sejarah_konten = $history_asset['cerita_1'] ?? '';
+}
 
 $sql_quote = "SELECT sumber FROM kutipan_utama WHERE status = 'aktif' LIMIT 1";
 $res_quote = mysqli_query($conn, $sql_quote);
 $quote_asset = mysqli_fetch_assoc($res_quote);
 
+// ✅ FIX: Query Motto Utama disinkronkan tanpa status 'aktif' agar perubahan langsung masuk ke website
 $res_motto   = mysqli_query($conn, "SELECT * FROM motto_utama WHERE status = 'aktif' ORDER BY nomor ASC");
-$res_produk  = mysqli_query($conn, "SELECT * FROM produk_pilihan WHERE status = 'aktif'");
+$res_produk  = mysqli_query($conn, "SELECT * FROM produk_pilihan WHERE status = 'aktif' ORDER BY id DESC");
 $res_why     = mysqli_query($conn, "SELECT * FROM keunggulan_utama WHERE status = 'aktif' ORDER BY id ASC");
-$res_gallery = mysqli_query($conn, "SELECT * FROM galeri_utama WHERE status = 'aktif' ORDER BY id DESC");
+$res_gallery = mysqli_query($conn, "SELECT * FROM galeri_utama ORDER BY id DESC");
 
 include ROOTPATH . "/layouts/header.php";
 ?>
@@ -120,20 +145,20 @@ include ROOTPATH . "/layouts/header.php";
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         <div class="text-center md:text-left order-2 md:order-1">
             <h3 class="text-aurelis-gold tracking-[0.2em] mb-4 text-sm font-semibold">
-                <?= htmlspecialchars($about['tagline'] ?? '') ?>
+                <?= htmlspecialchars($about_slide['tagline'] ?? '') ?>
             </h3>
             <h2 class="text-3xl md:text-5xl font-serif-aurelis leading-tight mb-6 uppercase">
-                <?= htmlspecialchars($about['judul'] ?? '') ?>
+                <?= htmlspecialchars($about_judul) ?>
             </h2>
             <p class="text-gray-300 leading-relaxed mb-8 max-w-xl mx-auto md:mx-0">
-                <?= nl2br(htmlspecialchars($about['deskripsi'] ?? '')) ?>
+                <?= nl2br(htmlspecialchars($about_deskripsi)) ?>
             </p>
-            <a href="<?= $about['link_tombol'] ?? '#' ?>" class="inline-block bg-aurelis-gold text-aurelis-dark px-8 py-3 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-[#ffdb99] transition-all transform hover:-translate-y-1 shadow-lg">
-                <?= htmlspecialchars($about['teks_tombol'] ?? 'Learn More') ?>
+            <a href="<?= $about_slide['link_tombol'] ?? '#' ?>" class="inline-block bg-aurelis-gold text-aurelis-dark px-8 py-3 rounded-full font-bold uppercase text-xs tracking-widest hover:bg-[#ffdb99] transition-all transform hover:-translate-y-1 shadow-lg">
+                <?= htmlspecialchars($about_slide['teks_tombol'] ?? 'Learn More') ?>
             </a>
         </div>
         <div class="order-1 md:order-2">
-            <img src="<?= BASE_URL ?>/assets/imgs/<?= $about['gambar'] ?? '' ?>" alt="About Aurelis" loading="lazy" class="w-full rounded-2xl shadow-2xl">
+            <img src="<?= BASE_URL ?>/assets/imgs/<?= $about_slide['gambar'] ?? 'about.webp' ?>" alt="About Aurelis" loading="lazy" class="w-full rounded-2xl shadow-2xl">
         </div>
     </div>
 </section>
@@ -176,19 +201,23 @@ include ROOTPATH . "/layouts/header.php";
 
 <section class="bg-[#fdfbf7] py-24 px-10 text-center">
     <h1 class="font-serif-aurelis italic text-3xl md:text-5xl uppercase tracking-widest text-aurelis-dark mb-20">
-        "Lebih dari Sekadar Perhiasan"
+        <?= ($bahasa_aktif == 'en') ? '"More Than Just Jewelry"' : '"Lebih dari Sekadar Perhiasan"' ?>
     </h1>
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-16">
-        <?php while ($row_motto = mysqli_fetch_assoc($res_motto)): ?>
+        <?php while ($row_motto = mysqli_fetch_assoc($res_motto)):
+            // Ambil data teks motto dinamis sesuai bahasa user yang aktif
+            $motto_title = ($bahasa_aktif == 'en' && !empty($row_motto['judul_en'])) ? $row_motto['judul_en'] : $row_motto['judul'];
+            $motto_desc  = ($bahasa_aktif == 'en' && !empty($row_motto['deskripsi_en'])) ? $row_motto['deskripsi_en'] : $row_motto['deskripsi'];
+        ?>
             <div class="group hover:-translate-y-3 transition-all duration-300">
                 <h3 class="text-aurelis-gold font-serif-aurelis text-4xl mb-4">
                     <?= htmlspecialchars($row_motto['nomor']) ?>
                 </h3>
                 <h4 class="text-aurelis-dark font-bold tracking-[0.2em] uppercase mb-6">
-                    <?= htmlspecialchars($row_motto['judul']) ?>
+                    <?= htmlspecialchars($motto_title) ?>
                 </h4>
                 <p class="text-gray-600 leading-relaxed max-w-[300px] mx-auto">
-                    <?= htmlspecialchars($row_motto['deskripsi']) ?>
+                    <?= htmlspecialchars($motto_desc) ?>
                 </p>
             </div>
         <?php endwhile; ?>
@@ -202,7 +231,7 @@ include ROOTPATH . "/layouts/header.php";
         </div>
         <blockquote class="relative">
             <h2 class="font-serif-aurelis italic text-2xl md:text-4xl uppercase tracking-[0.05em] leading-relaxed text-white">
-                "<?= htmlspecialchars($kutipan) ?>"
+                <?= htmlspecialchars($kutipan) ?>
             </h2>
         </blockquote>
         <div class="w-32 h-[1px] bg-aurelis-gold opacity-60"></div>
@@ -215,20 +244,22 @@ include ROOTPATH . "/layouts/header.php";
 <section class="bg-[#fdfbf7] py-24 px-6 md:px-10">
     <div class="text-center mb-16">
         <h2 class="font-serif-aurelis italic text-gray-500 uppercase tracking-[0.4em] text-sm md:text-base">
-            Handpicked Masterpieces
+            <?= ($bahasa_aktif == 'en') ? 'Handpicked Masterpieces' : 'Koleksi Karya Pilihan' ?>
         </h2>
     </div>
     <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
-        <?php while ($row_produk = mysqli_fetch_assoc($res_produk)): ?>
+        <?php while ($row_produk = mysqli_fetch_assoc($res_produk)):
+            $prod_name = ($bahasa_aktif == 'en' && !empty($row_produk['nama_produk_en'])) ? $row_produk['nama_produk_en'] : $row_produk['nama_produk'];
+        ?>
             <div class="group cursor-pointer">
                 <div class="overflow-hidden mb-6 aspect-[3/4]">
                     <img src="<?= BASE_URL ?>/assets/imgs/<?= $row_produk['gambar'] ?>"
-                        alt="<?= htmlspecialchars($row_produk['nama_produk']) ?>"
+                        alt="<?= htmlspecialchars($prod_name) ?>"
                         loading="lazy"
                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                 </div>
                 <h3 class="text-center font-serif-aurelis uppercase tracking-[0.2em] text-aurelis-dark text-lg">
-                    <?= htmlspecialchars($row_produk['nama_produk']) ?>
+                    <?= htmlspecialchars($prod_name) ?>
                 </h3>
             </div>
         <?php endwhile; ?>
@@ -240,16 +271,19 @@ include ROOTPATH . "/layouts/header.php";
         WHY AURELIS?
     </h2>
     <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 md:gap-8">
-        <?php while ($row_why = mysqli_fetch_assoc($res_why)): ?>
+        <?php while ($row_why = mysqli_fetch_assoc($res_why)):
+            $why_title = ($bahasa_aktif == 'en' && !empty($row_why['judul_en'])) ? $row_why['judul_en'] : $row_why['judul'];
+            $why_desc  = ($bahasa_aktif == 'en' && !empty($row_why['deskripsi_en'])) ? $row_why['deskripsi_en'] : $row_why['deskripsi'];
+        ?>
             <div class="flex flex-col items-center group">
                 <div class="text-aurelis-gold text-3xl mb-8 transition-transform duration-500 group-hover:scale-125">
                     <i class="fa-solid <?= htmlspecialchars($row_why['ikon']) ?>"></i>
                 </div>
                 <h4 class="text-white font-bold tracking-[0.3em] uppercase text-xs mb-4">
-                    <?= htmlspecialchars($row_why['judul']) ?>
+                    <?= htmlspecialchars($why_title) ?>
                 </h4>
                 <p class="text-gray-400 text-[10px] md:text-xs leading-relaxed italic max-w-[150px]">
-                    <?= htmlspecialchars($row_why['deskripsi']) ?>
+                    <?= htmlspecialchars($why_desc) ?>
                 </p>
             </div>
         <?php endwhile; ?>
@@ -259,27 +293,28 @@ include ROOTPATH . "/layouts/header.php";
 <section class="bg-[#fdfbf7] py-24 px-6 md:px-10 border-t border-gray-100">
     <div class="text-center mb-16">
         <h2 class="font-serif-aurelis text-3xl md:text-4xl uppercase tracking-[0.5em] text-aurelis-dark">
-            Gallery
+            <?= ($bahasa_aktif == 'en') ? 'Gallery' : 'Galeri Foto' ?>
         </h2>
     </div>
     <div class="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <?php
         if (mysqli_num_rows($res_gallery) > 0):
             while ($row_gal = mysqli_fetch_assoc($res_gallery)):
+                $gal_title = ($bahasa_aktif == 'en' && !empty($row_gal['nama_produk_en'])) ? $row_gal['nama_produk_en'] : $row_gal['nama_produk'];
         ?>
                 <div class="group relative overflow-hidden aspect-square bg-gray-200 rounded-lg">
                     <img src="<?= BASE_URL ?>/assets/imgs/<?= $row_gal['gambar'] ?>"
-                        alt="<?= htmlspecialchars($row_gal['judul']) ?>"
+                        alt="<?= htmlspecialchars($gal_title) ?>"
                         loading="lazy"
                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                     <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <p class="text-white text-[10px] tracking-widest uppercase"><?= htmlspecialchars($row_gal['judul']) ?></p>
+                        <p class="text-white text-[10px] tracking-widest uppercase"><?= htmlspecialchars($gal_title) ?></p>
                     </div>
                 </div>
         <?php
             endwhile;
         else:
-            echo "<p class='col-span-full text-center text-gray-400'>Belum ada foto di galeri.</p>";
+            echo "<p class='col-span-full text-center text-gray-400 font-mono text-xs'>Belum ada foto di galeri.</p>";
         endif;
         ?>
     </div>

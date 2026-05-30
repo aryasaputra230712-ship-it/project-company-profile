@@ -209,7 +209,7 @@ if ($tab == 'perhiasan') {
                                 </div>
                                 <div class="flex gap-2 mt-4 pt-3 border-t border-white/5">
                                     <button type="button" class="flex-1 text-center text-[8px] font-bold bg-white/5 py-2.5 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300">Edit</button>
-                                    <a href="process/process_delete_jewelry.php?id=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus perhiasan ini?')" class="text-center text-[8px] font-bold bg-red-500/10 text-red-400 px-3 py-2.5 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">
+                                    <a href="process/process_gallery.php?action=hapus&id=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus perhiasan ini?')" class="text-center text-[8px] font-bold bg-red-500/10 text-red-400 px-3 py-2.5 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">
                                         <i class="fa-regular fa-trash-can"></i>
                                     </a>
                                 </div>

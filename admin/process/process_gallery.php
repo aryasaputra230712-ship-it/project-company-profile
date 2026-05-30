@@ -11,14 +11,16 @@ include_once ROOTPATH . "/config/config.php";
 // BACKEND ACTION HANDLER
 // ==========================================
 
-// 1. UPDATE HERO BANNER GALERI
+// 1. UPDATE HERO BANNER GALERI (kolom bilingual sesuai skema DB)
 if (isset($_POST['action']) && $_POST['action'] == 'update_header') {
-    $judul    = mysqli_real_escape_string($conn, $_POST['judul']);
-    $subjudul = mysqli_real_escape_string($conn, $_POST['subjudul']);
+    $judul_id    = mysqli_real_escape_string($conn, $_POST['judul_id'] ?? $_POST['judul'] ?? '');
+    $judul_en    = mysqli_real_escape_string($conn, $_POST['judul_en'] ?? '');
+    $subjudul_id = mysqli_real_escape_string($conn, $_POST['subjudul_id'] ?? $_POST['subjudul'] ?? '');
+    $subjudul_en = mysqli_real_escape_string($conn, $_POST['subjudul_en'] ?? '');
 
     $q_old_img = mysqli_query($conn, "SELECT gambar FROM header_galeri WHERE id = 1 LIMIT 1");
     $old_img   = mysqli_fetch_assoc($q_old_img);
-    $nama_file = $old_img['gambar'];
+    $nama_file = $old_img['gambar'] ?? 'gallery-hero.webp';
 
     if (!empty($_FILES['gambar']['name'])) {
         $ext = pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
@@ -33,9 +35,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'update_header') {
         }
     }
 
-    mysqli_query($conn, "UPDATE header_galeri SET judul = '$judul', subjudul = '$subjudul', gambar = '$nama_file' WHERE id = 1");
+    $nama_file_esc = mysqli_real_escape_string($conn, $nama_file);
+    mysqli_query(
+        $conn,
+        "UPDATE header_galeri SET 
+         judul_id = '$judul_id', judul_en = '$judul_en', 
+         subjudul_id = '$subjudul_id', subjudul_en = '$subjudul_en', 
+         gambar = '$nama_file_esc' WHERE id = 1"
+    );
     $_SESSION['sukses'] = "Header Hero Galeri berhasil diperbarui!";
-    header("Location: ../gallery_manage.php?tab=hero-section");
+    header("Location: ../gallery_manage.php?tab=hero");
     exit();
 }
 

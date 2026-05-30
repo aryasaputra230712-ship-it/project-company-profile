@@ -44,6 +44,15 @@ if ($tab == 'motto') {
 } elseif ($tab == 'masterpieces') {
     $items = mysqli_query($conn, "SELECT * FROM produk_pilihan ORDER BY id DESC");
 }
+
+function edit_payload_attr(array $data): string
+{
+    return htmlspecialchars(
+        json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE),
+        ENT_QUOTES,
+        'UTF-8'
+    );
+}
 ?>
 
 <!DOCTYPE html>
@@ -124,6 +133,12 @@ if ($tab == 'motto') {
                                                                     unset($_SESSION['sukses']); ?>
             </div>
         <?php endif; ?>
+        <?php if (isset($_SESSION['error'])): ?>
+            <div class="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl flex items-center gap-3 text-xs tracking-wider uppercase">
+                <i class="fa-solid fa-circle-exclamation text-sm"></i> <?= $_SESSION['error'];
+                                                                        unset($_SESSION['error']); ?>
+            </div>
+        <?php endif; ?>
 
         <div id="tab-container" class="tab-container flex overflow-x-auto gap-2 p-1 bg-white/5 rounded-xl mb-8 border border-white/5">
             <?php
@@ -147,13 +162,14 @@ if ($tab == 'motto') {
                 </div>
 
                 <?php if (in_array($tab, ['motto', 'why_us', 'masterpieces'])): ?>
-                    <button class="bg-white/5 border border-white/10 px-3 py-2 rounded-lg text-[9px] font-bold text-aurelis-gold hover:bg-aurelis-gold hover:text-aurelis-dark transition uppercase">
+                    <button type="button" onclick="toggleModal('modal-add-<?= $tab ?>')" class="bg-white/5 border border-white/10 px-3 py-2 rounded-lg text-[9px] font-bold text-aurelis-gold hover:bg-aurelis-gold hover:text-aurelis-dark transition uppercase">
                         + Add Item
                     </button>
                 <?php endif; ?>
             </div>
 
             <form action="process/process_update_content.php" method="POST" enctype="multipart/form-data" class="space-y-6">
+                <input type="hidden" name="action" value="update">
                 <input type="hidden" name="tab_name" value="<?= $tab ?>">
 
                 <?php if ($tab == 'hero'): ?>
@@ -174,7 +190,6 @@ if ($tab == 'motto') {
                             <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Sub-headline / Description (EN) 🇺🇸</label>
                             <textarea name="hero_sub_en" rows="5" placeholder="Enter sub-headline text in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['hero_sub_en'] ?? '') ?></textarea>
                         </div>
-
                         <div class="md:col-span-2 border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
                             <div class="flex-1 w-full">
                                 <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Ganti Background Video (.mp4)</label>
@@ -199,10 +214,9 @@ if ($tab == 'motto') {
                             <textarea name="about_deskripsi_id" rows="5" placeholder="Masukkan paragraf tentang kami..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['about_deskripsi_id'] ?? '') ?></textarea>
                         </div>
                         <div>
-                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">About Narrative Story (EN) 🇺sky</label>
+                            <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">About Narrative Story (EN) 🇺🇸</label>
                             <textarea name="about_deskripsi_en" rows="5" placeholder="Enter about section story in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['about_deskripsi_en'] ?? '') ?></textarea>
                         </div>
-
                         <div class="md:col-span-2 border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
                             <div class="mx-auto md:mx-0 shrink-0">
                                 <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($about_data['gambar'] ?? 'default.jpg') ?>" class="w-32 h-24 object-cover rounded-xl border border-white/10 shadow-lg" alt="Current About">
@@ -229,7 +243,6 @@ if ($tab == 'motto') {
                             <textarea name="founder_bio_en" rows="6" placeholder="Enter complete founder biography in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['founder_bio_en'] ?? '') ?></textarea>
                         </div>
                     </div>
-
                     <div class="border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5 mt-6">
                         <div class="mx-auto md:mx-0 shrink-0">
                             <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($founder_data['gambar'] ?? 'default.jpg') ?>" class="w-24 h-24 object-cover rounded-xl border border-white/10 shadow-lg" alt="Current Founder">
@@ -237,7 +250,6 @@ if ($tab == 'motto') {
                         <div class="flex-1 w-full">
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Ganti Foto Potret Founder</label>
                             <input type="file" name="founder_gambar" accept="image/*" class="w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-gradient-to-r file:from-aurelis-gold file:to-[#bfa37e] file:text-aurelis-dark hover:file:opacity-90 cursor-pointer">
-                            <p class="text-[10px] text-gray-500 mt-2">Disarankan menggunakan aspek rasio potret vertikal (3:4).</p>
                         </div>
                     </div>
 
@@ -259,7 +271,6 @@ if ($tab == 'motto') {
                             <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-2 block">Historical Narrative Story (EN) 🇺🇸</label>
                             <textarea name="sejarah_konten_en" rows="6" placeholder="Enter historical narrative storyline in English..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none leading-relaxed"><?= htmlspecialchars($home_data['sejarah_konten_en'] ?? '') ?></textarea>
                         </div>
-
                         <div class="md:col-span-2 border-t border-white/5 pt-6 flex flex-col md:flex-row gap-6 items-center bg-white/[0.02] p-4 rounded-xl border border-white/5">
                             <div class="mx-auto md:mx-0 shrink-0">
                                 <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($history_data['gambar'] ?? 'default.jpg') ?>" class="w-32 h-24 object-cover rounded-xl border border-white/10 shadow-lg" alt="Current History">
@@ -282,10 +293,6 @@ if ($tab == 'motto') {
                             <textarea name="kutipan_en" rows="4" placeholder="Enter inspirational philosophy quote statement in English..." class="w-full bg-aurelis-input border border-white/5 rounded-2xl px-5 py-4 text-sm font-serif-lux italic text-aurelis-gold focus:border-aurelis-gold/50 outline-none"><?= htmlspecialchars($home_data['kutipan_en'] ?? '') ?></textarea>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-2 block">Link Video Utama (YouTube Embed/Jalur Video)</label>
-                        <input type="text" name="video_url" value="<?= htmlspecialchars($home_data['video_url'] ?? '') ?>" placeholder="Contoh: https://www.youtube.com/embed/..." class="w-full bg-aurelis-input border border-white/5 rounded-xl px-5 py-3 text-xs text-white tracking-wide outline-none focus:border-aurelis-gold/50">
-                    </div>
 
                 <?php elseif ($tab == 'motto' || $tab == 'why_us'): ?>
                     <div class="grid grid-cols-1 gap-4">
@@ -306,9 +313,34 @@ if ($tab == 'motto') {
                                             <span class="block"><strong class="text-gray-600 font-mono">ID:</strong> <?= htmlspecialchars($row['deskripsi']) ?></span>
                                             <span class="block"><strong class="text-aurelis-gold/60 font-mono">EN:</strong> <?= htmlspecialchars($row['deskripsi_en'] ?? '-') ?></span>
                                         </p>
+
                                         <div class="flex gap-2">
-                                            <button type="button" class="text-[8px] font-bold bg-white/5 px-4 py-2 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300">Edit</button>
-                                            <button type="button" class="text-[8px] font-bold bg-red-500/10 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">Delete</button>
+                                            <?php if ($tab == 'motto'): ?>
+                                                <button type="button"
+                                                    class="btn-edit-item text-[8px] font-bold bg-white/5 px-4 py-2 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300"
+                                                    data-edit-type="motto"
+                                                    data-edit="<?= edit_payload_attr([
+                                                        'nomor' => $row['nomor'],
+                                                        'judul' => $row['judul'],
+                                                        'judul_en' => $row['judul_en'] ?? '',
+                                                        'deskripsi' => $row['deskripsi'],
+                                                        'deskripsi_en' => $row['deskripsi_en'] ?? '',
+                                                    ]) ?>">Edit</button>
+                                                <a href="process/process_delete_motto.php?id=<?= $row['nomor'] ?>" onclick="return confirm('Hapus item motto ini?')" class="text-[8px] font-bold bg-red-500/10 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">Delete</a>
+                                            <?php else: ?>
+                                                <button type="button"
+                                                    class="btn-edit-item text-[8px] font-bold bg-white/5 px-4 py-2 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300"
+                                                    data-edit-type="why_us"
+                                                    data-edit="<?= edit_payload_attr([
+                                                        'id' => $row['id'],
+                                                        'ikon' => $row['ikon'],
+                                                        'judul' => $row['judul'],
+                                                        'judul_en' => $row['judul_en'] ?? '',
+                                                        'deskripsi' => $row['deskripsi'],
+                                                        'deskripsi_en' => $row['deskripsi_en'] ?? '',
+                                                    ]) ?>">Edit</button>
+                                                <a href="process/process_delete_why_us.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus item keunggulan ini?')" class="text-[8px] font-bold bg-red-500/10 text-red-400 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">Delete</a>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
                                 </div>
@@ -336,9 +368,17 @@ if ($tab == 'motto') {
                                             </h5>
                                         </div>
                                     </div>
+
                                     <div class="flex gap-2 mt-4 pt-3 border-t border-white/5">
-                                        <button type="button" class="flex-1 text-center text-[8px] font-bold bg-white/5 py-2.5 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300">Edit</button>
-                                        <button type="button" class="text-center text-[8px] font-bold bg-red-500/10 text-red-400 px-3 py-2.5 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300"><i class="fa-regular fa-trash-can"></i></button>
+                                        <button type="button"
+                                            class="btn-edit-item flex-1 text-center text-[8px] font-bold bg-white/5 py-2.5 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300"
+                                            data-edit-type="masterpiece"
+                                            data-edit="<?= edit_payload_attr([
+                                                'id' => $row['id'],
+                                                'nama_produk' => $row['nama_produk'],
+                                                'nama_produk_en' => $row['nama_produk_en'] ?? '',
+                                            ]) ?>">Edit</button>
+                                        <a href="process/process_delete_masterpiece.php?id=<?= $row['id'] ?>" onclick="return confirm('Hapus item masterpiece ini?')" class="text-center text-[8px] font-bold bg-red-500/10 text-red-400 px-3 py-2.5 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300"><i class="fa-regular fa-trash-can"></i></a>
                                     </div>
                                 </div>
                             <?php endwhile; ?>
@@ -361,8 +401,208 @@ if ($tab == 'motto') {
         </div>
     </main>
 
+    <?php if ($tab == 'motto'): ?>
+        <div id="modal-add-motto" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-lg shadow-2xl">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
+                    <h3 class="font-serif-lux text-base text-white">Add New Motto</h3>
+                    <button onclick="toggleModal('modal-add-motto')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form action="process/process_add_motto.php" method="POST" class="space-y-3">
+                    <input type="number" name="nomor" placeholder="Nomor Urut (Motto 1, 2, 3...)" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    <input type="text" name="judul" placeholder="Judul Motto (ID) 🇮🇩" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    <input type="text" name="judul_en" placeholder="Motto Title (EN) 🇺🇸" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    <textarea name="deskripsi" placeholder="Deskripsi Lengkap (ID) 🇮🇩" rows="3" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none"></textarea>
+                    <textarea name="deskripsi_en" placeholder="Full Description (EN) 🇺🇸" rows="3" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none"></textarea>
+                    <button type="submit" class="w-full bg-aurelis-gold text-aurelis-dark font-bold py-2.5 rounded-xl text-[10px] uppercase tracking-wider">Save Motto</button>
+                </form>
+            </div>
+        </div>
+        <div id="modal-edit-motto" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-lg shadow-2xl">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
+                    <h3 class="font-serif-lux text-base text-white">Update Motto Content</h3>
+                    <button onclick="toggleModal('modal-edit-motto')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form action="process/process_edit_motto.php" method="POST" class="space-y-4">
+                    <input type="hidden" name="nomor" id="edit-motto-nomor">
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-1 block">Judul Motto (ID) 🇮🇩</label>
+                        <input type="text" name="judul" id="edit-motto-judul" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-1 block">Motto Title (EN) 🇺🇸</label>
+                        <input type="text" name="judul_en" id="edit-motto-judul-en" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-1 block">Deskripsi Lengkap (ID) 🇮🇩</label>
+                        <textarea name="deskripsi" id="edit-motto-deskripsi" rows="3" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-1 block">Full Description (EN) 🇺🇸</label>
+                        <textarea name="deskripsi_en" id="edit-motto-deskripsi-en" rows="3" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-2.5 rounded-xl text-[10px] uppercase tracking-wider">Update Changes</button>
+                </form>
+            </div>
+        </div>
+
+    <?php elseif ($tab == 'why_us'): ?>
+        <div id="modal-add-why_us" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-lg shadow-2xl">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
+                    <h3 class="font-serif-lux text-base text-white">Add Core Value (Why Us)</h3>
+                    <button onclick="toggleModal('modal-add-why_us')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form action="process/process_add_why_us.php" method="POST" class="space-y-3">
+                    <input type="text" name="ikon" placeholder="Ikon FontAwesome (Contoh: fa-crown, fa-gem)" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    <input type="text" name="judul" placeholder="Judul Keunggulan (ID) 🇮🇩" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    <input type="text" name="judul_en" placeholder="Value Title (EN) 🇺🇸" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    <textarea name="deskripsi" placeholder="Deskripsi Ringkas (ID) 🇮🇩" rows="3" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none"></textarea>
+                    <textarea name="deskripsi_en" placeholder="Value Description (EN) 🇺🇸" rows="3" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none"></textarea>
+                    <button type="submit" class="w-full bg-aurelis-gold text-aurelis-dark font-bold py-2.5 rounded-xl text-[10px] uppercase tracking-wider">Save Value</button>
+                </form>
+            </div>
+        </div>
+        <div id="modal-edit-why_us" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-lg shadow-2xl">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
+                    <h3 class="font-serif-lux text-base text-white">Update Core Value</h3>
+                    <button onclick="toggleModal('modal-edit-why_us')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form action="process/process_edit_why_us.php" method="POST" class="space-y-4">
+                    <input type="hidden" name="id" id="edit-why-id">
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Ikon Klasik FontAwesome</label>
+                        <input type="text" name="ikon" id="edit-why-ikon" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-1 block">Judul Keunggulan (ID) 🇮🇩</label>
+                        <input type="text" name="judul" id="edit-why-judul" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-1 block">Value Title (EN) 🇺🇸</label>
+                        <input type="text" name="judul_en" id="edit-why-judul-en" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-1 block">Deskripsi Ringkas (ID) 🇮🇩</label>
+                        <textarea name="deskripsi" id="edit-why-deskripsi" rows="3" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-1 block">Value Description (EN) 🇺🇸</label>
+                        <textarea name="deskripsi_en" id="edit-why-deskripsi-en" rows="3" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-2.5 rounded-xl text-[10px] uppercase tracking-wider">Update Changes</button>
+                </form>
+            </div>
+        </div>
+
+    <?php elseif ($tab == 'masterpieces'): ?>
+        <div id="modal-add-masterpieces" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-lg shadow-2xl">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
+                    <h3 class="font-serif-lux text-base text-white">Add Masterpiece Item</h3>
+                    <button onclick="toggleModal('modal-add-masterpieces')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form action="process/process_add_masterpiece.php" method="POST" enctype="multipart/form-data" class="space-y-3">
+                    <input type="text" name="nama_produk" placeholder="Nama Produk Masterpiece (ID) 🇮🇩" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    <input type="text" name="nama_produk_en" placeholder="Product Name (EN) 🇺🇸" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    <input type="file" name="gambar" accept="image/*" required class="w-full text-xs text-gray-400 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:bg-white/5 file:text-aurelis-gold cursor-pointer">
+                    <button type="submit" class="w-full bg-aurelis-gold text-aurelis-dark font-bold py-2.5 rounded-xl text-[10px] uppercase tracking-wider">Save Product</button>
+                </form>
+            </div>
+        </div>
+        <div id="modal-edit-masterpieces" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-lg shadow-2xl">
+                <div class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
+                    <h3 class="font-serif-lux text-base text-white">Update Masterpiece</h3>
+                    <button onclick="toggleModal('modal-edit-masterpieces')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <form action="process/process_edit_masterpiece.php" method="POST" enctype="multipart/form-data" class="space-y-4">
+                    <input type="hidden" name="id" id="edit-master-id">
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-500 tracking-widest uppercase mb-1 block">Nama Produk Masterpiece (ID) 🇮🇩</label>
+                        <input type="text" name="nama_produk" id="edit-master-nama" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-1 block">Product Name (EN) 🇺🇸</label>
+                        <input type="text" name="nama_produk_en" id="edit-master-nama-en" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2 text-xs text-white outline-none">
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Ganti Asset Gambar Produk</label>
+                        <input type="file" name="gambar" accept="image/*" class="w-full text-xs text-gray-400 file:mr-4 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:bg-white/5 file:text-aurelis-gold cursor-pointer">
+                        <p class="text-[9px] text-gray-500 italic mt-1">*Biarkan kosong jika tidak ingin merubah foto display.</p>
+                    </div>
+                    <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-2.5 rounded-xl text-[10px] uppercase tracking-wider">Update Changes</button>
+                </form>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <script>
-        // 1. Sidebar Toggle
+        function showModal(id) {
+            const target = document.getElementById(id);
+            if (target) target.classList.remove('hidden');
+        }
+
+        function hideModal(id) {
+            const target = document.getElementById(id);
+            if (target) target.classList.add('hidden');
+        }
+
+        function toggleModal(id) {
+            const target = document.getElementById(id);
+            if (!target) return;
+            target.classList.toggle('hidden');
+        }
+
+        function setFieldValue(id, value) {
+            const el = document.getElementById(id);
+            if (el) el.value = value ?? '';
+        }
+
+        function openEditMotto(data) {
+            setFieldValue('edit-motto-nomor', data.nomor);
+            setFieldValue('edit-motto-judul', data.judul);
+            setFieldValue('edit-motto-judul-en', data.judul_en);
+            setFieldValue('edit-motto-deskripsi', data.deskripsi);
+            setFieldValue('edit-motto-deskripsi-en', data.deskripsi_en);
+            showModal('modal-edit-motto');
+        }
+
+        function openEditWhyUs(data) {
+            setFieldValue('edit-why-id', data.id);
+            setFieldValue('edit-why-ikon', data.ikon);
+            setFieldValue('edit-why-judul', data.judul);
+            setFieldValue('edit-why-judul-en', data.judul_en);
+            setFieldValue('edit-why-deskripsi', data.deskripsi);
+            setFieldValue('edit-why-deskripsi-en', data.deskripsi_en);
+            showModal('modal-edit-why_us');
+        }
+
+        function openEditMasterpiece(data) {
+            setFieldValue('edit-master-id', data.id);
+            setFieldValue('edit-master-nama', data.nama_produk);
+            setFieldValue('edit-master-nama-en', data.nama_produk_en);
+            showModal('modal-edit-masterpieces');
+        }
+
+        document.querySelectorAll('.btn-edit-item').forEach((btn) => {
+            btn.addEventListener('click', () => {
+                try {
+                    const type = btn.dataset.editType;
+                    const data = JSON.parse(btn.dataset.edit || '{}');
+
+                    if (type === 'motto') openEditMotto(data);
+                    else if (type === 'why_us') openEditWhyUs(data);
+                    else if (type === 'masterpiece') openEditMasterpiece(data);
+                } catch (err) {
+                    console.error('Gagal membuka form edit:', err);
+                    alert('Gagal membuka form edit. Muat ulang halaman lalu coba lagi.');
+                }
+            });
+        });
+
         const sidebar = document.getElementById('sidebar-main');
         const overlay = document.getElementById('sidebar-overlay');
         const openBtn = document.getElementById('open-sidebar');
@@ -376,7 +616,6 @@ if ($tab == 'motto') {
         if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
         if (overlay) overlay.addEventListener('click', toggleSidebar);
 
-        // 2. Auto-scroll Tab ke yang aktif
         window.addEventListener('DOMContentLoaded', () => {
             const activeTab = document.getElementById('active-tab-link');
             const container = document.getElementById('tab-container');
