@@ -207,8 +207,8 @@ switch ($action) {
 
                 if (!empty($_FILES['video_file']['name']) && $_FILES['video_file']['error'] === UPLOAD_ERR_OK) {
                     $ext = strtolower(pathinfo($_FILES['video_file']['name'], PATHINFO_EXTENSION));
-                    if ($ext === 'mp4') {
-                        $video_name = 'hero_' . time() . '.mp4';
+                    if ($ext === 'webm') {
+                        $video_name = 'hero_' . time() . '.webm';
                         if (!is_dir($video_dir)) {
                             mkdir($video_dir, 0755, true);
                         }

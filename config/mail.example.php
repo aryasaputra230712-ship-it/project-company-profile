@@ -1,7 +1,13 @@
 <?php
 /**
- * Salin file ini menjadi mail.php dan isi kredensial Gmail App Password Anda.
- * Jangan commit mail.php ke Git (sudah ada di .gitignore).
+ * SETUP LOKAL & HOSTING
+ * ---------------------
+ * 1. Salin file ini menjadi mail.php (di folder config/).
+ * 2. Isi smtp_user, smtp_password (Gmail App Password), from_email.
+ * 3. Di komputer Anda mail.php sudah ada — UPLOAD manual ke hosting (cPanel File Manager / FTP).
+ *    File mail.php TIDAK ikut Git (.gitignore), jadi deploy Git saja tidak cukup.
+ *
+ * Alternatif di hosting: set variabel lingkungan SMTP_USER, SMTP_PASSWORD (lihat mail_loader.php).
  */
 return [
     'smtp_host'     => 'smtp.gmail.com',

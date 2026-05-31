@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('ROOTPATH')) {
+    define('ROOTPATH', dirname(__DIR__));
+}
+
 // Mengecek apakah server dijalankan secara lokal (localhost)
 if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1') {
 
@@ -15,6 +19,22 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1') 
     $user = "vibewebs_id_rsa"; // User yang kamu buat di cPanel
     $pass = "Aryasaputra23"; // Password yang kamu reset tadi
     $db   = "vibewebs_db"; // Nama database di cPanel
+
+    /**
+     * SMTP Gmail untuk form Contact (hosting).
+     * Isi di bawah ini ATAU upload config/mail.php (salin dari mail.example.php).
+     * App Password: https://myaccount.google.com/apppasswords
+     */
+    $mail_smtp = [
+        'smtp_host'     => 'smtp.gmail.com',
+        'smtp_port'     => 587,
+        'smtp_secure'   => 'tls',
+        'smtp_user'     => '', // Gmail Anda
+        'smtp_password' => '', // App Password 16 karakter (Google → App passwords)
+        'from_email'    => '', // biasanya sama dengan smtp_user
+        'from_name'     => 'Aurelis Profile Website',
+        'notify_email'  => '', // kosong = pakai email di tabel pengaturan
+    ];
 }
 
 $conn = mysqli_connect($host, $user, $pass, $db);

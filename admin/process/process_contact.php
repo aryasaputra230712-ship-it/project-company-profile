@@ -12,21 +12,19 @@ require ROOTPATH . '/libs/PHPMailer/src/SMTP.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
+require_once ROOTPATH . '/config/mail_loader.php';
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$mailConfigPath = ROOTPATH . '/config/mail.php';
-if (!is_readable($mailConfigPath)) {
-    $_SESSION['error'] = 'Konfigurasi email belum disetup. Salin config/mail.example.php menjadi config/mail.php.';
-    header('Location: ../../contact.php');
-    exit();
-}
-$mailCfg = require $mailConfigPath;
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ../../contact.php');
     exit();
+}
+
+if (!empty($_POST['website_url'])) {
+    exit('Akses ditolak.');
 }
 
 $nama   = trim($_POST['name'] ?? '');
@@ -35,58 +33,53 @@ $subjek = trim($_POST['subject'] ?? '');
 $pesan  = trim($_POST['message'] ?? '');
 
 if ($nama === '' || $email === '' || $subjek === '' || $pesan === '') {
-    $_SESSION['error'] = 'Semua kolom form wajib diisi!';
+    $_SESSION['error'] = 'Semua kolom form wajib diisi.';
     header('Location: ../../contact.php');
     exit();
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $_SESSION['error'] = 'Format email pengirim tidak valid.';
+    $_SESSION['error'] = 'Format email tidak valid.';
     header('Location: ../../contact.php');
     exit();
 }
 
-$nama_db   = mysqli_real_escape_string($conn, $nama);
-$email_db  = mysqli_real_escape_string($conn, $email);
-$subjek_db = mysqli_real_escape_string($conn, $subjek);
-$pesan_db  = mysqli_real_escape_string($conn, $pesan);
+$stmt = $conn->prepare('INSERT INTO pesan_masuk (nama, email, subjek, pesan, tanggal) VALUES (?, ?, ?, ?, NOW())');
+$stmt->bind_param('ssss', $nama, $email, $subjek, $pesan);
 
-$sql = "INSERT INTO pesan_masuk (nama, email, subjek, pesan, tanggal) 
-        VALUES ('$nama_db', '$email_db', '$subjek_db', '$pesan_db', NOW())";
-if (!mysqli_query($conn, $sql)) {
-    error_log('contact insert failed: ' . mysqli_error($conn));
+if (!$stmt->execute()) {
+    error_log('contact insert failed: ' . $stmt->error);
     $_SESSION['error'] = 'Gagal menyimpan pesan. Silakan coba lagi.';
     header('Location: ../../contact.php');
     exit();
 }
 
-$notifyEmail = $mailCfg['notify_email'] ?? '';
-if ($notifyEmail === '') {
-    $qSet = mysqli_query($conn, 'SELECT email FROM pengaturan LIMIT 1');
-    if ($rowSet = mysqli_fetch_assoc($qSet)) {
-        $notifyEmail = trim($rowSet['email'] ?? '');
-    }
+$mailCfg = load_mail_config(ROOTPATH);
+
+if ($mailCfg === null) {
+    $_SESSION['error'] = 'Pesan tersimpan, tetapi email belum dikonfigurasi di server. '
+        . 'Isi $mail_smtp di config/config.php (bagian hosting) atau buat file config/mail.php.';
+    header('Location: ../../contact.php');
+    exit();
 }
-if ($notifyEmail === '' || !filter_var($notifyEmail, FILTER_VALIDATE_EMAIL)) {
-    $notifyEmail = $mailCfg['from_email'] ?? $mailCfg['smtp_user'];
-}
+
+$notifyEmail = resolve_notify_email($mailCfg, $conn);
 
 $mail = new PHPMailer(true);
 
 try {
-    $mail->SMTPDebug  = 0;
-    $mail->CharSet    = 'UTF-8';
-    $mail->Timeout    = 30;
-    $mail->SMTPKeepAlive = false;
+    $mail->SMTPDebug = 0;
+    $mail->CharSet   = 'UTF-8';
+    $mail->Timeout   = 30;
 
     $mail->isSMTP();
-    $mail->Host       = $mailCfg['smtp_host'] ?? 'smtp.gmail.com';
+    $mail->Host       = $mailCfg['smtp_host'];
     $mail->SMTPAuth   = true;
     $mail->Username   = $mailCfg['smtp_user'];
     $mail->Password   = $mailCfg['smtp_password'];
-    $mail->Port       = (int) ($mailCfg['smtp_port'] ?? 587);
+    $mail->Port       = $mailCfg['smtp_port'];
 
-    $secure = strtolower($mailCfg['smtp_secure'] ?? 'tls');
+    $secure = $mailCfg['smtp_secure'];
     if ($secure === 'ssl') {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     } else {
@@ -104,34 +97,27 @@ try {
         ];
     }
 
-    $fromEmail = $mailCfg['from_email'] ?? $mailCfg['smtp_user'];
-    $fromName  = $mailCfg['from_name'] ?? 'Aurelis Website';
-
-    $mail->setFrom($fromEmail, $fromName);
+    $mail->setFrom($mailCfg['from_email'], $mailCfg['from_name']);
     $mail->addAddress($notifyEmail);
     $mail->addReplyTo($email, $nama);
 
     $mail->isHTML(true);
     $mail->Subject = 'Pesan Baru dari Website: ' . $subjek;
     $mail->Body    = '
-        <h3>Ada pesan baru dari pengunjung website</h3>
-        <table border="0" cellpadding="6" cellspacing="0" style="font-family:sans-serif;font-size:14px;">
-            <tr><td><b>Nama</b></td><td>' . htmlspecialchars($nama) . '</td></tr>
-            <tr><td><b>Email</b></td><td>' . htmlspecialchars($email) . '</td></tr>
-            <tr><td><b>Subjek</b></td><td>' . htmlspecialchars($subjek) . '</td></tr>
-            <tr><td valign="top"><b>Pesan</b></td><td>' . nl2br(htmlspecialchars($pesan)) . '</td></tr>
-        </table>
-        <p style="color:#666;font-size:12px;">Dikirim otomatis dari form kontak Aurelis.</p>
+        <h3>Pesan baru dari form kontak</h3>
+        <p><b>Nama:</b> ' . htmlspecialchars($nama) . '</p>
+        <p><b>Email:</b> ' . htmlspecialchars($email) . '</p>
+        <p><b>Subjek:</b> ' . htmlspecialchars($subjek) . '</p>
+        <p><b>Pesan:</b><br>' . nl2br(htmlspecialchars($pesan)) . '</p>
     ';
-    $mail->AltBody = "Nama: $nama\nEmail: $email\nSubjek: $subjek\n\nPesan:\n$pesan";
+    $mail->AltBody = "Nama: $nama\nEmail: $email\nSubjek: $subjek\n\n$pesan";
 
     $mail->send();
-
     $_SESSION['sukses'] = 'Pesan Anda berhasil dikirim! Kami akan segera menghubungi Anda.';
 } catch (Exception $e) {
-    error_log('PHPMailer contact error: ' . $mail->ErrorInfo);
-    $_SESSION['error'] = 'Pesan tersimpan di sistem, tetapi notifikasi email gagal terkirim. '
-        . 'Coba lagi nanti atau hubungi kami via WhatsApp.';
+    error_log('PHPMailer contact: ' . $mail->ErrorInfo);
+    $_SESSION['error'] = 'Pesan tersimpan, tetapi notifikasi email gagal terkirim. '
+        . 'Periksa App Password Gmail atau coba lagi nanti.';
 }
 
 header('Location: ../../contact.php');
