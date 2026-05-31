@@ -206,9 +206,10 @@ switch ($action) {
                 }
 
                 if (!empty($_FILES['video_file']['name']) && $_FILES['video_file']['error'] === UPLOAD_ERR_OK) {
+                    $allowed_exts = ['webm', 'mp4', 'mov', 'ogg'];
                     $ext = strtolower(pathinfo($_FILES['video_file']['name'], PATHINFO_EXTENSION));
-                    if ($ext === 'webm') {
-                        $video_name = 'hero_' . time() . '.webm';
+                    if (in_array($ext, $allowed_exts, true)) {
+                        $video_name = 'hero_' . time() . $ext;
                         if (!is_dir($video_dir)) {
                             mkdir($video_dir, 0755, true);
                         }
