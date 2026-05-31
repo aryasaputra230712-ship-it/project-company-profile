@@ -231,9 +231,6 @@ include ROOTPATH . "/layouts/header.php";
             </h2>
             <div class="space-y-6 text-[#e6e9ff] opacity-85 text-[1rem] leading-loose tracking-wide">
                 <p><?= nl2br(htmlspecialchars($sejarah_konten)) ?></p>
-                <?php if (!empty($history_asset['cerita_2'])): ?>
-                    <p><?= nl2br(htmlspecialchars($history_asset['cerita_2'])) ?></p>
-                <?php endif; ?>
             </div>
         </div>
     </div>
