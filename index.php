@@ -27,47 +27,30 @@ $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
 // 2. AMBIL DATA DARI WADAH BARU (HOMEPAGE)
 // ==========================================
 $query_home = mysqli_query($conn, "SELECT * FROM konten_homepage WHERE id = 1 LIMIT 1");
-$home = mysqli_fetch_assoc($query_home);
+$home = mysqli_fetch_assoc($query_home) ?: []; // Pastikan selalu array, minimal kosong
 
 /**
- * Susun slide hero untuk rotasi teks (judul + subjudul).
- * Sumber: slide_utama (banyak baris) atau konten_homepage (pisah dengan | atau baris baru).
+ * Versi yang lebih efisien: Langsung pakai array $home
  */
-function build_hero_slides(array $home, mysqli $conn, string $bahasa_aktif): array
+/**
+ * Versi yang sudah diperbaiki: Lebih fleksibel
+ */
+function build_hero_slides(array $home, string $bahasa_aktif): array
 {
-    $slides = [];
-
-    $res_slides = mysqli_query(
-        $conn,
-        "SELECT judul, subjudul FROM slide_utama WHERE status IN ('active', 'aktif') ORDER BY id ASC"
-    );
-    if ($res_slides) {
-        while ($row = mysqli_fetch_assoc($res_slides)) {
-            $judul = trim($row['judul'] ?? '');
-            if ($judul !== '') {
-                $slides[] = [
-                    'judul'    => $judul,
-                    'subjudul' => trim($row['subjudul'] ?? ''),
-                ];
-            }
-        }
-    }
-
-    if (count($slides) >= 2) {
-        return $slides;
-    }
-
+    // Mengambil data berdasarkan bahasa
     $judul_raw = ($bahasa_aktif === 'en' && !empty($home['hero_judul_en']))
-        ? (string) $home['hero_judul_en']
-        : (string) ($home['hero_judul_id'] ?? '');
+        ? $home['hero_judul_en']
+        : ($home['hero_judul_id'] ?? 'Aurelis Jewelry');
+
     $sub_raw = ($bahasa_aktif === 'en' && !empty($home['hero_sub_en']))
-        ? (string) $home['hero_sub_en']
-        : (string) ($home['hero_sub_id'] ?? '');
+        ? $home['hero_sub_en']
+        : ($home['hero_sub_id'] ?? '');
 
-    $titles = preg_split('/\s*\|\s*|\r\n|\n/', $judul_raw, -1, PREG_SPLIT_NO_EMPTY);
-    $subs   = preg_split('/\s*\|\s*|\r\n|\n/', $sub_raw, -1, PREG_SPLIT_NO_EMPTY);
+    // Logika pemisahan: Hanya jika ada karakter '|' di database
+    if (strpos($judul_raw, '|') !== false) {
+        $titles = preg_split('/\s*\|\s*/', $judul_raw, -1, PREG_SPLIT_NO_EMPTY);
+        $subs   = preg_split('/\s*\|\s*/', $sub_raw, -1, PREG_SPLIT_NO_EMPTY);
 
-    if (count($titles) > 1) {
         $parsed = [];
         foreach ($titles as $i => $title) {
             $parsed[] = [
@@ -78,26 +61,16 @@ function build_hero_slides(array $home, mysqli $conn, string $bahasa_aktif): arr
         return $parsed;
     }
 
-    if (!empty($slides)) {
-        return $slides;
-    }
-
-    if (trim($judul_raw) !== '') {
-        return [[
-            'judul'    => trim($judul_raw),
-            'subjudul' => trim($sub_raw),
-        ]];
-    }
-
+    // Jika tidak ada '|', kembalikan teks tunggal (fallback normal)
     return [[
-        'judul'    => 'Aurelis Jewelry',
-        'subjudul' => '',
+        'judul'    => trim($judul_raw),
+        'subjudul' => trim($sub_raw),
     ]];
 }
 
-$hero_slides = build_hero_slides($home ?: [], $conn, $bahasa_aktif);
-$hero_judul  = $hero_slides[0]['judul'];
-$hero_sub    = $hero_slides[0]['subjudul'];
+$hero_slides = build_hero_slides($home ?: [], $bahasa_aktif);
+$hero_judul  = $hero_slides[0]['judul'] ?? 'Default Title'; // Tambahkan ??
+$hero_sub    = $hero_slides[0]['subjudul'] ?? '';           // Tambahkan ??
 $sejarah_judul  = ($bahasa_aktif == 'en' && !empty($home['sejarah_judul_en'])) ? $home['sejarah_judul_en'] : $home['sejarah_judul_id'];
 $sejarah_konten = ($bahasa_aktif == 'en' && !empty($home['sejarah_konten_en'])) ? $home['sejarah_konten_en'] : $home['sejarah_konten_id'];
 $founder_nama   = !empty($home['founder_nama']) ? $home['founder_nama'] : 'THE FOUNDER';
