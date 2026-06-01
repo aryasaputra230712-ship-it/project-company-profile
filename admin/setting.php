@@ -65,35 +65,76 @@ $data = mysqli_fetch_assoc($query);
 
             <form action="process/process_setting.php" method="POST" class="max-w-5xl space-y-6">
                 <input type="hidden" name="id" value="<?= $data['id'] ?>">
+                <input type="hidden" name="update_settings" value="1">
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-[#0c0e17] border border-white/5 p-6 rounded-[2rem] space-y-5">
-                        <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Nama Perusahaan</label>
-                        <input type="text" name="nama_perusahaan" value="<?= $data['nama_perusahaan'] ?>" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none">
+                <!-- SECTION 1: INFO DASAR -->
+                <div class="space-y-4">
+                    <h2 class="text-lg font-serif tracking-wider text-aurelis-gold">Informasi Dasar</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-[#0c0e17] border border-white/5 p-6 rounded-[2rem] space-y-5">
+                            <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Nama Perusahaan</label>
+                            <input type="text" name="nama_perusahaan" value="<?= htmlspecialchars($data['nama_perusahaan']) ?>" required class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-aurelis-gold/50 transition">
 
-                        <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">WhatsApp</label>
-                        <input type="text" name="whatsapp" value="<?= $data['whatsapp'] ?>" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none">
-                    </div>
+                            <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Email</label>
+                            <input type="email" name="email" value="<?= htmlspecialchars($data['email']) ?>" required class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-aurelis-gold/50 transition">
+                        </div>
 
-                    <div class="bg-[#0c0e17] border border-white/5 p-6 rounded-[2rem] space-y-5">
-                        <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Email</label>
-                        <input type="email" name="email" value="<?= $data['email'] ?>" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none">
+                        <div class="bg-[#0c0e17] border border-white/5 p-6 rounded-[2rem] space-y-5">
+                            <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">WhatsApp</label>
+                            <input type="text" name="whatsapp" value="<?= htmlspecialchars($data['whatsapp']) ?>" placeholder="628509721034" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-aurelis-gold/50 transition">
 
-                        <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Instagram</label>
-                        <input type="text" name="instagram" value="<?= $data['instagram'] ?>" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none">
-                    </div>
-
-                    <div class="lg:col-span-2">
-                        <div class="bg-[#0c0e17] border border-white/5 p-6 rounded-[2rem]">
                             <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Alamat</label>
-                            <textarea name="alamat" rows="3" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none"><?= $data['alamat'] ?></textarea>
+                            <input type="text" name="alamat" value="<?= htmlspecialchars($data['alamat']) ?>" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-aurelis-gold/50 transition">
                         </div>
                     </div>
                 </div>
 
-                <div class="flex justify-end pt-4">
-                    <button type="submit" class="bg-gradient-to-r from-[#f7c66b] to-[#bfa37e] text-[#050816] font-bold px-12 py-4 rounded-xl uppercase text-[10px] tracking-[2px] shadow-xl">
-                        Simpan Profil
+                <!-- SECTION 2: MEDIA SOSIAL -->
+                <div class="space-y-4">
+                    <h2 class="text-lg font-serif tracking-wider text-aurelis-gold">Media Sosial</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-[#0c0e17] border border-white/5 p-6 rounded-[2rem] space-y-5">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-brands fa-instagram text-pink-500"></i>
+                                <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Instagram</label>
+                            </div>
+                            <input type="text" name="instagram" value="<?= htmlspecialchars($data['instagram']) ?>" placeholder="aurelis.jewelry" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-aurelis-gold/50 transition">
+
+                            <div class="flex items-center gap-2">
+                                <i class="fa-brands fa-facebook text-blue-600"></i>
+                                <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Facebook</label>
+                            </div>
+                            <input type="text" name="facebook" value="<?= htmlspecialchars($data['facebook']) ?>" placeholder="Aurelis Jewelry" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-aurelis-gold/50 transition">
+
+                            <div class="flex items-center gap-2">
+                                <i class="fa-brands fa-tiktok text-white"></i>
+                                <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">TikTok</label>
+                            </div>
+                            <input type="text" name="tiktok" value="<?= htmlspecialchars($data['tiktok']) ?>" placeholder="aurelis.jewelry" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-aurelis-gold/50 transition">
+                        </div>
+
+                        <div class="bg-[#0c0e17] border border-white/5 p-6 rounded-[2rem] space-y-5">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-brands fa-telegram text-blue-400"></i>
+                                <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Telegram</label>
+                            </div>
+                            <input type="text" name="telegram" value="<?= htmlspecialchars($data['telegram']) ?>" placeholder="@aurelis_jewelry" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-aurelis-gold/50 transition">
+
+                            <div class="flex items-center gap-2">
+                                <i class="fa-brands fa-twitter text-sky-500"></i>
+                                <label class="text-[9px] font-bold text-gray-500 tracking-widest block uppercase">Twitter/X</label>
+                            </div>
+                            <input type="text" name="twitter" value="<?= htmlspecialchars($data['twitter']) ?>" placeholder="@aurelis" class="w-full bg-[#161925] border border-white/5 rounded-xl px-4 py-3 text-sm text-white outline-none focus:border-aurelis-gold/50 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-4 pt-6">
+                    <button type="reset" class="border border-white/20 text-white font-bold px-8 py-3 rounded-xl uppercase text-[10px] tracking-[2px] hover:bg-white/5 transition">
+                        Reset
+                    </button>
+                    <button type="submit" class="bg-gradient-to-r from-[#f7c66b] to-[#bfa37e] text-[#050816] font-bold px-12 py-3 rounded-xl uppercase text-[10px] tracking-[2px] shadow-xl hover:shadow-2xl transition">
+                        <i class="fa-solid fa-save mr-2"></i> Simpan Pengaturan
                     </button>
                 </div>
             </form>
