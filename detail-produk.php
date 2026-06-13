@@ -1,0 +1,152 @@
+<?php
+
+if (!defined('ROOTPATH')) {
+    define('ROOTPATH', __DIR__);
+}
+include_once ROOTPATH . "/config/config.php";
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// ==========================================
+// 1. DETEKSI ATURAN BAHASA AKTIF (BILINGUAL)
+// ==========================================
+$lang = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
+
+// 2. Logika Base URL (Supaya gambar & asset tidak pecah)
+$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+$host = $_SERVER['HTTP_HOST'];
+$script_name = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
+$base_url = $protocol . "://" . $host . ($script_name == '/' ? '' : $script_name);
+
+if (!defined('BASE_URL')) define('BASE_URL', $base_url);
+
+include ROOTPATH . "/layouts/header.php";
+
+$id_galeri = $_GET['id'];
+$row1 = mysqli_query($conn, "SELECT * FROM galeri_utama WHERE id = $id_galeri");
+$result = mysqli_fetch_assoc($row1);
+
+// Tarik nomor WhatsApp dari tabel pengaturan
+$query_nomor = mysqli_query($conn, "SELECT whatsapp FROM pengaturan LIMIT 1");
+$no_wa = mysqli_fetch_assoc($query_nomor);
+
+?>
+
+
+<section class="py-10 px-6">
+    <header class="grid grid-cols-1 md:grid-cols-2 max-w-7xl gap-8">
+        <div class="flex flex-col">
+            <div class="overflow-hidden mx-auto">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="product" class="md:w-[350px] md:h-[350px] w-full object-cover overflow-hidden transition duration-1000 hover:scale-[1.5]">
+            </div>
+
+            <div class="flex gap-6 justify-center w-full mt-5">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
+            </div>
+        </div>
+        
+        
+        <div>
+            <div class="mb-12">
+                <h2 class="text-3xl mb-3"><?= htmlspecialchars($result['nama_produk']) ?></h2>
+                <p class="text-3xl mb-3">Rp <?= number_format($result['harga'], 0, ',', '.') ?></p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas itaque labore eum temporibus enim. Doloremque cum delectus minus cupiditate vitae, beatae ducimus soluta voluptatibus expedita voluptatum totam est sed consequuntur.</p>
+                
+
+                <h3 class="mt-8 mb-2 text-lg">Spesifikasi Produk:</h3>
+                <table cellpadding="10" width="100%" class="bg-white text-black text-sm">
+                    
+                    <tr class="bg-neutral-50">
+                        <td class="font-bold">Type</td>
+                        <td>Perak</td>
+                    </tr>
+
+                    <tr class="bg-neutral-200">
+                        <td class="font-bold">Berat</td>
+                        <td>250gr</td>
+                    </tr>
+
+                    <tr class="bg-neutral-50">
+                        <td class="font-bold">Type</td>
+                        <td>Perak</td>
+                    </tr>
+                </table>
+            </div>
+            
+            
+            <a href="https://wa.me/<?= htmlspecialchars($no_wa['whatsapp'] ?? '') ?>" class="bg-aurelis-gold hover:bg-[#ffdb99] transition duration-300 px-4 py-2 text-black">Pesan Sekarang</a>
+        </div>
+    </header>
+</section>
+
+<section class="px-6 py-12">
+    <header class="relative">
+        <h2 align="center" class="text-2xl">Yang lainnya untukmu</h2>
+        <div class="more-product owl-carousel owl-theme max-w-7xl mx-auto">
+            <?php
+            while($row2 = mysqli_fetch_assoc($row1)) { ?>
+            <a href="detail-produk.php?id=<?= $row2['id'] ?>"><img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($row2['gambar']) ?>" alt="" class="w-full h-[350px] object-cover"></a>
+            
+            <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($row2['gambar']) ?>" alt="" class="w-full h-[350px] object-cover">
+            <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($row2['gambar']) ?>" alt="" class="w-full h-[350px] object-cover">
+            <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($row2['gambar']) ?>" alt="" class="w-full h-[350px] object-cover">
+        </div>
+
+        <?php }; ?>
+
+        <div class="flex absolute z-index-0 top-[200px] w-full justify-between">
+            <div class="customPrevBtnMore hover:cursor-pointer border border-[2px] rounded-full py-2 px-4"><</div>
+            <div class="customNextBtnMore hover:cursor-pointer">></div>
+        </div>
+    </header>
+</section>
+
+
+<script>
+    $(document).ready(function () {
+    $(".more-product").owlCarousel({
+        margin: 20,
+        loop: true,
+        responsiveClass: true,
+        nav: false,
+        dots: false,
+        responsive: {
+            0: {
+                items: 2
+            },
+
+            564:{
+                items: 3
+            },
+
+            768: {
+                items: 4
+            },
+            1024: {
+                items: 5
+            }
+        }
+    });
+
+    var owl = $('.more-product');
+    owl.owlCarousel();
+    // Go to the next item
+    $('.customNextBtnMore').click(function () {
+        owl.trigger('next.owl.carousel');
+    })
+    // Go to the previous item
+    $('.customPrevBtnMore').click(function () {
+        // With optional speed parameter
+        // Parameters has to be in square bracket '[]'
+        owl.trigger('prev.owl.carousel');
+    })
+});
+
+</script>
+
+<?php include ROOTPATH . "/layouts/footer.php"; ?>

@@ -101,7 +101,7 @@ $hero_sub   = ($lang == 'en' && !empty($header['subjudul_en'])) ? $header['subju
         ?>
                 <div class="item <?= strtolower($row['kategori']) ?> overflow-hidden w-full group">
                     <div class="relative overflow-hidden h-[300px]">
-                        <a href="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($row['gambar']) ?>" target="_blank">
+                        <a href="detail-produk.php?id=<?= $row['id'] ?>">
                             <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($row['gambar']) ?>"
                                 class="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-in-out"
                                 alt="<?= htmlspecialchars($product_name) ?>">
