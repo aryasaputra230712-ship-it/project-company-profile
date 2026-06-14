@@ -40,6 +40,12 @@ if ($tab == 'perhiasan') {
 
     // Ambil data dengan LIMIT
     $items = mysqli_query($conn, "SELECT * FROM galeri_utama ORDER BY id DESC LIMIT $start, $limit");
+} elseif ($tab == 'gambar') {
+    $limit = 8;
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $start = ($page > 1) ? ($page * $limit) - $limit : 0;
+
+    $items = mysqli_query($conn, "SELECT * FROM gambar_detail_product ORDER BY id DESC LIMIT $start, $limit");
 }
 
 $kategori_list = mysqli_query($conn, "SELECT * FROM kategori_galeri ORDER BY nama_kategori ASC");
@@ -136,12 +142,15 @@ function gallery_edit_payload(array $data): string
             </div>
         <?php endif; ?>
 
-        <div class="flex gap-2 p-1 bg-white/5 rounded-xl mb-8 border border-white/5 w-fit">
+        <div class="flex gap-3 p-1 bg-white/5 rounded-xl mb-8 border border-white/5 w-fit">
             <a href="?tab=hero" class="px-5 py-2.5 rounded-lg text-[10px] font-bold tracking-widest transition flex items-center gap-2 <?= $tab == 'hero' ? 'active-tab' : 'text-gray-500 hover:text-white' ?>">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> HERO BANNER
             </a>
             <a href="?tab=perhiasan" class="px-5 py-2.5 rounded-lg text-[10px] font-bold tracking-widest transition flex items-center gap-2 <?= $tab == 'perhiasan' ? 'active-tab' : 'text-gray-500 hover:text-white' ?>">
                 <i class="fa-solid fa-gem"></i> MANAJEMEN PERHIASAN
+            </a>
+            <a href="?tab=gambar" class="px-5 py-2.5 rounded-lg text-[10px] font-bold tracking-widest transition flex items-center gap-2 <?= $tab == 'gambar' ? 'active-tab' : 'text-gray-500 hover:text-white' ?>">
+                <i class="fa-solid fa-image"></i> GAMBAR DETAIL PRODUK
             </a>
         </div>
 
@@ -153,6 +162,7 @@ function gallery_edit_payload(array $data): string
                     </div>
                     <h2 class="text-xs md:text-base text-white font-bold uppercase tracking-widest">
                         Konfigurasi <?= $tab == 'hero' ? 'Hero Galeri' : 'Koleksi Perhiasan' ?>
+
                     </h2>
                 </div>
 
@@ -222,12 +232,12 @@ function gallery_edit_payload(array $data): string
                                     <button type="button"
                                         class="btn-edit-jewelry flex-1 text-center text-[8px] font-bold bg-white/5 py-2.5 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition duration-300"
                                         data-edit="<?= gallery_edit_payload([
-                                            'id' => $row['id'],
-                                            'nama_produk' => $row['nama_produk'],
-                                            'nama_produk_en' => $row['nama_produk_en'] ?? '',
-                                            'harga' => $row['harga'] ?? 0,
-                                            'kategori' => $row['kategori'] ?? '',
-                                        ]) ?>">Edit</button>
+                                                        'id' => $row['id'],
+                                                        'nama_produk' => $row['nama_produk'],
+                                                        'nama_produk_en' => $row['nama_produk_en'] ?? '',
+                                                        'harga' => $row['harga'] ?? 0,
+                                                        'kategori' => $row['kategori'] ?? '',
+                                                    ]) ?>">Edit</button>
                                     <a href="process/process_gallery.php?action=hapus&id=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus perhiasan ini?')" class="text-center text-[8px] font-bold bg-red-500/10 text-red-400 px-3 py-2.5 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">
                                         <i class="fa-regular fa-trash-can"></i>
                                     </a>
@@ -278,7 +288,8 @@ function gallery_edit_payload(array $data): string
                     <div>
                         <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Kategori</label>
                         <select name="kategori" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
-                            <?php mysqli_data_seek($kategori_list, 0); while ($kat = mysqli_fetch_assoc($kategori_list)): ?>
+                            <?php mysqli_data_seek($kategori_list, 0);
+                            while ($kat = mysqli_fetch_assoc($kategori_list)): ?>
                                 <option value="<?= htmlspecialchars($kat['slug']) ?>"><?= htmlspecialchars($kat['nama_kategori']) ?></option>
                             <?php endwhile; ?>
                         </select>
@@ -320,7 +331,8 @@ function gallery_edit_payload(array $data): string
                     <div>
                         <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Kategori</label>
                         <select name="kategori" id="edit-kategori" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
-                            <?php mysqli_data_seek($kategori_list, 0); while ($kat = mysqli_fetch_assoc($kategori_list)): ?>
+                            <?php mysqli_data_seek($kategori_list, 0);
+                            while ($kat = mysqli_fetch_assoc($kategori_list)): ?>
                                 <option value="<?= htmlspecialchars($kat['slug']) ?>"><?= htmlspecialchars($kat['nama_kategori']) ?></option>
                             <?php endwhile; ?>
                         </select>
