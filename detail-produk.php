@@ -34,19 +34,42 @@ $no_wa = mysqli_fetch_assoc($query_nomor);
 
 ?>
 
+<style>
+    .owl-nav {
+        width: 100%;
+        top: 0px;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+        pointer-events: none;
+    }
+
+    .owl-nav button {
+        pointer-events: auto;
+        
+    }
+
+    .owl-nav button span {
+        font-size: 20px;
+        
+    }
+</style>
 
 <section class="py-10 px-6">
     <header class="grid grid-cols-1 md:grid-cols-2 max-w-7xl gap-8">
-        <div class="flex flex-col">
+        <div class="flex flex-col relative">
             <div class="overflow-hidden mx-auto">
-                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="product" class="md:w-[350px] md:h-[350px] w-full object-cover overflow-hidden transition duration-1000 hover:scale-[1.5]">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="product" class="md:w-[400px] md:h-[400px] w-full object-cover overflow-hidden transition duration-1000 hover:scale-[1.5]">
             </div>
 
-            <div class="flex gap-6 justify-center w-full mt-5">
-                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
-                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
-                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
-                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
+            <div class="scroll-product owl-carousel owl-theme mt-5 m-auto max-w-[400px]">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[50px] h-[60px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[50px] h-[60px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[50px] h-[60px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[50px] h-[60px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[50px] h-[60px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[50px] h-[60px] object-cover">
             </div>
         </div>
 
@@ -98,7 +121,8 @@ $no_wa = mysqli_fetch_assoc($query_nomor);
                     </a>
                 </div>
             <?php }; ?>
-        </div> <div class="flex absolute top-1/2 -translate-y-1/2 w-full justify-between pointer-events-none px-2 left-0 right-0 z-10">
+        </div>
+        <div class="flex absolute top-1/2 -translate-y-1/2 w-full justify-between pointer-events-none px-2 left-0 right-0 z-10">
             <div class="customPrevBtnMore pointer-events-auto hover:cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-aurelis-gold transition duration-300">
                 &#10094;
             </div>
@@ -136,18 +160,44 @@ $no_wa = mysqli_fetch_assoc($query_nomor);
             }
         });
 
-        var owl = $('.more-product');
-        owl.owlCarousel();
+        var owl1 = $('.more-product');
+        owl1.owlCarousel();
         // Go to the next item
         $('.customNextBtnMore').click(function() {
-            owl.trigger('next.owl.carousel');
+            owl1.trigger('next.owl.carousel');
         })
         // Go to the previous item
         $('.customPrevBtnMore').click(function() {
             // With optional speed parameter
             // Parameters has to be in square bracket '[]'
-            owl.trigger('prev.owl.carousel');
+            owl1.trigger('prev.owl.carousel');
         })
+
+
+        //product-scroll by id
+        $(".scroll-product").owlCarousel({
+            margin: 15,
+            loop: false,
+            responsiveClass: true,
+            nav: true,
+            dots: false,
+            responsive: {
+                0: {
+                    items: 2
+                },
+
+                564: {
+                    items: 3
+                },
+
+                768: {
+                    items: 4
+                },
+                1024: {
+                    items: 5
+                }
+            }
+        });
     });
 </script>
 
