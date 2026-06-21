@@ -29,12 +29,7 @@ $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
 $query_home = mysqli_query($conn, "SELECT * FROM konten_homepage WHERE id = 1 LIMIT 1");
 $home = mysqli_fetch_assoc($query_home) ?: []; // Pastikan selalu array, minimal kosong
 
-/**
- * Versi yang lebih efisien: Langsung pakai array $home
- */
-/**
- * Versi yang sudah diperbaiki: Lebih fleksibel
- */
+
 function build_hero_slides(array $home, string $bahasa_aktif): array
 {
     // Mengambil data berdasarkan bahasa
@@ -69,8 +64,8 @@ function build_hero_slides(array $home, string $bahasa_aktif): array
 }
 
 $hero_slides = build_hero_slides($home ?: [], $bahasa_aktif);
-$hero_judul  = $hero_slides[0]['judul'] ?? 'Default Title'; // Tambahkan ??
-$hero_sub    = $hero_slides[0]['subjudul'] ?? '';           // Tambahkan ??
+$hero_judul  = $hero_slides[0]['judul'] ?? 'Default Title';
+$hero_sub    = $hero_slides[0]['subjudul'] ?? '';
 $sejarah_judul  = ($bahasa_aktif == 'en' && !empty($home['sejarah_judul_en'])) ? $home['sejarah_judul_en'] : $home['sejarah_judul_id'];
 $sejarah_konten = ($bahasa_aktif == 'en' && !empty($home['sejarah_konten_en'])) ? $home['sejarah_konten_en'] : $home['sejarah_konten_id'];
 $founder_nama   = !empty($home['founder_nama']) ? $home['founder_nama'] : 'THE FOUNDER';
@@ -125,7 +120,6 @@ $sql_quote = "SELECT sumber FROM kutipan_utama WHERE status = 'aktif' LIMIT 1";
 $res_quote = mysqli_query($conn, $sql_quote);
 $quote_asset = mysqli_fetch_assoc($res_quote);
 
-// ✅ FIX: Query Motto Utama disinkronkan tanpa status 'aktif' agar perubahan langsung masuk ke website
 $res_motto   = mysqli_query($conn, "SELECT * FROM motto_utama WHERE status = 'aktif' ORDER BY nomor ASC");
 $res_produk  = mysqli_query($conn, "SELECT * FROM produk_pilihan WHERE status = 'aktif' ORDER BY id DESC");
 $res_why     = mysqli_query($conn, "SELECT * FROM keunggulan_utama WHERE status = 'aktif' ORDER BY id ASC");
