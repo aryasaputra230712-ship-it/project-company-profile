@@ -46,100 +46,25 @@ $stmt->execute();
 $result_query = $stmt->get_result();
 $result = $result_query->fetch_assoc();
 
-// ⚠️ Cek jika produk tidak ditemukan
-if (!$result) {
-    header("Location: gallery.php");
-    exit("❌ Produk tidak ditemukan!");
-}
+// Tarik nomor WhatsApp dari tabel pengaturan
+$query_nomor = mysqli_query($conn, "SELECT whatsapp FROM pengaturan LIMIT 1");
+$no_wa = mysqli_fetch_assoc($query_nomor);
 
-// ============================================
-// 5. AMBIL DATA SPESIFIKASI PRODUK
-// ============================================
-$stmt_spek = $conn->prepare("SELECT * FROM spesifikasi_produk WHERE id_galeri = ?");
-$stmt_spek->bind_param("i", $id_galeri);
-$stmt_spek->execute();
-$spesifikasi = $stmt_spek->get_result()->fetch_assoc();
-
-// ============================================
-// 6. AMBIL DATA GALLERY DETAIL (4 GAMBAR)
-// ============================================
-// 📸 Coba ambil dari tabel galeri_detail, jika tidak ada gunakan gambar utama
-$stmt_gallery = $conn->prepare("
-    SELECT gambar FROM gambar_detail_produk 
-    WHERE id_galeri = ? 
-    ORDER BY id ASC 
-    LIMIT 4
-");
-$stmt_gallery->bind_param("i", $id_galeri);
-$stmt_gallery->execute();
-$gallery_result = $stmt_gallery->get_result();
-$gallery_images = ($gallery_result->num_rows > 0) ? $gallery_result->fetch_all(MYSQLI_ASSOC) : [];
-
-// ============================================
-// 7. AMBIL NOMOR WHATSAPP DARI PENGATURAN
-// ============================================
-$stmt_wa = $conn->prepare("SELECT whatsapp FROM pengaturan LIMIT 1");
-$stmt_wa->execute();
-$no_wa = $stmt_wa->get_result()->fetch_assoc();
-$whatsapp_number = $no_wa['whatsapp'] ?? '0';
-
-// 🔄 Escape untuk keamanan XSS
-$product_name = htmlspecialchars($result['nama_produk'], ENT_QUOTES, 'UTF-8');
-$product_image = htmlspecialchars($result['gambar'], ENT_QUOTES, 'UTF-8');
-$product_price = number_format($result['harga'], 0, ',', '.');
-
-// Siapkan pesan WhatsApp (Bilingual)
-$wa_message = ($lang == 'en')
-    ? "Hello Aurelis Jewelry, I'm interested in purchasing: " . $product_name
-    : "Halo Aurelis Jewelry, saya tertarik dengan produk: " . $product_name;
-$wa_message_encoded = urlencode($wa_message);
 ?>
 
-<!-- ============================================
-     SECTION: DETAIL PRODUK UTAMA (2 KOLOM)
-     ============================================ -->
+
 <section class="py-10 px-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 max-w-7xl gap-8 mx-auto">
-
-        <!-- 📸 KOLOM 1: GAMBAR PRODUK -->
+    <header class="grid grid-cols-1 md:grid-cols-2 max-w-7xl gap-8">
         <div class="flex flex-col">
-
-            <!-- Gambar Utama dengan Hover Zoom -->
-            <div class="overflow-hidden mx-auto rounded-lg shadow-lg">
-                <img id="main-image"
-                    src="<?= BASE_URL ?>/assets/imgs/<?= $product_image ?>"
-                    alt="<?= $product_name ?>"
-                    class="md:w-[350px] md:h-[350px] w-full h-auto object-cover overflow-hidden transition duration-1000 hover:scale-[1.5] cursor-zoom-in">
+            <div class="overflow-hidden mx-auto">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="product" class="md:w-[350px] md:h-[350px] w-full object-cover overflow-hidden transition duration-1000 hover:scale-[1.5]">
             </div>
 
-            <!-- 🖼️ Gallery Thumbnail (4 Gambar) -->
-            <div class="flex gap-4 justify-center w-full mt-6 flex-wrap">
-                <?php
-                if (count($gallery_images) > 0) {
-                    // 📸 Ada gambar detail dari tabel galeri_detail
-                    foreach ($gallery_images as $index => $img) {
-                        $img_src = htmlspecialchars($img['gambar'], ENT_QUOTES, 'UTF-8');
-                        $is_active = ($index === 0) ? 'border-2 border-aurelis-gold' : 'border border-gray-300';
-                ?>
-                        <img class="w-[80px] h-[80px] object-cover cursor-pointer rounded transition <?= $is_active ?> hover:opacity-75"
-                            src="<?= BASE_URL ?>/assets/imgs/<?= $img_src ?>"
-                            alt="product-<?= $index ?>"
-                            onclick="changeMainImage(this.src)">
-                    <?php
-                    }
-                } else {
-                    // Fallback: Gunakan gambar utama 4x jika tidak ada detail
-                    for ($i = 0; $i < 4; $i++) {
-                        $is_active = ($i === 0) ? 'border-2 border-aurelis-gold' : 'border border-gray-300';
-                    ?>
-                        <img class="w-[80px] h-[80px] object-cover cursor-pointer rounded transition <?= $is_active ?> hover:opacity-75"
-                            src="<?= BASE_URL ?>/assets/imgs/<?= $product_image ?>"
-                            alt="product"
-                            onclick="changeMainImage(this.src)">
-                <?php
-                    }
-                }
-                ?>
+            <div class="flex gap-6 justify-center w-full mt-5">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
+                <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($result['gambar']) ?>" alt="test" class="w-[80px] h-[80px] object-cover">
             </div>
         </div>
 
@@ -237,14 +162,9 @@ $wa_message_encoded = urlencode($wa_message);
                         <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition duration-300"></div>
                     </a>
                 </div>
-            <?php
-            }
-            ?>
-        </div>
-
-        <!-- ◀️ ▶️ TOMBOL NAVIGASI CAROUSEL -->
-        <div class="flex absolute top-1/2 -translate-y-1/2 w-full justify-between pointer-events-none px-2 left-0 right-0 z-10">
-            <button class="customPrevBtnMore pointer-events-auto hover:cursor-pointer bg-white/90 border border-gray-200 text-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-aurelis-gold hover:text-white transition duration-300 font-bold text-lg">
+            <?php }; ?>
+        </div> <div class="flex absolute top-1/2 -translate-y-1/2 w-full justify-between pointer-events-none px-2 left-0 right-0 z-10">
+            <div class="customPrevBtnMore pointer-events-auto hover:cursor-pointer bg-white border border-gray-200 text-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-aurelis-gold transition duration-300">
                 &#10094;
             </button>
             <button class="customNextBtnMore pointer-events-auto hover:cursor-pointer bg-white/90 border border-gray-200 text-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-aurelis-gold hover:text-white transition duration-300 font-bold text-lg">
@@ -293,16 +213,17 @@ $wa_message_encoded = urlencode($wa_message);
         });
 
         var owl = $('.more-product');
-
-        // ▶️ Tombol Next
+        owl.owlCarousel();
+        // Go to the next item
         $('.customNextBtnMore').click(function() {
             owl.trigger('next.owl.carousel');
-        });
-
-        // ◀️ Tombol Previous
+        })
+        // Go to the previous item
         $('.customPrevBtnMore').click(function() {
+            // With optional speed parameter
+            // Parameters has to be in square bracket '[]'
             owl.trigger('prev.owl.carousel');
-        });
+        })
     });
 </script>
 
