@@ -187,7 +187,7 @@ $wa_message_encoded = urlencode($wa_message);
                             <tr class="bg-gray-100 hover:bg-gray-200 transition">
                                 <td class="font-bold text-gray-900 px-6 py-4">Berat</td>
                                 <td class="text-gray-700 px-6 py-4">
-                                    <?= htmlspecialchars($spesifikasi['berat'] ?? 'N/A', ENT_QUOTES, 'UTF-8') ?> gram
+                                    <?= htmlspecialchars($spesifikasi['berat'] ?? 'N/A', ENT_QUOTES, 'UTF-8') ?>
                                 </td>
                             </tr>
                         </table>
