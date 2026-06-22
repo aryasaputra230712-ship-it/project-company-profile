@@ -18,7 +18,7 @@ $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" :
 $host = $_SERVER['HTTP_HOST'];
 $script_name = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
 $base_url = $protocol . "://" . $host . ($script_name == '/' ? '' : $script_name);
-
+//COment
 if (!defined('BASE_URL')) define('BASE_URL', $base_url);
 
 // 2. AMBIL DATA PENGATURAN DARI DATABASE
