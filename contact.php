@@ -132,20 +132,4 @@ include ROOTPATH . "/layouts/header.php";
         </iframe>
     </div>
 </section>
-
-<section class="flex flex-col items-center justify-center uppercase my-[100px]">
-    <p class="tracking-[5px] text-xs font-bold mb-8 text-gray-500">Follow Our Journey</p>
-    <div class="flex gap-10 text-3xl">
-        <a href="https://instagram.com/<?= $set['instagram'] ?>" target="_blank" class="transition-all duration-300 hover:text-aurelis-gold hover:-translate-y-2">
-            <i class="fa-brands fa-instagram"></i>
-        </a>
-        <a href="#" class="transition-all duration-300 hover:text-aurelis-gold hover:-translate-y-2">
-            <i class="fa-brands fa-facebook"></i>
-        </a>
-        <a href="#" class="transition-all duration-300 hover:text-aurelis-gold hover:-translate-y-2">
-            <i class="fa-brands fa-tiktok"></i>
-        </a>
-    </div>
-</section>
-
 <?php include ROOTPATH . "/layouts/footer.php" ?>
