@@ -268,7 +268,7 @@ function gallery_edit_payload(array $data): string
                                         <i class="fa-regular fa-trash-can"></i>
                                     </a>
                                 </div>
-                                
+
                                 <div class="border-t border-white/10 pt-4 mt-4">
                                     <h4 class="text-[10px] text-aurelis-gold font-bold uppercase tracking-widest mb-2">Spesifikasi Produk</h4>
                                     <div class="grid grid-cols-2 gap-2 text-[9px] text-gray-400">
@@ -416,7 +416,37 @@ function gallery_edit_payload(array $data): string
                         </select>
                     </div>
                 </div>
-                <div>
+
+                <div class="border-t border-white/5 pt-4 mt-4">
+                    <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Deskripsi (ID) 🇮🇩</label>
+                    <textarea name="deskripsi_id" rows="2" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none"></textarea>
+                </div>
+                <div class="mt-2">
+                    <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-1 block">Description (EN) 🇺🇸</label>
+                    <textarea name="deskripsi_en" rows="2" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none"></textarea>
+                </div>
+
+                <div class="border-t border-white/5 pt-4 mt-4">
+                    <h4 class="text-[9px] font-bold text-aurelis-gold uppercase tracking-widest mb-3">Spesifikasi Produk</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block">Tipe (ID / EN)</label>
+                            <input type="text" name="tipe_spesifikasi_id" placeholder="ID" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white mb-2">
+                            <input type="text" name="tipe_spesifikasi_en" placeholder="EN" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block">Warna (ID / EN)</label>
+                            <input type="text" name="warna_id" placeholder="ID" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white mb-2">
+                            <input type="text" name="warna_en" placeholder="EN" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block">Berat (gr)</label>
+                            <input type="text" name="berat" placeholder="Contoh: 5.5gr" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/5 pt-4 mt-4">
                     <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Foto Produk Perhiasan</label>
                     <input type="file" name="gambar" accept="image/*" required class="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/5 file:text-aurelis-gold hover:file:bg-white/10 cursor-pointer">
                 </div>
@@ -436,7 +466,7 @@ function gallery_edit_payload(array $data): string
             <form action="process/process_gallery.php" method="POST" enctype="multipart/form-data" class="space-y-4">
                 <input type="hidden" name="action" value="edit_item">
                 <input type="hidden" name="id_item" id="edit-id">
-                
+
                 <div>
                     <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Nama Perhiasan (ID) 🇮🇩</label>
                     <input type="text" name="nama_produk" id="edit-nama" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
@@ -495,7 +525,7 @@ function gallery_edit_payload(array $data): string
                     <input type="file" name="gambar" accept="image/*" class="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/5 file:text-aurelis-gold hover:file:bg-white/10 cursor-pointer">
                     <p class="text-[9px] text-gray-500 italic mt-1">Biarkan kosong jika tidak ingin mengganti gambar.</p>
                 </div>
-                
+
                 <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-3 rounded-xl uppercase tracking-widest text-[10px] mt-4">
                     Update Perubahan
                 </button>
@@ -542,18 +572,18 @@ function gallery_edit_payload(array $data): string
             setFieldValue('edit-nama', data.nama_produk);
             setFieldValue('edit-nama-en', data.nama_produk_en);
             setFieldValue('edit-harga', data.harga);
-            
+
             // Data Deskripsi
             setFieldValue('edit-deskripsi-id', data.deskripsi_id);
             setFieldValue('edit-deskripsi-en', data.deskripsi_en);
-            
+
             // Data Spesifikasi
             setFieldValue('edit-tipe-id', data.tipe_spesifikasi_id);
             setFieldValue('edit-tipe-en', data.tipe_spesifikasi_en);
             setFieldValue('edit-warna-id', data.warna_id);
             setFieldValue('edit-warna-en', data.warna_en);
             setFieldValue('edit-berat', data.berat);
-            
+
             setKategoriValue(data.kategori);
             showModal('modal-edit');
         }
@@ -584,4 +614,5 @@ function gallery_edit_payload(array $data): string
         if (overlay) overlay.addEventListener('click', toggleSidebar);
     </script>
 </body>
+
 </html>

@@ -65,6 +65,18 @@ if (isset($_POST['action']) && $_POST['action'] === 'tambah_item') {
     $nama_produk_en = mysqli_real_escape_string($conn, $_POST['nama_produk_en'] ?? '');
     $harga          = (int) ($_POST['harga'] ?? 0);
     $kategori       = mysqli_real_escape_string($conn, strtolower($_POST['kategori'] ?? 'rings'));
+
+    // Tangkap Deskripsi
+    $deskripsi_id   = mysqli_real_escape_string($conn, $_POST['deskripsi_id'] ?? '');
+    $deskripsi_en   = mysqli_real_escape_string($conn, $_POST['deskripsi_en'] ?? '');
+
+    // Tangkap Spesifikasi
+    $tipe_id        = mysqli_real_escape_string($conn, $_POST['tipe_spesifikasi_id'] ?? '');
+    $tipe_en        = mysqli_real_escape_string($conn, $_POST['tipe_spesifikasi_en'] ?? '');
+    $warna_id       = mysqli_real_escape_string($conn, $_POST['warna_id'] ?? '');
+    $warna_en       = mysqli_real_escape_string($conn, $_POST['warna_en'] ?? '');
+    $berat          = mysqli_real_escape_string($conn, $_POST['berat'] ?? '');
+
     $gambar         = "";
 
     if (!empty($_FILES['gambar']['name']) && $_FILES['gambar']['error'] === UPLOAD_ERR_OK) {
@@ -81,11 +93,22 @@ if (isset($_POST['action']) && $_POST['action'] === 'tambah_item') {
 
     if ($gambar !== '') {
         $harga_sql = mysqli_real_escape_string($conn, (string) $harga);
-        if (mysqli_query(
-            $conn,
-            "INSERT INTO galeri_utama (nama_produk, nama_produk_en, harga, kategori, gambar, status) 
-             VALUES ('$nama_produk', '$nama_produk_en', '$harga_sql', '$kategori', '$gambar', 'aktif')"
-        )) {
+
+        // Simpan ke galeri utama beserta deskripsinya
+        $query_insert = "INSERT INTO galeri_utama 
+            (nama_produk, nama_produk_en, harga, kategori, deskripsi_id, deskripsi_en, gambar, status) 
+            VALUES ('$nama_produk', '$nama_produk_en', '$harga_sql', '$kategori', '$deskripsi_id', '$deskripsi_en', '$gambar', 'aktif')";
+
+        if (mysqli_query($conn, $query_insert)) {
+            // Ambil ID produk yang baru saja dimasukkan
+            $id_baru = mysqli_insert_id($conn);
+
+            // Simpan ke tabel spesifikasi menggunakan ID baru tersebut
+            $query_spek = "INSERT INTO spesifikasi_produk 
+                           (id_galeri, tipe_spesifikasi_id, tipe_spesifikasi_en, warna_id, warna_en, berat) 
+                           VALUES ('$id_baru', '$tipe_id', '$tipe_en', '$warna_id', '$warna_en', '$berat')";
+            mysqli_query($conn, $query_spek);
+
             $_SESSION['sukses'] = "Koleksi perhiasan baru berhasil ditambahkan!";
         } else {
             $_SESSION['error'] = "Gagal menyimpan ke database: " . mysqli_error($conn);
