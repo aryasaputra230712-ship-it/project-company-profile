@@ -106,30 +106,32 @@ if (isset($_POST['action']) && $_POST['action'] === 'edit_item') {
     $harga          = (int) ($_POST['harga'] ?? 0);
     $kategori       = mysqli_real_escape_string($conn, strtolower($_POST['kategori'] ?? 'rings'));
 
+    // Data Deskripsi (Ini ada di tabel galeri_utama)
+    $deskripsi_id   = mysqli_real_escape_string($conn, $_POST['deskripsi_id'] ?? '');
+
+    // Data Spesifikasi (Ini ada di tabel spesifikasi_produk)
+    $tipe_id        = mysqli_real_escape_string($conn, $_POST['tipe_spesifikasi_id'] ?? '');
+    $tipe_en        = mysqli_real_escape_string($conn, $_POST['tipe_spesifikasi_en'] ?? '');
+    $warna_id       = mysqli_real_escape_string($conn, $_POST['warna_id'] ?? '');
+    $warna_en       = mysqli_real_escape_string($conn, $_POST['warna_en'] ?? '');
+    $berat          = mysqli_real_escape_string($conn, $_POST['berat'] ?? '');
+
     if ($id_item === '') {
         $_SESSION['error'] = "ID produk tidak valid.";
         header("Location: ../gallery_manage.php?tab=perhiasan");
         exit();
     }
 
+    // Proses Gambar
     $q_old_prod = mysqli_query($conn, "SELECT gambar FROM galeri_utama WHERE id = '$id_item' LIMIT 1");
     $old_prod   = mysqli_fetch_assoc($q_old_prod);
-
-    if (!$old_prod) {
-        $_SESSION['error'] = "Produk tidak ditemukan.";
-        header("Location: ../gallery_manage.php?tab=perhiasan");
-        exit();
-    }
-
-    $nama_file = $old_prod['gambar'];
+    $nama_file  = $old_prod['gambar'];
 
     if (!empty($_FILES['gambar']['name']) && $_FILES['gambar']['error'] === UPLOAD_ERR_OK) {
         $ext = strtolower(pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION));
         if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'], true)) {
             $nama_file_baru = 'prod_' . time() . '_' . rand(100, 999) . '.' . $ext;
-            $target_file    = ROOTPATH . "/assets/imgs/" . $nama_file_baru;
-
-            if (move_uploaded_file($_FILES['gambar']['tmp_name'], $target_file)) {
+            if (move_uploaded_file($_FILES['gambar']['tmp_name'], ROOTPATH . "/assets/imgs/" . $nama_file_baru)) {
                 if (!empty($old_prod['gambar']) && file_exists(ROOTPATH . "/assets/imgs/" . $old_prod['gambar'])) {
                     unlink(ROOTPATH . "/assets/imgs/" . $old_prod['gambar']);
                 }
@@ -138,20 +140,31 @@ if (isset($_POST['action']) && $_POST['action'] === 'edit_item') {
         }
     }
 
-    $nama_file_esc = mysqli_real_escape_string($conn, $nama_file);
-    $harga_sql     = mysqli_real_escape_string($conn, (string) $harga);
-
-    if (mysqli_query(
-        $conn,
-        "UPDATE galeri_utama SET 
+    // 1. UPDATE TABEL GALERI_UTAMA (Hapus kolom spesifikasi dari sini)
+    $query_utama = "UPDATE galeri_utama SET 
          nama_produk = '$nama_produk', 
          nama_produk_en = '$nama_produk_en', 
-         harga = '$harga_sql', 
+         harga = '$harga', 
          kategori = '$kategori', 
-         gambar = '$nama_file_esc' 
-         WHERE id = '$id_item'"
-    )) {
-        $_SESSION['sukses'] = "Detail perhiasan berhasil diperbarui!";
+         deskripsi_id = '$deskripsi_id',
+         gambar = '$nama_file' 
+         WHERE id = '$id_item'";
+
+    if (mysqli_query($conn, $query_utama)) {
+        // 2. UPDATE/INSERT TABEL SPESIFIKASI_PRODUK
+        // Menggunakan ON DUPLICATE KEY agar datanya ter-update jika sudah ada, atau tambah baru jika belum
+        $query_spek = "INSERT INTO spesifikasi_produk (id_galeri, tipe_spesifikasi_id, tipe_spesifikasi_en, warna_id, warna_en, berat) 
+                       VALUES ('$id_item', '$tipe_id', '$tipe_en', '$warna_id', '$warna_en', '$berat')
+                       ON DUPLICATE KEY UPDATE 
+                       tipe_spesifikasi_id = '$tipe_id', 
+                       tipe_spesifikasi_en = '$tipe_en', 
+                       warna_id = '$warna_id', 
+                       warna_en = '$warna_en', 
+                       berat = '$berat'";
+
+        mysqli_query($conn, $query_spek);
+
+        $_SESSION['sukses'] = "Produk dan spesifikasi berhasil diperbarui!";
     } else {
         $_SESSION['error'] = "Gagal memperbarui produk: " . mysqli_error($conn);
     }

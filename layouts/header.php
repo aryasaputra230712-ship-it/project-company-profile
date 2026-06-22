@@ -18,11 +18,29 @@ if (file_exists(ROOTPATH . "/config/config.php")) {
     include_once ROOTPATH . "/config/config.php";
 }
 
-// 4. Pengaman & Pembaca Sistem Bahasa Melalui Session
+// ==========================================
+// 4. LOGIKA BAHASA & URL DINAMIS (PERBAIKAN)
+// ==========================================
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
+// Tangkap jika ada permintaan ganti bahasa dari URL
+if (isset($_GET['lang']) && in_array($_GET['lang'], ['id', 'en'])) {
+    $_SESSION['lang'] = $_GET['lang'];
+}
+
 $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
+
+// Buat link dinamis agar parameter (seperti ?id=1) tidak hilang
+$current_params = $_GET;
+
+$current_params['lang'] = 'id';
+$link_id = '?' . http_build_query($current_params);
+
+$current_params['lang'] = 'en';
+$link_en = '?' . http_build_query($current_params);
+// ==========================================
 ?>
 <!DOCTYPE html>
 <html lang="<?= $bahasa_aktif ?>" class="w-full min-h-full overflow-x-hidden">
@@ -77,7 +95,6 @@ $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
     </script>
 
     <style>
-        /* Hapus @import dari sini! */
         body {
             font-family: 'Poppins', sans-serif;
             background: #050816;
@@ -98,7 +115,6 @@ $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
 
 <body class="w-full min-h-full bg-aurelis-dark">
 
-    <!-- 1. HEADER UTAMA (Hanya membungkus Navigasi Atas) -->
     <header class="fixed top-0 left-0 w-full z-[999] glass-header transition-all duration-300">
         <nav class="max-w-[1180px] mx-auto px-6 py-4 flex justify-between items-center">
 
@@ -116,34 +132,25 @@ $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
             </ul>
 
             <div class="flex items-center gap-4 md:gap-5">
-                <!-- Language Switcher Desktop (Mengarah ke url_lang.php agar URL Bersih) -->
                 <div class="hidden md:flex items-center gap-3">
-                    <a href="<?= $base_url ?>/url_lang.php?lang=id" class="flex items-center gap-2 text-sm font-semibold transition group <?= ($bahasa_aktif == 'id') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
+                    <a href="<?= $link_id ?>" class="flex items-center gap-2 text-sm font-semibold transition group <?= ($bahasa_aktif == 'id') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
                         <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm transition-opacity <?= ($bahasa_aktif == 'id') ? 'opacity-100' : 'opacity-40 group-hover:opacity-80' ?>"> ID
                     </a>
 
                     <div class="w-[1px] h-4 bg-white/10 self-center"></div>
 
-                    <a href="<?= $base_url ?>/url_lang.php?lang=en" class="flex items-center gap-2 text-sm font-semibold transition group <?= ($bahasa_aktif == 'en') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
+                    <a href="<?= $link_en ?>" class="flex items-center gap-2 text-sm font-semibold transition group <?= ($bahasa_aktif == 'en') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
                         <img src="https://flagcdn.com/w20/us.png" alt="EN" class="w-4 h-auto rounded-sm transition-opacity <?= ($bahasa_aktif == 'en') ? 'opacity-100' : 'opacity-40 group-hover:opacity-80' ?>"> EN
                     </a>
                 </div>
 
-                <div id="nav-icons" class="flex items-center gap-5 transition-opacity duration-300">
-                    <a href="#" class="text-aurelis-krem text-lg hover:text-aurelis-gold"><i class="fa-regular fa-user"></i></a>
-                    <a href="#" class="text-aurelis-krem text-lg hover:text-aurelis-gold"><i class="fa-solid fa-cart-shopping"></i></a>
-                </div>
-
-                <!-- Tombol Hamburger -->
                 <button id="hamburger-btn" class="md:hidden text-aurelis-krem text-2xl focus:outline-none p-2 relative z-[1000]">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
         </nav>
-    </header> <!-- Penutup Header -->
+    </header>
 
-
-    <!-- 2. MOBILE MENU -->
     <div id="mobile-menu" class="fixed inset-0 bg-aurelis-dark z-[9999] flex flex-col transition-all duration-500 transform -translate-y-full opacity-0 pointer-events-none">
 
         <div class="flex justify-between items-center px-6 py-4 border-b border-white/10">
@@ -169,34 +176,27 @@ $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
                 </li>
             </ul>
 
-            <!-- Language Switcher Mobile (Mengarah ke url_lang.php agar URL Bersih) -->
             <div class="mt-16 text-center w-full">
                 <span class="text-[0.6rem] text-gray-500 tracking-[0.5em] font-bold uppercase mb-6 block">SELECT LANGUAGE</span>
                 <div class="flex justify-center gap-6">
-                    <a href="<?= $base_url ?>/url_lang.php?lang=id" class="flex items-center gap-3 text-sm font-semibold transition group <?= ($bahasa_aktif == 'id') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
+                    <a href="<?= $link_id ?>" class="flex items-center gap-3 text-sm font-semibold transition group <?= ($bahasa_aktif == 'id') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
                         <img src="https://flagcdn.com/w20/id.png" alt="ID" class="w-4 h-auto rounded-sm <?= ($bahasa_aktif == 'id') ? 'opacity-100' : 'opacity-40' ?>"> ID
                     </a>
 
                     <div class="w-[1px] h-4 bg-white/10 self-center"></div>
 
-                    <a href="<?= $base_url ?>/url_lang.php?lang=en" class="flex items-center gap-3 text-sm font-semibold transition group <?= ($bahasa_aktif == 'en') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
+                    <a href="<?= $link_en ?>" class="flex items-center gap-3 text-sm font-semibold transition group <?= ($bahasa_aktif == 'en') ? 'text-aurelis-gold' : 'text-gray-500 hover:text-aurelis-krem' ?>">
                         <img src="https://flagcdn.com/w20/us.png" alt="EN" class="w-4 h-auto rounded-sm <?= ($bahasa_aktif == 'en') ? 'opacity-100' : 'opacity-40' ?>"> EN
                     </a>
                 </div>
             </div>
 
-            <div class="mt-12 flex gap-8">
-                <a href="#" class="text-white/40 hover:text-aurelis-gold transition text-lg"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#" class="text-white/40 hover:text-aurelis-gold transition text-lg"><i class="fa-brands fa-whatsapp"></i></a>
-                <a href="#" class="text-white/40 hover:text-aurelis-gold transition text-lg"><i class="fa-regular fa-envelope"></i></a>
-            </div>
+
         </div>
     </div>
 
-    <!-- 3. SPACER HEIGHT -->
     <div class="h-16 md:h-20"></div>
 
-    <!-- 4. LOGIKA JAVASCRIPT -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const hamburgerBtn = document.getElementById("hamburger-btn");
@@ -205,7 +205,6 @@ $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
             const navIcons = document.getElementById("nav-icons");
             const mobileLinks = document.querySelectorAll(".mobile-link");
 
-            // Fungsi Buka Menu
             if (hamburgerBtn) {
                 hamburgerBtn.addEventListener("click", (e) => {
                     e.preventDefault();
@@ -218,7 +217,6 @@ $bahasa_aktif = isset($_SESSION['lang']) ? $_SESSION['lang'] : 'id';
                 });
             }
 
-            // Fungsi Tutup Menu
             const closeMenuAction = (e) => {
                 if (mobileMenu) {
                     mobileMenu.classList.remove("translate-y-0", "opacity-100", "pointer-events-auto");

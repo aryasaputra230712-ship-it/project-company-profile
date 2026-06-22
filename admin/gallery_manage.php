@@ -38,14 +38,33 @@ if ($tab == 'perhiasan') {
     $total_data = mysqli_fetch_assoc($total_query)['total'];
     $total_pages = ceil($total_data / $limit);
 
-    // Ambil data dengan LIMIT
-    $items = mysqli_query($conn, "SELECT * FROM galeri_utama ORDER BY id DESC LIMIT $start, $limit");
+    // Ambil data dengan LIMIT (MENGGUNAKAN LEFT JOIN)
+    $query_items = "SELECT g.*, s.tipe_spesifikasi_id, s.tipe_spesifikasi_en, s.warna_id, s.warna_en, s.berat 
+                FROM galeri_utama g 
+                LEFT JOIN spesifikasi_produk s ON g.id = s.id_galeri 
+                ORDER BY g.id DESC LIMIT $start, $limit";
+    $items = mysqli_query($conn, $query_items);
 } elseif ($tab == 'gambar') {
-    $limit = 8;
+    // 🎨 Kita set limit 12 agar grid gambar terlihat penuh dan rapi di layar
+    $limit = 12;
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $start = ($page > 1) ? ($page * $limit) - $limit : 0;
 
-    $items = mysqli_query($conn, "SELECT * FROM gambar_detail_product ORDER BY id DESC LIMIT $start, $limit");
+    // 📊 Hitung total gambar detail untuk sistem Paginasi
+    $total_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM gambar_detail_produk");
+    $total_data = mysqli_fetch_assoc($total_query)['total'];
+    $total_pages = ceil($total_data / $limit);
+
+    // 🔗 TEKNIK JOIN: Mengambil gambar dari 'gambar_detail_produk' 
+    // SEKALIGUS mencocokkan 'nama_produk' dari tabel 'galeri_utama'
+    $query_detail = "SELECT g.id, g.gambar, u.nama_produk 
+                     FROM gambar_detail_produk g 
+                     JOIN galeri_utama u ON g.id_galeri = u.id 
+                     ORDER BY g.id DESC LIMIT $start, $limit";
+    $items_gambar = mysqli_query($conn, $query_detail);
+
+    // 📦 Ambil daftar produk (ID & Nama) untuk pilihan di Dropdown Form Upload
+    $produk_list = mysqli_query($conn, "SELECT id, nama_produk FROM galeri_utama ORDER BY id DESC");
 }
 
 $kategori_list = mysqli_query($conn, "SELECT * FROM kategori_galeri ORDER BY nama_kategori ASC");
@@ -237,10 +256,35 @@ function gallery_edit_payload(array $data): string
                                                         'nama_produk_en' => $row['nama_produk_en'] ?? '',
                                                         'harga' => $row['harga'] ?? 0,
                                                         'kategori' => $row['kategori'] ?? '',
+                                                        'deskripsi_id' => $row['deskripsi_id'] ?? '',
+                                                        'deskripsi_en' => $row['deskripsi_en'] ?? '',
+                                                        'tipe_spesifikasi_id' => $row['tipe_spesifikasi_id'] ?? '',
+                                                        'tipe_spesifikasi_en' => $row['tipe_spesifikasi_en'] ?? '',
+                                                        'warna_id' => $row['warna_id'] ?? '',
+                                                        'warna_en' => $row['warna_en'] ?? '',
+                                                        'berat' => $row['berat'] ?? ''
                                                     ]) ?>">Edit</button>
                                     <a href="process/process_gallery.php?action=hapus&id=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus perhiasan ini?')" class="text-center text-[8px] font-bold bg-red-500/10 text-red-400 px-3 py-2.5 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300">
                                         <i class="fa-regular fa-trash-can"></i>
                                     </a>
+                                </div>
+                                
+                                <div class="border-t border-white/10 pt-4 mt-4">
+                                    <h4 class="text-[10px] text-aurelis-gold font-bold uppercase tracking-widest mb-2">Spesifikasi Produk</h4>
+                                    <div class="grid grid-cols-2 gap-2 text-[9px] text-gray-400">
+                                        <div>
+                                            <span class="block font-bold text-gray-500 mb-0.5">Tipe:</span>
+                                            <span class="text-white"><?= htmlspecialchars($row['tipe_spesifikasi_id'] ?? '-') ?></span>
+                                        </div>
+                                        <div>
+                                            <span class="block font-bold text-gray-500 mb-0.5">Warna:</span>
+                                            <span class="text-white"><?= htmlspecialchars($row['warna_id'] ?? '-') ?></span>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <span class="block font-bold text-gray-500 mb-0.5">Berat:</span>
+                                            <span class="text-white"><?= htmlspecialchars($row['berat'] ?? '-') ?></span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         <?php endwhile; ?>
@@ -255,6 +299,83 @@ function gallery_edit_payload(array $data): string
                     <div class="mt-12 flex justify-center items-center gap-2">
                         <?php for ($i = 1; $i <= $total_pages; $i++): ?>
                             <a href="?tab=perhiasan&page=<?= $i ?>" class="w-8 h-8 flex items-center justify-center text-xs font-bold rounded-lg border transition <?= $page == $i ? 'bg-aurelis-gold text-aurelis-dark border-aurelis-gold' : 'bg-white/5 border-white/5 text-gray-400 hover:text-white hover:border-white/20' ?>">
+                                <?= $i ?>
+                            </a>
+                        <?php endfor; ?>
+                    </div>
+                <?php endif; ?>
+            <?php elseif ($tab == 'gambar'): ?>
+
+                <div class="bg-white/[0.02] border border-white/5 p-6 rounded-2xl mb-8 shadow-inner">
+                    <h3 class="text-sm font-bold text-aurelis-gold tracking-widest uppercase mb-4 border-b border-white/5 pb-2">
+                        <i class="fa-solid fa-images mr-2"></i> Tambah Gambar Detail
+                    </h3>
+
+                    <form action="process/process_gambar_detail.php" method="POST" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                        <input type="hidden" name="action" value="tambah_gambar">
+
+                        <div class="md:col-span-1">
+                            <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-2 block">1. Pilih Milik Produk Apa?</label>
+                            <select name="id_galeri" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-3 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                                <option value="" disabled selected>-- Pilih Perhiasan --</option>
+                                <?php
+                                if (isset($produk_list)) {
+                                    mysqli_data_seek($produk_list, 0);
+                                    while ($prod = mysqli_fetch_assoc($produk_list)):
+                                ?>
+                                        <option value="<?= $prod['id'] ?>"><?= htmlspecialchars($prod['nama_produk']) ?></option>
+                                <?php
+                                    endwhile;
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <div class="md:col-span-1">
+                            <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-2 block">2. Pilih Gambar (Bisa Multiple)</label>
+                            <input type="file" name="gambar_detail[]" accept="image/*" multiple required class="w-full text-xs text-gray-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/5 file:text-aurelis-gold hover:file:bg-white/10 cursor-pointer border border-white/5 rounded-xl bg-aurelis-input">
+                        </div>
+
+                        <div class="md:col-span-1">
+                            <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-3 rounded-xl uppercase tracking-widest text-[10px] hover:brightness-110 transition shadow-lg">
+                                <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload Gambar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <?php if (isset($items_gambar) && mysqli_num_rows($items_gambar) > 0): ?>
+                        <?php while ($row_img = mysqli_fetch_assoc($items_gambar)): ?>
+                            <div class="bg-white/[0.02] border border-white/5 p-2 rounded-xl group relative overflow-hidden flex flex-col justify-between h-full">
+
+                                <div class="aspect-square rounded-lg overflow-hidden bg-gray-900 mb-2 relative">
+                                    <img src="<?= BASE_URL ?>/assets/imgs/<?= htmlspecialchars($row_img['gambar']) ?>" alt="Detail" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+
+                                    <div class="absolute bottom-0 left-0 right-0 bg-black/80 backdrop-blur-md p-2 translate-y-full group-hover:translate-y-0 transition duration-300">
+                                        <p class="text-[9px] text-aurelis-gold text-center font-bold tracking-wider truncate">
+                                            <?= htmlspecialchars($row_img['nama_produk']) ?>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <a href="process/process_gambar_detail.php?action=hapus&id=<?= $row_img['id'] ?>" onclick="return confirm('Yakin ingin menghapus gambar detail ini?')" class="block text-center text-[9px] font-bold bg-red-500/10 text-red-400 py-2 rounded-lg hover:bg-red-500 hover:text-white uppercase transition duration-300 mt-auto">
+                                    <i class="fa-regular fa-trash-can mr-1"></i> Hapus
+                                </a>
+                            </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <div class="col-span-full py-12 text-center bg-white/[0.01] border border-dashed border-white/5 rounded-2xl">
+                            <div class="text-gray-600 mb-2 text-3xl"><i class="fa-regular fa-image"></i></div>
+                            <p class="text-xs text-gray-500 italic">Belum ada gambar detail yang diunggah untuk produk manapun.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <?php if (isset($total_pages) && $total_pages > 1): ?>
+                    <div class="mt-8 flex justify-center items-center gap-2">
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                            <a href="?tab=gambar&page=<?= $i ?>" class="w-8 h-8 flex items-center justify-center text-xs font-bold rounded-lg border transition <?= $page == $i ? 'bg-aurelis-gold text-aurelis-dark border-aurelis-gold' : 'bg-white/5 border-white/5 text-gray-400 hover:text-white hover:border-white/20' ?>">
                                 <?= $i ?>
                             </a>
                         <?php endfor; ?>
@@ -315,6 +436,7 @@ function gallery_edit_payload(array $data): string
             <form action="process/process_gallery.php" method="POST" enctype="multipart/form-data" class="space-y-4">
                 <input type="hidden" name="action" value="edit_item">
                 <input type="hidden" name="id_item" id="edit-id">
+                
                 <div>
                     <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Nama Perhiasan (ID) 🇮🇩</label>
                     <input type="text" name="nama_produk" id="edit-nama" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
@@ -338,12 +460,43 @@ function gallery_edit_payload(array $data): string
                         </select>
                     </div>
                 </div>
-                <div>
+
+                <div class="border-t border-white/5 pt-4 mt-4">
+                    <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Deskripsi (ID) 🇮🇩</label>
+                    <textarea name="deskripsi_id" id="edit-deskripsi-id" rows="2" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none"></textarea>
+                </div>
+                <div class="mt-2">
+                    <label class="text-[9px] font-bold text-aurelis-gold tracking-widest uppercase mb-1 block">Description (EN) 🇺🇸</label>
+                    <textarea name="deskripsi_en" id="edit-deskripsi-en" rows="2" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none"></textarea>
+                </div>
+
+                <div class="border-t border-white/5 pt-4 mt-4">
+                    <h4 class="text-[9px] font-bold text-aurelis-gold uppercase tracking-widest mb-3">Spesifikasi Produk</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block">Tipe (ID / EN)</label>
+                            <input type="text" name="tipe_spesifikasi_id" id="edit-tipe-id" placeholder="ID" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white mb-2">
+                            <input type="text" name="tipe_spesifikasi_en" id="edit-tipe-en" placeholder="EN" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block">Warna (ID / EN)</label>
+                            <input type="text" name="warna_id" id="edit-warna-id" placeholder="ID" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white mb-2">
+                            <input type="text" name="warna_en" id="edit-warna-en" placeholder="EN" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-[9px] font-bold text-gray-400 uppercase mb-1 block">Berat (gr)</label>
+                            <input type="text" name="berat" id="edit-berat" placeholder="Contoh: 5.5gr" class="w-full bg-aurelis-input border border-white/5 rounded-lg px-3 py-2 text-sm text-white">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-white/5 pt-4 mt-4">
                     <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Ganti Foto (opsional)</label>
                     <input type="file" name="gambar" accept="image/*" class="w-full text-xs text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-white/5 file:text-aurelis-gold hover:file:bg-white/10 cursor-pointer">
                     <p class="text-[9px] text-gray-500 italic mt-1">Biarkan kosong jika tidak ingin mengganti gambar.</p>
                 </div>
-                <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-3 rounded-xl uppercase tracking-widest text-[10px] mt-2">
+                
+                <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-3 rounded-xl uppercase tracking-widest text-[10px] mt-4">
                     Update Perubahan
                 </button>
             </form>
@@ -384,10 +537,23 @@ function gallery_edit_payload(array $data): string
         }
 
         function openEditJewelry(data) {
+            // Data Dasar
             setFieldValue('edit-id', data.id);
             setFieldValue('edit-nama', data.nama_produk);
             setFieldValue('edit-nama-en', data.nama_produk_en);
             setFieldValue('edit-harga', data.harga);
+            
+            // Data Deskripsi
+            setFieldValue('edit-deskripsi-id', data.deskripsi_id);
+            setFieldValue('edit-deskripsi-en', data.deskripsi_en);
+            
+            // Data Spesifikasi
+            setFieldValue('edit-tipe-id', data.tipe_spesifikasi_id);
+            setFieldValue('edit-tipe-en', data.tipe_spesifikasi_en);
+            setFieldValue('edit-warna-id', data.warna_id);
+            setFieldValue('edit-warna-en', data.warna_en);
+            setFieldValue('edit-berat', data.berat);
+            
             setKategoriValue(data.kategori);
             showModal('modal-edit');
         }
@@ -418,5 +584,4 @@ function gallery_edit_payload(array $data): string
         if (overlay) overlay.addEventListener('click', toggleSidebar);
     </script>
 </body>
-
 </html>
