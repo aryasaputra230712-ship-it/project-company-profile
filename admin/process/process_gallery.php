@@ -173,7 +173,7 @@ if (isset($_POST['action']) && $_POST['action'] === 'edit_item') {
     exit();
 }
 
-// 4. HAPUS ITEM PERHIASAN
+// 4. HAPUS ITEM PERHIASANN
 if (isset($_GET['action']) && $_GET['action'] === 'hapus') {
     $id_hapus = mysqli_real_escape_string($conn, $_GET['id'] ?? '');
 
