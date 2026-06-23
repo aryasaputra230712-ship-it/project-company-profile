@@ -222,5 +222,64 @@ if (isset($_GET['action']) && $_GET['action'] === 'hapus') {
     exit();
 }
 
+// ==========================================
+// FITUR CRUD KATEGORI
+// ==========================================
+
+// Fungsi bantuan untuk membuat slug (contoh: "Cincin Emas" jadi "cincin-emas")
+function createSlug($string) {
+    $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', strtolower(trim($string)));
+    return $slug;
+}
+
+// 5. TAMBAH KATEGORI BARU
+if (isset($_POST['action']) && $_POST['action'] === 'tambah_kategori') {
+    $nama_kategori = mysqli_real_escape_string($conn, $_POST['nama_kategori'] ?? '');
+    $slug = createSlug($nama_kategori);
+
+    if ($nama_kategori !== '') {
+        if (mysqli_query($conn, "INSERT INTO kategori_galeri (nama_kategori, slug) VALUES ('$nama_kategori', '$slug')")) {
+            $_SESSION['sukses'] = "Kategori baru berhasil ditambahkan!";
+        } else {
+            $_SESSION['error'] = "Gagal menambah kategori: " . mysqli_error($conn);
+        }
+    }
+    header("Location: ../gallery_manage.php?tab=kategori");
+    exit();
+}
+
+// 6. EDIT KATEGORI
+if (isset($_POST['action']) && $_POST['action'] === 'edit_kategori') {
+    $id_kategori   = mysqli_real_escape_string($conn, $_POST['id_kategori'] ?? '');
+    $nama_kategori = mysqli_real_escape_string($conn, $_POST['nama_kategori'] ?? '');
+    $slug          = createSlug($nama_kategori);
+
+    if ($id_kategori !== '' && $nama_kategori !== '') {
+        if (mysqli_query($conn, "UPDATE kategori_galeri SET nama_kategori = '$nama_kategori', slug = '$slug' WHERE id = '$id_kategori'")) {
+            $_SESSION['sukses'] = "Kategori berhasil diperbarui!";
+        } else {
+            $_SESSION['error'] = "Gagal memperbarui kategori: " . mysqli_error($conn);
+        }
+    }
+    header("Location: ../gallery_manage.php?tab=kategori");
+    exit();
+}
+
+// 7. HAPUS KATEGORI
+if (isset($_GET['action']) && $_GET['action'] === 'hapus_kategori') {
+    $id_hapus = mysqli_real_escape_string($conn, $_GET['id'] ?? '');
+
+    if ($id_hapus !== '') {
+        // Hapus kategori dari database
+        if (mysqli_query($conn, "DELETE FROM kategori_galeri WHERE id = '$id_hapus'")) {
+            $_SESSION['sukses'] = "Kategori berhasil dihapus!";
+        } else {
+            $_SESSION['error'] = "Gagal menghapus. Pastikan kategori ini tidak sedang dipakai oleh perhiasan: " . mysqli_error($conn);
+        }
+    }
+    header("Location: ../gallery_manage.php?tab=kategori");
+    exit();
+}
+
 header("Location: ../gallery_manage.php?tab=" . $redirect_tab);
 exit();

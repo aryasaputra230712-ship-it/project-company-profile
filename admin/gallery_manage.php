@@ -171,6 +171,9 @@ function gallery_edit_payload(array $data): string
             <a href="?tab=gambar" class="px-5 py-2.5 rounded-lg text-[10px] font-bold tracking-widest transition flex items-center gap-2 <?= $tab == 'gambar' ? 'active-tab' : 'text-gray-500 hover:text-white' ?>">
                 <i class="fa-solid fa-image"></i> GAMBAR DETAIL PRODUK
             </a>
+            <a href="?tab=kategori" class="px-5 py-2.5 rounded-lg text-[10px] font-bold tracking-widest transition flex items-center gap-2 <?= $tab == 'kategori' ? 'active-tab' : 'text-gray-500 hover:text-white' ?>">
+                <i class="fa-solid fa-tags"></i> KATEGORI
+            </a>
         </div>
 
         <div class="bg-aurelis-panel border border-white/5 rounded-[1.5rem] md:rounded-[2.5rem] p-5 md:p-10 shadow-2xl">
@@ -180,7 +183,7 @@ function gallery_edit_payload(array $data): string
                         <i class="fa-solid <?= $tab == 'hero' ? 'fa-wand-magic-sparkles' : 'fa-gem' ?>"></i>
                     </div>
                     <h2 class="text-xs md:text-base text-white font-bold uppercase tracking-widest">
-                        Konfigurasi <?= $tab == 'hero' ? 'Hero Galeri' : 'Koleksi Perhiasan' ?>
+                        Konfigurasi <?= $tab == 'hero' ? 'Hero Galeri' : ($tab == 'perhiasan' ? 'Koleksi Perhiasan' : ($tab == 'kategori' ? 'Kategori Produk' : 'Gambar Detail')) ?>
 
                     </h2>
                 </div>
@@ -188,6 +191,10 @@ function gallery_edit_payload(array $data): string
                 <?php if ($tab == 'perhiasan'): ?>
                     <button type="button" onclick="toggleModal('modal-add')" class="bg-white/5 border border-white/10 px-3 py-2 rounded-lg text-[9px] font-bold text-aurelis-gold hover:bg-aurelis-gold hover:text-aurelis-dark transition uppercase tracking-wider">
                         + Tambah Perhiasan
+                    </button>
+                <?php elseif ($tab == 'kategori'): ?>
+                    <button type="button" onclick="toggleModal('modal-add-kategori')" class="bg-white/5 border border-white/10 px-3 py-2 rounded-lg text-[9px] font-bold text-aurelis-gold hover:bg-aurelis-gold hover:text-aurelis-dark transition uppercase tracking-wider">
+                        + Tambah Kategori
                     </button>
                 <?php endif; ?>
             </div>
@@ -381,7 +388,38 @@ function gallery_edit_payload(array $data): string
                         <?php endfor; ?>
                     </div>
                 <?php endif; ?>
+            <?php elseif ($tab == 'kategori'): ?>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <?php
+                    mysqli_data_seek($kategori_list, 0); // Reset pointer
+                    if (mysqli_num_rows($kategori_list) > 0):
+                        while ($kat = mysqli_fetch_assoc($kategori_list)):
+                    ?>
+                            <div class="bg-white/[0.02] border border-white/5 p-5 rounded-2xl flex items-center justify-between group hover:border-aurelis-gold/20 transition duration-300">
+                                <div>
+                                    <h4 class="font-bold text-white text-sm uppercase tracking-wider mb-1"><?= htmlspecialchars($kat['nama_kategori']) ?></h4>
+                                    <span class="text-[9px] text-gray-500 font-mono bg-black/50 px-2 py-1 rounded">Slug: /<?= htmlspecialchars($kat['slug']) ?></span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button type="button" onclick="openEditKategori(<?= htmlspecialchars(json_encode($kat)) ?>)" class="text-[10px] font-bold text-aurelis-gold bg-aurelis-gold/10 px-3 py-2 rounded-lg hover:bg-aurelis-gold hover:text-aurelis-dark uppercase transition">
+                                        Edit
+                                    </button>
+                                    <a href="process/process_gallery.php?action=hapus_kategori&id=<?= $kat['id'] ?>" onclick="return confirm('Yakin ingin menghapus kategori ini?')" class="text-[10px] font-bold text-red-400 bg-red-500/10 px-3 py-2 rounded-lg hover:bg-red-500 hover:text-white uppercase transition">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        <?php
+                        endwhile;
+                    else:
+                        ?>
+                        <div class="col-span-full py-8 text-center border border-dashed border-white/5 rounded-2xl">
+                            <p class="text-xs text-gray-500 italic">Belum ada kategori terdaftar.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
             <?php endif; ?>
+
         </div>
     </main>
 
@@ -453,6 +491,41 @@ function gallery_edit_payload(array $data): string
                 <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-3 rounded-xl uppercase tracking-widest text-[10px] mt-4">
                     Simpan Produk Baru
                 </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-add-kategori" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-sm shadow-2xl relative">
+            <div class="flex items-center justify-between mb-6 pb-2 border-b border-white/5">
+                <h3 class="font-serif-lux text-lg text-white tracking-wide">Tambah Kategori</h3>
+                <button type="button" onclick="toggleModal('modal-add-kategori')" class="text-gray-500 hover:text-white bg-aurelis-input/50 px-3 py-1 rounded-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form action="process/process_gallery.php" method="POST" class="space-y-4">
+                <input type="hidden" name="action" value="tambah_kategori">
+                <div>
+                    <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Nama Kategori</label>
+                    <input type="text" name="nama_kategori" required placeholder="Contoh: Bracelets" class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-3 rounded-xl uppercase tracking-widest text-[10px]">Simpan Kategori</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-edit-kategori" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-sm shadow-2xl relative">
+            <div class="flex items-center justify-between mb-6 pb-2 border-b border-white/5">
+                <h3 class="font-serif-lux text-lg text-white tracking-wide">Edit Kategori</h3>
+                <button type="button" onclick="toggleModal('modal-edit-kategori')" class="text-gray-500 hover:text-white bg-aurelis-input/50 px-3 py-1 rounded-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form action="process/process_gallery.php" method="POST" class="space-y-4">
+                <input type="hidden" name="action" value="edit_kategori">
+                <input type="hidden" name="id_kategori" id="edit-kat-id">
+                <div>
+                    <label class="text-[9px] font-bold text-gray-400 tracking-widest uppercase mb-1 block">Nama Kategori</label>
+                    <input type="text" name="nama_kategori" id="edit-kat-nama" required class="w-full bg-aurelis-input border border-white/5 rounded-xl px-4 py-2.5 text-sm text-white focus:border-aurelis-gold/50 outline-none">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-aurelis-gold to-[#bfa37e] text-aurelis-dark font-bold py-3 rounded-xl uppercase tracking-widest text-[10px]">Update Kategori</button>
             </form>
         </div>
     </div>
@@ -612,6 +685,12 @@ function gallery_edit_payload(array $data): string
         if (openBtn) openBtn.addEventListener('click', toggleSidebar);
         if (closeBtn) closeBtn.addEventListener('click', toggleSidebar);
         if (overlay) overlay.addEventListener('click', toggleSidebar);
+
+        function openEditKategori(data) {
+            document.getElementById('edit-kat-id').value = data.id;
+            document.getElementById('edit-kat-nama').value = data.nama_kategori;
+            showModal('modal-edit-kategori');
+        }
     </script>
 </body>
 
