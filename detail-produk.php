@@ -115,7 +115,7 @@ $label_tipe        = ($lang == 'en') ? "Type" : "Tipe";
 $label_warna       = ($lang == 'en') ? "Color" : "Warna";
 $label_berat       = ($lang == 'en') ? "Weight" : "Berat";
 $label_wa_btn      = ($lang == 'en') ? "💬 Order via WhatsApp" : "💬 Pesan via WhatsApp";
-$label_lainnya     = ($lang == 'en') ? "✨ Other Collections For You" : "✨ Koleksi Lainnya Untukmu";
+$label_lainnya     = ($lang == 'en') ? "Other Collections For You" : "Koleksi Lainnya Untukmu";
 
 // Siapkan gambar dan harga (tidak terpengaruh bahasa)
 $product_image = htmlspecialchars($result['gambar'], ENT_QUOTES, 'UTF-8');
@@ -222,30 +222,48 @@ include ROOTPATH . "/layouts/header.php";
      ============================================ -->
 <section class="px-6 py-16 relative bg-gray-900/30">
     <h2 class="text-center text-3xl mb-12 font-serif tracking-wider text-white">
-        Koleksi Lainnya Untukmu
+        <?= $label_lainnya ?>
     </h2>
 
     <div class="relative max-w-7xl mx-auto">
-        <!-- 🎠 OWL CAROUSEL -->
         <div class="more-product owl-carousel owl-theme">
             <?php
-            // 📦 Ambil 8 produk lain (selain produk saat ini)
-            $stmt_other = $conn->prepare("SELECT id, nama_produk, gambar FROM galeri_utama WHERE id != ? AND status = 'aktif' ORDER BY id DESC LIMIT 8");
+            // 📦 PERBAIKAN: Menambahkan 'nama_produk_en' dan 'harga' ke dalam SELECT query
+            $stmt_other = $conn->prepare("SELECT id, nama_produk, nama_produk_en, harga, gambar FROM galeri_utama WHERE id != ? AND status = 'aktif' ORDER BY id DESC LIMIT 8");
             $stmt_other->bind_param("i", $id_galeri);
             $stmt_other->execute();
             $query_list = $stmt_other->get_result();
 
             while ($row2 = $query_list->fetch_assoc()) {
-                $other_name = htmlspecialchars($row2['nama_produk'], ENT_QUOTES, 'UTF-8');
+                // 🔄 Logika Bahasa untuk Nama Produk Lainnya
+                $other_name = ($lang == 'en' && !empty($row2['nama_produk_en'])) ? $row2['nama_produk_en'] : $row2['nama_produk'];
+                $other_display_name = htmlspecialchars($other_name, ENT_QUOTES, 'UTF-8');
+
                 $other_img = htmlspecialchars($row2['gambar'], ENT_QUOTES, 'UTF-8');
                 $other_id = intval($row2['id']);
+
+                // 💰 Format Harga Produk Lainnya
+                $other_formatted_price = number_format($row2['harga'], 0, ',', '.');
             ?>
                 <div class="item">
-                    <a href="detail-produk.php?id=<?= $other_id ?>" class="block overflow-hidden rounded-xl group shadow-lg">
-                        <img src="<?= BASE_URL ?>/assets/imgs/<?= $other_img ?>"
-                            alt="<?= $other_name ?>"
-                            class="w-full h-[280px] object-cover transition duration-500 group-hover:scale-110 group-hover:brightness-75">
-                        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition duration-300"></div>
+                    <a href="detail-produk.php?id=<?= $other_id ?>" class="block group">
+
+                        <div class="relative overflow-hidden rounded-xl shadow-lg aspect-square">
+                            <img src="<?= BASE_URL ?>/assets/imgs/<?= $other_img ?>"
+                                alt="<?= $other_display_name ?>"
+                                class="w-full h-[280px] object-cover transition duration-500 group-hover:scale-110 group-hover:brightness-75">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition duration-300"></div>
+                        </div>
+
+                        <div class="mt-4 text-center px-1">
+                            <h4 class="text-white text-xs md:text-sm font-medium tracking-wide uppercase truncate group-hover:text-aurelis-gold transition duration-300">
+                                <?= $other_display_name ?>
+                            </h4>
+                            <p class="text-aurelis-gold text-xs md:text-sm font-bold mt-1">
+                                Rp <?= $other_formatted_price ?>
+                            </p>
+                        </div>
+
                     </a>
                 </div>
             <?php
@@ -253,7 +271,6 @@ include ROOTPATH . "/layouts/header.php";
             ?>
         </div>
 
-        <!-- ◀️ ▶️ TOMBOL NAVIGASI CAROUSEL -->
         <div class="flex absolute top-1/2 -translate-y-1/2 w-full justify-between pointer-events-none px-2 left-0 right-0 z-10">
             <button class="customPrevBtnMore pointer-events-auto hover:cursor-pointer bg-white/90 border border-gray-200 text-gray-800 rounded-full w-10 h-10 flex items-center justify-center shadow-md hover:bg-aurelis-gold hover:text-white transition duration-300 font-bold text-lg">
                 &#10094;
