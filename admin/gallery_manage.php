@@ -49,7 +49,7 @@ if ($tab == 'perhiasan') {
     $limit = 12;
     $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
     $start = ($page > 1) ? ($page * $limit) - $limit : 0;
-
+ 
     // 📊 Hitung total gambar detail untuk sistem Paginasi
     $total_query = mysqli_query($conn, "SELECT COUNT(*) AS total FROM gambar_detail_produk");
     $total_data = mysqli_fetch_assoc($total_query)['total'];
