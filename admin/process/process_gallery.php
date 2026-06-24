@@ -265,6 +265,8 @@ if (isset($_POST['action']) && $_POST['action'] === 'edit_kategori') {
     exit();
 }
 
+
+
 // 7. HAPUS KATEGORI
 if (isset($_GET['action']) && $_GET['action'] === 'hapus_kategori') {
     $id_hapus = mysqli_real_escape_string($conn, $_GET['id'] ?? '');

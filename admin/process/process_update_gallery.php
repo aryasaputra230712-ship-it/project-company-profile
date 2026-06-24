@@ -50,6 +50,8 @@ $sql = "UPDATE header_galeri SET
         gambar = '$gambar_esc' 
         WHERE id = 1";
 
+
+
 if (mysqli_query($conn, $sql)) {
     $_SESSION['sukses'] = "Header hero galeri berhasil diperbarui!";
 } else {
