@@ -38,7 +38,7 @@ if ($tab == 'perhiasan') {
     $total_data = mysqli_fetch_assoc($total_query)['total'];
     $total_pages = ceil($total_data / $limit);
 
-    // Ambil data dengan LIMIT (MENGGUNAKAN LEFT JOIN)
+    // Ambil data dengan LIMIT (MENGGUNAKAN LEFT JOIN)12
     $query_items = "SELECT g.*, s.tipe_spesifikasi_id, s.tipe_spesifikasi_en, s.warna_id, s.warna_en, s.berat 
                 FROM galeri_utama g 
                 LEFT JOIN spesifikasi_produk s ON g.id = s.id_galeri 
