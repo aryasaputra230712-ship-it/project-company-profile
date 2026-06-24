@@ -424,10 +424,10 @@ function gallery_edit_payload(array $data): string
     </main>
 
     <div id="modal-add" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-lg shadow-2xl">
+        <div class="bg-aurelis-panel border border-white/10 p-6 rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-6 pb-2 border-b border-white/5">
                 <h3 class="font-serif-lux text-lg text-white tracking-wide">Tambah Koleksi Perhiasan</h3>
-                <button onclick="toggleModal('modal-add')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+                <button type="button" onclick="toggleModal('modal-add')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <form action="process/process_gallery.php" method="POST" enctype="multipart/form-data" class="space-y-4">
                 <input type="hidden" name="action" value="tambah_item">
