@@ -26,14 +26,14 @@ if ($_SERVER['REMOTE_ADDR'] == '127.0.0.1' || $_SERVER['REMOTE_ADDR'] == '::1') 
      * App Password: https://myaccount.google.com/apppasswords
      */
     $mail_smtp = [
-        'smtp_host'     => 'smtp.gmail.com',
+        'smtp_host'     => 'mail.vibewebs.web.id',
         'smtp_port'     => 587,
         'smtp_secure'   => 'tls',
-        'smtp_user'     => '', // Gmail Anda
-        'smtp_password' => '', // App Password 16 karakter (Google → App passwords)
-        'from_email'    => '', // biasanya sama dengan smtp_user
+        'smtp_user'     => 'info@vibewebs.web.id', // Gmail Anda
+        'smtp_password' => 'Vib3DGodW3bs', // App Password 16 karakter (Google → App passwords)
+        'from_email'    => 'info@vibewebs.web.id', // biasanya sama dengan smtp_user
         'from_name'     => 'Aurelis Profile Website',
-        'notify_email'  => '', // kosong = pakai email di tabel pengaturan
+        'notify_email'  => 'vibewebss@gmail.com', // kosong = pakai email di tabel pengaturan
     ];
 }
 
